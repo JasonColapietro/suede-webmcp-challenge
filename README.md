@@ -14,6 +14,33 @@ support triage, and more.
 
 > Build agents that get work done, and get paid.
 
+## WebMCP Challenge
+
+This repository is the public, MIT-licensed source snapshot for Suede Agent
+Studio's OpenAI WebMCP Challenge entry. The existing application was extended
+with WebMCP during the challenge window. The live directory registers four
+page-scoped tools:
+
+1. `find_services` searches the published service shelf by job-to-be-done.
+2. `get_service` returns price, input contract, review policy, data handling,
+   and worked examples before any action is taken.
+3. `preview_service` creates a free dry-run receipt without model inference or
+   payment. It is correctly marked as a write because it records the run.
+4. `buy_service` spends only prepaid workspace credit after server-side origin,
+   rate-limit, buyability, and exact-price checks. It is not used in the public
+   challenge demo.
+
+Try the live WebMCP surface at
+[agents.suedeai.ai/agents](https://agents.suedeai.ai/agents) using ChatGPT's
+in-app browser or a compatible Chrome WebMCP build.
+
+- [Challenge evidence and implementation map](CHALLENGE_EVIDENCE.md)
+- [Under-three-minute demo script](DEMO_SCRIPT.md)
+- [Submission checklist](SUBMISSION_CHECKLIST.md)
+
+The `"private": true` field in `package.json` prevents accidental publication
+to the npm registry. It does not restrict this repository's MIT license.
+
 ## Stack
 
 Next.js 15 · React 19 · TypeScript (strict) · `@xyflow/react` (canvas) ·

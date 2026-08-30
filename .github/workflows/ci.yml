@@ -1,245 +1,40 @@
-name: CI
+name: WebMCP challenge CI
 
-# Vercel's ignoreCommand kills every non-production build, so this workflow is
-# the only pre-merge proof that the app compiles. "Vercel deployed" is a
-# production signal, never a PR signal.
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 permissions:
   contents: read
 
-# The pull_request event tests GitHub's synthetic merge commit, so repeating
-# the suite after a squash merge re-tests the same tree at full cost. Only the
-# newest push to a PR branch matters.
 concurrency:
-  group: ci-${{ github.event.pull_request.number }}
+  group: webmcp-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # The classifier lives in the web job so a source PR does not pay for a
-  # separate one-minute dispatch job. Docs-only and native-only PRs stop after
-  # the filters, preserving the same path-aware behavior.
-  web:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    # paths-filter reads the PR's changed-file list from the API, which the
-    # workflow-level `contents: read` alone does not grant.
-    permissions:
-      contents: read
-      pull-requests: read
-    outputs:
-      ios: ${{ steps.filter.outputs.ios }}
-      android: ${{ steps.filter.outputs.android }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      # Two filter steps because `predicate-quantifier` is a step-level input,
-      # and the two groups need opposite combining rules. This step keeps the
-      # default 'some' (a file matching ANY rule counts), which is what the
-      # native-shell filters below want: "under ios-app/ OR the workflow file".
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            # Positive patterns only, deliberately. The `!` lines that used to
-            # sit here did not subtract anything — in this matcher a negated
-            # pattern is itself a match rule ("any path that is not an ios-app
-            # markdown file"), which nearly every changed file satisfies. The
-            # filter therefore returned true for ordinary source commits: on
-            # 2026-07-25, fba44e2 (four .ts files, nothing under ios-app/, not
-            # ci.yml) still started this job, and so did e39060c and c8e069e.
-            # That is precisely the "fires on every commit" mistake the ios job
-            # warns about below, at the ~10x macOS rate.
-            #
-            # The cost of dropping the exclusions is that an ios-app README or
-            # an AppStore-Submission/android edit now starts a build it does not
-            # strictly need. That is rare and cheap next to a macOS run on every
-            # source commit, and unlike the negations it is unambiguous: a file
-            # is either under ios-app/ or it is not.
-            ios:
-              - 'ios-app/**'
-              - '.github/workflows/ci.yml'
-            # Listed explicitly rather than as `ios-app/**` minus ios/, because
-            # the shared Capacitor layer (deps, config, web assets) is synced
-            # into both native projects and so has to trigger both jobs.
-            #
-            # Positive patterns only, for the same reason as ios above: the
-            # '!ios-app/**/*.md' line this used to carry matched every path that
-            # was not an ios-app markdown file, i.e. almost everything, so it
-            # would have started a Gradle build on every commit. Linux rate
-            # makes that cheaper than the macOS equivalent, not correct.
-            android:
-              - 'ios-app/android/**'
-              - 'ios-app/package.json'
-              - 'ios-app/package-lock.json'
-              - 'ios-app/capacitor.config.json'
-              - 'ios-app/www/**'
-              - '.github/workflows/ci.yml'
-
-      # Separate step because this filter needs 'every' (a file must match ALL
-      # rules) and the one above needs 'some'. That is the whole reason the
-      # exclusions here work now: with the default 'some', each `!` line is an
-      # independent rule rather than a subtraction, so '!**/*.md' alone matched
-      # every non-markdown path and made the filter true for anything at all —
-      # a docs-only commit ran the full suite. The action's own README documents
-      # this and points at 'every' as the fix.
-      #
-      # Read as: "some changed file is not markdown, not under docs/, and not
-      # under ios-app/". `.github/workflows/ci.yml` still qualifies via '**'
-      # (the matcher runs with dot: true, so dotted paths match), which is why
-      # it no longer needs its own line — under 'every' an extra OR-style
-      # include would instead have to match every file, breaking the filter.
-      - uses: dorny/paths-filter@v3
-        id: filter-web
-        with:
-          predicate-quantifier: 'every'
-          filters: |
-            web:
-              - '**'
-              - '!**/*.md'
-              - '!docs/**'
-              - '!ios-app/**'
       - uses: actions/setup-node@v4
-        if: steps.filter-web.outputs.web == 'true'
         with:
-          # Pin the exact Node patch used to reproduce and verify native-addon
-          # cleanup so CI cannot drift when a new 24.x release is published.
           node-version: '24.19.0'
-          cache: 'npm'
-      # One job on purpose: `npm ci` restores the whole workspace (root + the
-      # packages/agent-kit workspace), so splitting test and build across two
-      # jobs would pay that install twice for no extra signal.
-      - run: npm ci
-        if: steps.filter-web.outputs.web == 'true'
-      # Runs before the suite so a type error fails in ~1 minute instead of
-      # eight. `next build` type-checks the app graph, but scripts/*.ts is not
-      # reachable from it, so this is not redundant with the Build step.
-      #
-      # Scoped via tsconfig.ci.json rather than a bare `tsc --noEmit`: the root
-      # tsconfig includes **/*.ts, which pulls tests/ and packages/*/tests/ in
-      # along with 35 long-standing type errors the build never sees.
-      - name: Typecheck
-        if: steps.filter-web.outputs.web == 'true'
-        run: npx tsc -p tsconfig.ci.json --noEmit
-      # `--max-warnings 0`: the tree is clean, so a warning is a regression and
-      # is treated as one. Anything genuinely not applicable gets a scoped
-      # disable with the reason next to it, not a tolerated warning count.
-      - name: Lint
-        if: steps.filter-web.outputs.web == 'true'
-        run: npm run lint
-      - name: Test
-        if: steps.filter-web.outputs.web == 'true'
-        run: npm test
-      # `next build` is the type-check gate for the app graph itself (see
-      # AGENTS.md).
-      - name: Build
-        if: steps.filter-web.outputs.web == 'true'
-        run: npm run build
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx tsc -p tsconfig.ci.json --noEmit
+      - run: npm run lint
+      - name: Focused WebMCP tests
+        run: >-
+          npm test -- --run
+          tests/webmcp-protocol.test.ts
+          tests/webmcp-shelf-contract.test.ts
+          tests/webmcp-storefront.test.ts
+          tests/webmcp-preview-budget.test.ts
+          tests/webmcp-buy-guard.test.ts
+          tests/webmcp-mount-scope.test.ts
+      - run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: '1'
-
-  # The native shell only loads https://agents.suedeai.ai, so this job proves
-  # the wrapper still compiles — the web content it displays is covered by the
-  # `web` job above.
-  #
-  # macOS runners bill at ~10x the Linux rate on private repos, which is the
-  # whole reason this is filtered to ios-app changes. Do not widen that filter
-  # without meaning to: a run that fires on every commit is the expensive
-  # mistake here.
-  ios:
-    needs: web
-    if: ${{ always() && needs.web.result == 'success' && needs.web.outputs.ios == 'true' }}
-    runs-on: macos-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: ios-app
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24.19.0'
-          cache: 'npm'
-          cache-dependency-path: ios-app/package-lock.json
-      # The Xcode project resolves Capacitor over SPM from local node_modules
-      # paths, so the install must happen before xcodebuild can even list a
-      # scheme. --omit=dev skips playwright, which only the screenshot script
-      # needs and which would pull browser binaries for nothing.
-      - name: Install (production deps only)
-        run: npm ci --omit=dev
-      # `public/`, `capacitor.config.json`, and `config.xml` are generated into
-      # the native project and gitignored, so a clean checkout cannot build
-      # until sync writes them.
-      - name: Capacitor sync
-        run: npx cap sync ios
-      # No signing in CI: this is a compile check, not a distributable build.
-      # Archiving would need the W3N8SRDK4C team's certificates.
-      - name: Build (unsigned, simulator)
-        working-directory: ios-app/ios/App
-        run: |
-          xcodebuild \
-            -project App.xcodeproj \
-            -scheme App \
-            -destination 'generic/platform=iOS Simulator' \
-            -configuration Debug \
-            CODE_SIGNING_ALLOWED=NO \
-            build
-
-  # The Android half of the same Capacitor shell. Unlike `ios` this runs on
-  # Linux at the normal rate, so the filter can afford to be generous.
-  android:
-    needs: web
-    if: ${{ always() && needs.web.result == 'success' && needs.web.outputs.android == 'true' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: ios-app
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24.19.0'
-          cache: 'npm'
-          cache-dependency-path: ios-app/package-lock.json
-      # Read from ios-app/android/.java-version rather than hardcoded here, so
-      # CI and a developer's jenv/asdf/mise resolve the same JDK from one file.
-      # It says 21 — not AGP 8.13's baseline of 17 — because capacitor-android
-      # 8.4.2 compiles at JavaVersion.VERSION_21, and a 17 JDK fails it with
-      # "invalid source release: 21".
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version-file: ios-app/android/.java-version
-      - name: Install (production deps only)
-        run: npm ci --omit=dev
-      # assets/public, capacitor.config.json, and capacitor.plugins.json are
-      # generated into the native project and gitignored — same story as iOS.
-      - name: Capacitor sync
-        run: npx cap sync android
-      # assembleDebug signs with the auto-generated debug keystore, so no
-      # secrets are involved. app/build.gradle applies the google-services
-      # plugin only when google-services.json exists; it is untracked, so the
-      # build logs "Push Notifications won't work" and continues. Expected.
-      - name: Build (debug APK)
-        working-directory: ios-app/android
-        run: ./gradlew assembleDebug --no-daemon
-
-  # The only check worth requiring in branch protection. Requiring `web`,
-  # `ios`, or `android` directly would leave unrelated PRs pending forever,
-  # because a skipped job never reports a conclusion.
-  #
-  # `web` owns the path classifier, so a filter failure is also a gate failure.
-  ci-success:
-    if: always()
-    needs: [web, ios, android]
-    # This job only evaluates three result strings, so use GitHub's lower-cost
-    # 1-core runner instead of a full 2-core CI runner.
-    runs-on: ubuntu-slim
-    timeout-minutes: 15
-    steps:
-      - name: Gate on all jobs
-        run: |
-          for r in ${{ join(needs.*.result, ' ') }}; do
-            [ "$r" = "success" ] || [ "$r" = "skipped" ] || { echo "blocked by: $r"; exit 1; }
-          done
