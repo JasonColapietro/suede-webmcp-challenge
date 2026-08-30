@@ -7,6 +7,9 @@
  */
 import { describe, it, expect } from "vitest";
 import {
+  BUY_IP_LIMIT,
+  buyRateLimitKeys,
+  checkBuyRateLimits,
   guardBuyRequest,
   priceEchoMatches,
   round6,
@@ -29,8 +32,6 @@ function input(over: Partial<BuyGuardInput> = {}): BuyGuardInput {
     listedPriceUsdc: 2,
     confirmedPriceUsdc: 2,
     buyable: true,
-    rateLimitAllowed: true,
-    retryAfterSec: 0,
     ...over,
   };
 }
@@ -76,25 +77,68 @@ describe("same-origin mutation headers", () => {
   });
 });
 
-describe("rate limiting", () => {
-  it("refuses once the caller's bucket is empty, and says when to retry", () => {
-    // Non-optional: a zero-price agent is non-billable, so without this the
-    // route is unmetered inference for any browser.
-    const verdict = guardBuyRequest(input({ rateLimitAllowed: false, retryAfterSec: 7 }));
-    expect(verdict).toMatchObject({ ok: false, status: 429, retryAfterSec: 7 });
+describe("rate limit keying", () => {
+  /*
+   * These are the tests that were missing. The original limiter keyed on the
+   * resolved owner id, which middleware mints fresh (crypto.randomUUID) for any
+   * caller without an agx_owner cookie — so every request drew a new bucket and
+   * the limit was never reached. The keying decision lived in the route
+   * handler, which vitest does not import, so nothing caught it.
+   */
+  it("keys on the request IP and the target slug, never on caller-supplied identity", () => {
+    const [ipKey, slugKey] = buyRateLimitKeys("203.0.113.7", "contract-review");
+    expect(ipKey).toBe("webmcp-buy:ip:203.0.113.7");
+    expect(slugKey).toBe("webmcp-buy:slug:contract-review");
+    expect(ipKey).not.toContain("owner");
   });
 
-  it("is checked before the price echo, so a hot loop cannot probe prices", () => {
-    const verdict = guardBuyRequest(
-      input({ rateLimitAllowed: false, retryAfterSec: 3, confirmedPriceUsdc: 999 }),
-    );
-    expect(verdict).toMatchObject({ status: 429 });
+  it("does NOT reset when a caller rotates its identity", () => {
+    // The exact exploit: a fresh owner id per request used to mean a fresh
+    // bucket. Keying on IP means rotating identity changes nothing.
+    const ip = `198.51.100.${Math.floor(Math.random() * 200) + 1}`;
+    const now = 9_000_000;
+    let refused = 0;
+    for (let i = 0; i < BUY_IP_LIMIT.capacity + 5; i += 1) {
+      // A different slug each time also must not open a new per-IP bucket.
+      if (checkBuyRateLimits(ip, `slug-${i}`, now) !== null) refused += 1;
+    }
+    expect(refused).toBeGreaterThan(0);
+  });
+
+  it("bounds one target across many source IPs", () => {
+    const slug = `hot-${Math.random().toString(36).slice(2)}`;
+    const now = 9_100_000;
+    let refused = 0;
+    for (let i = 0; i < 80; i += 1) {
+      if (checkBuyRateLimits(`10.0.${Math.floor(i / 250)}.${i % 250}`, slug, now) !== null) {
+        refused += 1;
+      }
+    }
+    expect(refused).toBeGreaterThan(0);
+  });
+
+  it("names the wait when it refuses", () => {
+    const ip = `192.0.2.${Math.floor(Math.random() * 200) + 1}`;
+    const now = 9_200_000;
+    for (let i = 0; i < BUY_IP_LIMIT.capacity; i += 1) checkBuyRateLimits(ip, "s", now);
+    const verdict = checkBuyRateLimits(ip, "s", now);
+    expect(verdict).toMatchObject({ ok: false, status: 429 });
+    expect(verdict !== null && verdict.ok === false && verdict.retryAfterSec).toBeGreaterThan(0);
+  });
+
+  it("lets a first-time caller through", () => {
+    expect(checkBuyRateLimits(`172.16.0.${Math.floor(Math.random() * 200) + 1}`, "fresh", 9_300_000))
+      .toBeNull();
   });
 });
 
 describe("buyability", () => {
   it("refuses when the server's own projection says it is not payable", () => {
-    expect(guardBuyRequest(input({ buyable: false }))).toMatchObject({ ok: false, status: 409 });
+    const verdict = guardBuyRequest(input({ buyable: false }));
+    expect(verdict).toMatchObject({ ok: false, status: 409 });
+    // Half the live shelf is preview-only, so this path is common and must be
+    // at least as actionable as a typo.
+    expect(verdict.ok === false && verdict.error).toContain("preview_service");
   });
 });
 

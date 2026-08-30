@@ -75,6 +75,16 @@ export interface McpCallToolInput {
   readonly arguments: Record<string, unknown>;
   /** Bearer workspace key, or null when the caller sent none. */
   readonly workspaceKey: string | null;
+  /**
+   * Hard ceiling on what this call may charge, in USDC.
+   *
+   * Optional, and unset by the JSON-RPC transport — an MCP client agrees to a
+   * price by reading the tool descriptor, and re-reads it on every tools/list.
+   * The browser storefront is different: it quotes a price to a buying agent,
+   * then charges on a LATER catalog read, so without a ceiling the two can
+   * disagree across a cache expiry. Set it there.
+   */
+  readonly maxPriceUsdc?: number;
 }
 
 export interface McpServerDeps {

@@ -24,17 +24,15 @@
  * host by that module's deny-by-default rule.
  */
 import { z } from "zod";
-import { privateJson, validateMutationHeaders } from "@/lib/runtime/api-contract";
+import { privateJson, readBoundedJson, validateMutationHeaders } from "@/lib/runtime/api-contract";
 import { resolveOwnerId } from "@/lib/auth";
 import { buildCatalog } from "@/lib/catalog";
 import { createMcpDeps } from "@/lib/mcp/service";
 import { toolNameForSlug } from "@/lib/mcp/tools";
-import { checkRateLimit, ipFromRequest } from "@/lib/rate-limit";
-import { guardBuyRequest } from "@/lib/webmcp/buy-guard";
+import { ipFromRequest } from "@/lib/rate-limit";
+import { checkBuyRateLimits, guardBuyRequest } from "@/lib/webmcp/buy-guard";
 
 export const runtime = "nodejs";
-
-const MAX_BODY_BYTES = 64 * 1024;
 
 const buyBodySchema = z.object({
   slug: z.string().min(1).max(200),
@@ -42,14 +40,18 @@ const buyBodySchema = z.object({
   confirmedPriceUsdc: z.number().finite().min(0),
 }).strict();
 
-/**
- * Tighter than the shared agent-run bucket. A browser-reachable spend endpoint
- * gets less burst than a keyed machine caller.
- */
-const BUY_LIMIT = { capacity: 5, refillPerSec: 0.2 } as const;
+/** Reads `structuredContent` for the fields the buyer needs to keep. */
+function receiptFrom(structured: unknown): { runId?: string; chargedUsdc?: number } {
+  if (structured === null || typeof structured !== "object") return {};
+  const row = structured as { runId?: unknown; chargedUsdc?: unknown };
+  return {
+    ...(typeof row.runId === "string" ? { runId: row.runId } : {}),
+    ...(typeof row.chargedUsdc === "number" ? { chargedUsdc: row.chargedUsdc } : {}),
+  };
+}
 
 export async function POST(req: Request): Promise<Response> {
-  // Cheap, allocation-free rejections first, before any owner or catalog read.
+  // Cheapest rejection first, before a body is read or an owner resolved.
   const headerFailure = validateMutationHeaders(req);
   if (headerFailure !== null) {
     return privateJson(
@@ -58,9 +60,44 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  const declared = Number(req.headers.get("content-length") ?? "0");
-  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
-    return privateJson({ error: "request body too large" }, 413);
+  /*
+   * A real, streamed byte bound. The previous version read a caller-controlled
+   * content-length, which an absent or lying header skipped entirely, and it
+   * capped at 64 KB against the preview path's 256 KB — a 4x asymmetry that let
+   * a document preview cleanly and then fail to buy. readBoundedJson counts
+   * actual bytes at the same 256 KB ceiling, so both halves of the funnel now
+   * accept the same payload.
+   */
+  const raw = await readBoundedJson(req);
+  if (raw === null) {
+    return privateJson({ error: "request body was invalid or too large" }, 413);
+  }
+
+  const parsed = buyBodySchema.safeParse(raw);
+  if (!parsed.success) {
+    // Name the offending field: `.strict()` rejects an extra key and a
+    // stringified number identically, and "invalid request" alone gave the
+    // agent nothing to correct.
+    const issue = parsed.error.issues[0];
+    const path = issue?.path.join(".");
+    return privateJson(
+      { error: path ? `invalid request at "${path}": ${issue?.message}` : "invalid request" },
+      400,
+    );
+  }
+
+  /*
+   * Rate limit BEFORE resolveOwnerId() and buildCatalog(), because the work
+   * being protected is downstream of both: callTool runs eligibleEntries(),
+   * which issues two uncached queries per catalog entry.
+   */
+  const limited = checkBuyRateLimits(ipFromRequest(req), parsed.data.slug);
+  if (limited !== null) {
+    return privateJson(
+      { error: limited.error, retryAfterSec: limited.retryAfterSec },
+      limited.status,
+      { "Retry-After": String(limited.retryAfterSec ?? 1) },
+    );
   }
 
   let ownerId: string;
@@ -70,43 +107,20 @@ export async function POST(req: Request): Promise<Response> {
     return privateJson({ error: "authentication required" }, 401);
   }
 
-  let raw: unknown;
   try {
-    raw = await req.json();
-  } catch {
-    return privateJson({ error: "invalid request" }, 400);
-  }
-
-  const parsed = buyBodySchema.safeParse(raw);
-  if (!parsed.success) {
-    return privateJson({ error: "invalid request" }, 400);
-  }
-
-  try {
-    // Freshly read server-side price and buyability. The client's cached copy
-    // is never trusted for either.
     const entry = (await buildCatalog()).find((row) => row.slug === parsed.data.slug);
     if (!entry) {
       return privateJson({ error: "not found" }, 404);
     }
 
-    const limit = checkRateLimit(`webmcp-buy:${ownerId}:${ipFromRequest(req)}`, BUY_LIMIT);
     const verdict = guardBuyRequest({
       request: req,
       listedPriceUsdc: entry.priceUsdc,
       confirmedPriceUsdc: parsed.data.confirmedPriceUsdc,
       buyable: entry.acceptsPayment && entry.publishedLive,
-      rateLimitAllowed: limit.allowed,
-      retryAfterSec: limit.retryAfterSec,
     });
     if (!verdict.ok) {
-      return privateJson(
-        { error: verdict.error },
-        verdict.status,
-        verdict.retryAfterSec === undefined
-          ? {}
-          : { "Retry-After": String(verdict.retryAfterSec) },
-      );
+      return privateJson({ error: verdict.error }, verdict.status);
     }
 
     // resolveOwnerId may return `sb:<userId>` for an ecosystem session. That is
@@ -117,6 +131,9 @@ export async function POST(req: Request): Promise<Response> {
       name: toolNameForSlug(entry.slug),
       arguments: parsed.data.input,
       workspaceKey: ownerId,
+      // The echo above was checked against THIS request's catalog read; the
+      // charge happens on a later one. This ceiling is what actually binds it.
+      maxPriceUsdc: parsed.data.confirmedPriceUsdc,
     });
 
     const text = result.content
@@ -124,8 +141,19 @@ export async function POST(req: Request): Promise<Response> {
       .join("\n")
       .trim();
 
+    /*
+     * runId and chargedUsdc ride in structuredContent, and the first version
+     * dropped it — so a buyer paid, received a response clamped to the tool
+     * output budget, and had no id with which to retrieve the rest. They are
+     * small and they are the receipt; they go first.
+     */
     return privateJson(
-      { ok: result.isError !== true, slug: entry.slug, result: text },
+      {
+        ok: result.isError !== true,
+        slug: entry.slug,
+        ...receiptFrom(result.structuredContent),
+        result: text,
+      },
       result.isError === true ? 422 : 200,
     );
   } catch (error: unknown) {

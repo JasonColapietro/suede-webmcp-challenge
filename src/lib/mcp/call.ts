@@ -159,6 +159,22 @@ export async function callAgentTool(
   }
 
   const price = round6(entry.priceUsdc);
+
+  /*
+   * The caller's agreed ceiling, enforced against the price this call will
+   * ACTUALLY charge. Any check performed by the caller ran against its own,
+   * earlier catalog read; between that read and this one sit the eligibility
+   * queries and a catalog cache that can expire, so a price raised in that
+   * window would otherwise be charged silently. Refuse instead — no ledger
+   * movement has happened yet at this point.
+   */
+  if (input.maxPriceUsdc !== undefined && price > round6(input.maxPriceUsdc)) {
+    return toolError(
+      `${entry.name} now costs ${price} USDC per call, above the ${round6(input.maxPriceUsdc)} USDC you confirmed. ` +
+        "Nothing was charged. Re-read the price and call again to accept it.",
+    );
+  }
+
   const creatorId = flow.ownerId;
   const callerId = input.workspaceKey;
 

@@ -16,6 +16,7 @@ import {
   storefrontToolSpecs,
   WEBMCP_TOOL_NAMES,
 } from "@/lib/webmcp/storefront";
+import { describeWhatItDoes } from "@/lib/webmcp/storefront";
 import type { ShelfEntry } from "@/lib/webmcp/shelf-contract";
 import { describePrice, toolNameForSlug } from "@/lib/mcp/tools";
 
@@ -133,9 +134,38 @@ describe("matchServices", () => {
   });
 
   it("breaks ties on slug so ordering is stable", () => {
+    const a = entry({ slug: "aaa", id: "a", tags: ["contract"] });
+    const b = entry({ slug: "bbb", id: "b", tags: ["contract"] });
+    expect(matchServices([b, a], "contract").map((e) => e.slug)).toEqual(["aaa", "bbb"]);
+  });
+
+  it("returns NOTHING when nothing matches, rather than shelf order", () => {
+    // Returning zero-hit entries sorted by slug presents shelf order as
+    // relevance. An agent cannot tell that from a real result set.
     const a = entry({ slug: "aaa", id: "a", tags: [] });
     const b = entry({ slug: "bbb", id: "b", tags: [] });
-    expect(matchServices([b, a], "nothing matches here").map((e) => e.slug)).toEqual(["aaa", "bbb"]);
+    for (const need of ["book me a flight to Tokyo", "xyzzy quux frobnicate"]) {
+      expect(matchServices([b, a], need), need).toEqual([]);
+    }
+  });
+});
+
+describe("what a listing says it does", () => {
+  it("prefers the creator pitch over the derived node chain", () => {
+    // Production `summary` is "Input › LLM (Claude) › Output" on most of the
+    // shelf, so rendering it makes every listing read identically.
+    const topology = entry({
+      summary: "Input › LLM (Claude) › Output",
+      description: "Flags renewal risk in a vendor contract.",
+    });
+    expect(describeWhatItDoes(topology)).toBe("Flags renewal risk in a vendor contract.");
+    expect(formatServiceList([topology], 1)).toContain("Flags renewal risk");
+    expect(formatServiceList([topology], 1)).not.toContain("Input ›");
+  });
+
+  it("falls back to the summary when there is no pitch", () => {
+    expect(describeWhatItDoes(entry({ description: null, summary: "Does a thing." })))
+      .toBe("Does a thing.");
   });
 });
 
@@ -150,7 +180,9 @@ describe("formatServiceList", () => {
   });
 
   it("says so plainly when nothing matches", () => {
-    expect(formatServiceList([], 0)).toMatch(/No services/);
+    expect(formatServiceList([], 0)).toMatch(/no services right now/i);
+    // A miss against a stocked shelf must read differently from an empty shelf.
+    expect(formatServiceList([], 6)).toMatch(/shelf has 6/);
   });
 
   it("reports availability read back from the server projection", () => {
@@ -168,6 +200,36 @@ describe("formatServiceDetail", () => {
       exampleInput: { blob: "x".repeat(4000) },
     });
     expect(formatServiceDetail(huge).length).toBeLessThanOrEqual(WEBMCP_BUDGETS.toolOutput);
+  });
+
+  it("keeps every included JSON part parseable rather than clipping one", () => {
+    // A blob cut mid-string fails JSON.parse AND eats the budget a smaller
+    // part could have used intact.
+    const detail = formatServiceDetail(
+      entry({
+        inputSchema: { type: "object", properties: { a: { type: "string" } } },
+        outputSchema: { type: "object", properties: { huge: { description: "z".repeat(3000) } } },
+        exampleInput: { contract: "a short example" },
+      }),
+    );
+    expect(detail.length).toBeLessThanOrEqual(WEBMCP_BUDGETS.toolOutput);
+    for (const [, json] of detail.matchAll(/^(?:Input contract|Example input|Returns): (.+)$/gmu)) {
+      expect(() => JSON.parse(json) as unknown, json.slice(0, 60)).not.toThrow();
+    }
+    expect(detail).toContain("Omitted, too large to inline: return shape.");
+  });
+
+  it("keeps the worked example over the return schema when space is short", () => {
+    // A dry-run stubs every fetch and model node, so exampleOutput is the only
+    // thing that can show a buyer what it is paying for.
+    const detail = formatServiceDetail(
+      entry({
+        outputSchema: { type: "object", properties: { big: { description: "y".repeat(2500) } } },
+        exampleInput: { contract: "text" },
+      }),
+    );
+    expect(detail).toContain("Example input");
+    expect(detail).not.toContain("Returns:");
   });
 
   it("puts price and review policy ahead of the example payload", () => {

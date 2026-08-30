@@ -206,10 +206,29 @@ export function matchServices(
     const hits = haystack.filter((word) => wanted.has(word)).length;
     return { entry, hits };
   });
-  return scored
+  // Zero-hit entries are NOT matches. Returning them sorted alphabetically
+  // presents shelf order as relevance, which is worse than an honest miss: the
+  // agent cannot tell "nothing fits" from "here are your top results".
+  const hits = scored.filter((row) => row.hits > 0);
+  return hits
     .sort((a, b) => b.hits - a.hits || a.entry.slug.localeCompare(b.entry.slug))
     .slice(0, capped)
     .map((row) => row.entry);
+}
+
+/**
+ * What the service actually does, in the creator's own words.
+ *
+ * `summary` is DERIVED from the node chain, so in production it reads
+ * "Input › LLM (Claude) › Output" — identical across most of the shelf and
+ * useless to a buyer. `description` is the creator-written pitch. Preferring it
+ * is the difference between six distinguishable listings and six identical
+ * ones. The fixture-vs-live gap here is real: a test fixture with a written
+ * summary hides the problem entirely.
+ */
+export function describeWhatItDoes(entry: ShelfEntry): string {
+  const pitch = entry.description?.trim();
+  return pitch !== undefined && pitch.length > 0 ? pitch : entry.summary;
 }
 
 /** One-line availability verdict, read back from the server's own projection. */
@@ -230,26 +249,35 @@ export function formatServiceList(
   total: number,
 ): string {
   if (entries.length === 0) {
-    return "No services on the Suede shelf match that need.";
+    // Naming the shelf size distinguishes "your query missed" from "the shelf
+    // is empty" — an agent should retry differently in each case.
+    return total > 0
+      ? `No services match that need. The Suede shelf has ${total}; try broader wording.`
+      : "The Suede shelf has no services right now.";
   }
   const lines: string[] = [];
   let shown = 0;
   for (const entry of entries) {
     const line =
-      `- ${entry.slug}: ${entry.name}. ${entry.summary} ` +
+      `- ${entry.slug}: ${entry.name}. ${describeWhatItDoes(entry)} ` +
       `${describeShelfPrice(entry.priceUsdc)} (${availability(entry)})`;
     const candidate = [...lines, clampText(line, 300)].join("\n");
     if (candidate.length > WEBMCP_BUDGETS.toolOutput - 120) break;
     lines.push(clampText(line, 300));
     shown += 1;
   }
-  const omitted = total - shown;
+  // Count against what MATCHED, not the whole shelf. Measuring against shelf
+  // size made every query end in "1 further match not shown" even when the
+  // agent had already seen every match — and pointed at narrowing the need,
+  // which re-ranks without revealing more. `limit` is the actual lever.
+  const omitted = entries.length - shown;
   const footer =
     omitted > 0
-      ? `\n${omitted} further match(es) not shown. Narrow the need to see them.`
+      ? `\n${omitted} more match(es) not shown. Raise limit (max 10) to see them.`
       : "";
   return clampText(
-    `${shown} of ${total} match(es):\n${lines.join("\n")}${footer}`,
+    `${shown} of ${entries.length} match(es) from ${total} on the shelf:\n` +
+      `${lines.join("\n")}${footer}`,
     WEBMCP_BUDGETS.toolOutput,
   );
 }
@@ -257,25 +285,59 @@ export function formatServiceList(
 /**
  * Render one service's full contract inside the output budget.
  *
- * Ordered so the money and the caveats come first: if anything is lost to the
- * clamp it is the example payload, never the price or the review policy.
+ * Two rules, both learned from measuring real shelf data rather than fixtures:
+ *
+ * 1. ORDER BY WHAT A BUYER CANNOT PROCEED WITHOUT. Price, availability and the
+ *    review policy come first, then the input contract, then the worked
+ *    example, then the return shape. A dry-run stubs every fetch and model
+ *    node, so `exampleOutput` is the only thing that can show a buyer what it
+ *    is actually paying for — it must outrank the return schema, not trail it.
+ *
+ * 2. OMIT A PART WHOLE, NEVER CLIP IT. A JSON blob cut mid-string does not
+ *    parse AND consumes the budget that would have carried a smaller part
+ *    intact. Anything dropped is named, so the agent knows to ask rather than
+ *    assuming it saw everything.
  */
 export function formatServiceDetail(entry: ShelfEntry): string {
-  const parts = [
+  const head = [
     `${entry.slug}: ${entry.name}`,
     describeShelfPrice(entry.priceUsdc),
     `Availability: ${availability(entry)}.`,
     entry.curation
       ? `Review policy: ${entry.curation.reviewPolicy} Data handling: ${entry.curation.dataHandling}`
       : "Published by a Suede customer, not reviewed by Suede.",
-    `What it does: ${entry.description ?? entry.summary}`,
-    `Input contract: ${JSON.stringify(entry.inputSchema)}`,
+    `What it does: ${clampText(describeWhatItDoes(entry), 400)}`,
+  ].join("\n");
+
+  const optional: readonly { readonly label: string; readonly text: string }[] = [
+    { label: "input contract", text: `Input contract: ${JSON.stringify(entry.inputSchema)}` },
+    ...(entry.exampleInput
+      ? [{ label: "example input", text: `Example input: ${JSON.stringify(entry.exampleInput)}` }]
+      : []),
+    ...(entry.exampleOutput
+      ? [{ label: "example output", text: `Example output: ${JSON.stringify(entry.exampleOutput)}` }]
+      : []),
+    ...(entry.outputSchema
+      ? [{ label: "return shape", text: `Returns: ${JSON.stringify(entry.outputSchema)}` }]
+      : []),
   ];
-  if (entry.outputSchema) {
-    parts.push(`Returns: ${JSON.stringify(entry.outputSchema)}`);
+
+  const parts: string[] = [head];
+  const dropped: string[] = [];
+  let used = head.length;
+  for (const part of optional) {
+    // +1 for the newline join, and reserve room for the omission notice.
+    if (used + part.text.length + 1 <= WEBMCP_BUDGETS.toolOutput - 90) {
+      parts.push(part.text);
+      used += part.text.length + 1;
+    } else {
+      dropped.push(part.label);
+    }
   }
-  if (entry.exampleInput) {
-    parts.push(`Example input: ${JSON.stringify(entry.exampleInput)}`);
+  if (dropped.length > 0) {
+    parts.push(`Omitted, too large to inline: ${dropped.join(", ")}.`);
   }
+  // head is bounded by construction, so this clamp is a backstop, not the
+  // mechanism — the loop above is what keeps every included part parseable.
   return clampText(parts.join("\n"), WEBMCP_BUDGETS.toolOutput);
 }

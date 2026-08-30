@@ -53,7 +53,14 @@ function unknownSlug(slug: unknown): string {
   return `No service with slug ${JSON.stringify(slug)}. Call ${WEBMCP_TOOL_NAMES.find} first.`;
 }
 
-/** Post JSON same-origin and render the reply inside the output budget. */
+/**
+ * Post JSON same-origin and render the reply inside the output budget.
+ *
+ * The HTTP status and Retry-After are carried through explicitly. Stringifying
+ * the body alone turned a 429 into `{"error":"too many requests"}` with no wait
+ * time attached, against a bucket that refills slowly — the agent could not
+ * tell a momentary throttle from a permanent refusal.
+ */
 async function postJson(
   url: string,
   body: Readonly<Record<string, unknown>>,
@@ -66,11 +73,19 @@ async function postJson(
     body: JSON.stringify(body),
   });
   const payload: unknown = await response.json().catch(() => null);
-  const text =
-    payload !== null && typeof payload === "object"
-      ? JSON.stringify(payload)
-      : `HTTP ${response.status}`;
-  return clampText(text, WEBMCP_BUDGETS.toolOutput);
+  const rendered =
+    payload !== null && typeof payload === "object" ? JSON.stringify(payload) : "";
+
+  if (response.ok) {
+    return clampText(rendered === "" ? `HTTP ${response.status}` : rendered, WEBMCP_BUDGETS.toolOutput);
+  }
+
+  const retryAfter = response.headers.get("retry-after");
+  const wait = retryAfter === null ? "" : ` Retry after ${retryAfter}s.`;
+  return clampText(
+    `Request failed with HTTP ${response.status}.${wait} ${rendered}`.trim(),
+    WEBMCP_BUDGETS.toolOutput,
+  );
 }
 
 function buildDescriptors(): readonly WebMcpToolDescriptor[] {
