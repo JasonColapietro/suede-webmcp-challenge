@@ -1,0 +1,14 @@
+{
+  // Typecheck gate for CI. Identical compiler options to tsconfig.json, but
+  // narrowed to the code that actually ships. The root config sweeps in
+  // `**/*.ts`, which pulls `tests/` and `packages/*/tests/` into the program —
+  // those carry ~35 long-standing type errors that `next build` never sees,
+  // so a full `tsc --noEmit` cannot be a merge gate without first fixing them.
+  //
+  // Scope here matches the build's blast radius: application source plus the
+  // standalone TypeScript scripts. Test-file types are still exercised at
+  // runtime by `npm run test`.
+  "extends": "./tsconfig.json",
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"],
+  "exclude": ["node_modules", ".next", "dist"]
+}

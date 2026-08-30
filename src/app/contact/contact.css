@@ -1,0 +1,87 @@
+/* /contact — page-scoped layer over chrome.css + site.css. Tokens only, so
+   dark mode (:root[data-theme="dark"]) inherits automatically. */
+
+.ct-channels {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 0.9rem;
+}
+.ct-channel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.15rem 1.2rem 1.25rem;
+  box-shadow: var(--shadow-card);
+}
+.ct-channel .k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.ct-channel h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.ct-channel p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.ct-channel .addr {
+  margin-top: auto;
+  padding-top: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--primary);
+  text-decoration: none;
+  word-break: break-all;
+}
+.ct-channel .addr:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ct-note {
+  margin-top: 1rem;
+  max-width: 62ch;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.ct-browse {
+  color: var(--text-muted);
+  max-width: 62ch;
+  line-height: 1.65;
+  margin: 0;
+}
+/* .ct-browse got the link treatment when this page was built; .ct-note did not,
+   so its two links rendered in --text-muted with no underline, identical to the
+   sentence around them. */
+.ct-note a,
+.ct-browse a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  text-underline-offset: 3px;
+}
+.ct-note a:hover,
+.ct-browse a:hover {
+  text-decoration-color: currentColor;
+}
+
+.ct-updated {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-top: 2rem;
+}

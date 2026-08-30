@@ -1,0 +1,35 @@
+-- runs.trigger_input / runs.run_variables — "Run again" resubmit columns
+-- Apply via Supabase dashboard SQL editor (Settings -> SQL Editor).
+-- Both statements are additive, idempotent (IF NOT EXISTS), and nullable —
+-- safe to run even if one of the two columns already exists.
+--
+-- Context: added to src/lib/db/schema.deploy.sql (lines 176-177) and to the
+-- SQLite runtime (RUN_TRIGGER_INPUT_COLUMNS in src/lib/db/migrations/sqlite.ts,
+-- v27) as part of "feat(runs): store legacy run trigger input so it can be
+-- resubmitted" (#119). That PR never went through the manual production-apply
+-- gate in this directory, so the live `runs` table in Supabase project
+-- drzuelosizfllruocmly is missing both columns. createRun() in
+--
+-- ✓ 2026-07-27: the project ref above is CORRECT — confirmed by fingerprint
+-- query against production. drzuelosizfllruocmly holds Agent Studio's tables
+-- AND Suede Social's; one project serves both roles, which is why this file
+-- and src/lib/suede-identity.ts:20 (calling it "the SHARED identity project")
+-- are both right. A note briefly added here calling this ref wrong was itself
+-- wrong: it rested on the dashboard's lazily-loaded table list, which had not
+-- rendered `agents`/`flows`/`runs` yet. Identify a project with to_regclass
+-- or information_schema, never with that list.
+--
+-- src/lib/db/supabase-repo.ts writes both in a single INSERT, so any
+-- non-dry-run agent call currently fails at createRun with "Could not find
+-- the 'run_variables' column of 'runs' in the schema cache" before the flow
+-- ever executes (Vercel runtime error, first seen 2026-07-21T02:44:45Z,
+-- route /api/agents/[agent]/run).
+--
+-- 1. trigger_input: the exact trigger payload a run was started with, so a
+--    later "Run again" can resubmit it. Null for rows written before this
+--    column existed and for callers that supplied no input.
+alter table runs add column if not exists trigger_input jsonb;
+
+-- 2. run_variables: the resolved run-scoped variables at run start, same
+--    resubmit use case as trigger_input above.
+alter table runs add column if not exists run_variables jsonb;

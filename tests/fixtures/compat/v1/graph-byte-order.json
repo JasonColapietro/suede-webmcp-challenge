@@ -1,0 +1,49 @@
+{
+  "futureGraphField": {
+    "z-last-schema-wise": 1,
+    "a-first-schema-wise": 2
+  },
+  "edges": [
+    {
+      "futureEdgeField": "preserve-first",
+      "targetHandle": "input",
+      "target": "output",
+      "sourceHandle": "output",
+      "source": "input",
+      "id": "input-output"
+    }
+  ],
+  "meta": {
+    "zeta": true,
+    "alpha": false
+  },
+  "nodes": [
+    {
+      "futureNodeField": {
+        "zeta": "before",
+        "alpha": "after"
+      },
+      "position": {
+        "y": 20,
+        "x": 10
+      },
+      "params": {
+        "zeta": "preserve",
+        "alpha": "order"
+      },
+      "type": "input",
+      "id": "input"
+    },
+    {
+      "position": {
+        "y": 40,
+        "x": 30
+      },
+      "params": {},
+      "type": "output",
+      "id": "output"
+    }
+  ],
+  "name": "Byte order fixture",
+  "id": "legacy-byte-order"
+}

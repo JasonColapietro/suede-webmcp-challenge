@@ -1,0 +1,24 @@
+{
+  "name": "suede-agents-ios",
+  "version": "1.0.0",
+  "description": "Suede Agent Studio iOS — Capacitor wrap of the web app at agents.suedeai.ai",
+  "private": true,
+  "scripts": {
+    "generate-assets": "capacitor-assets generate --ios",
+    "open": "cap open ios",
+    "sync": "cap sync ios",
+    "generate-assets:android": "capacitor-assets generate --android --assetPath assets-android",
+    "sync:android": "cap sync android && node ./scripts/apply-android-capacitor-config.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.2",
+    "@capacitor/cli": "^8.3.3",
+    "@capacitor/core": "^8.3.3",
+    "@capacitor/ios": "^8.3.3",
+    "@capacitor/splash-screen": "^8.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "playwright": "^1.58.0"
+  }
+}

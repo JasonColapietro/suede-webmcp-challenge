@@ -1,0 +1,749 @@
+/* /company — company-specific presentation layer (template picker, founding
+   moment, dashboard hierarchy). Composes with chrome.css / site.css lp-*
+   atoms under a `co-` prefix so nothing here collides with shared surfaces.
+
+   Dark mode: every color derives from tokens.css custom properties (or
+   color-mix over them), which :root[data-theme="dark"] already flips, so no
+   per-theme overrides are needed. */
+
+/* ---- Founding intro (first authenticated screen) ------------------------- */
+.co-founding-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h2);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  margin: 0.4rem 0 0;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+.co-founding-title em {
+  font-style: italic;
+  color: var(--primary);
+}
+.co-founding-sub {
+  margin: 0.6rem 0 0;
+  max-width: 62ch;
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+
+/* ---- Template picker ------------------------------------------------------ */
+.co-picker-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+.co-chip-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 0.5rem 0.8rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.co-chip-card:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--hairline));
+}
+.co-chip-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.co-chip-card b {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+.co-chip-card span {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+.co-chip-card[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--hairline));
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--primary) 25%, transparent),
+    var(--shadow-card);
+  background: color-mix(in srgb, var(--primary) 4%, var(--ink-control));
+}
+.co-chip-card[aria-pressed="true"] span {
+  color: var(--primary);
+}
+
+.co-picker-pitch {
+  margin: 0.9rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  max-width: 68ch;
+}
+
+/* Facts strip: the commercial shape of the selected company at a glance. */
+.co-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.1rem;
+  margin-top: 0.65rem;
+}
+.co-fact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.co-fact b {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--text-primary);
+}
+.co-fact--paid b {
+  color: var(--text-success);
+}
+
+/* ---- Chart frames --------------------------------------------------------- */
+.co-chart-frame {
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) * 1.6);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  background: var(--canvas-bg);
+}
+.co-chart-frame--picker {
+  height: clamp(22rem, 48vh, 30rem);
+  margin-top: 0.9rem;
+}
+.co-chart-frame--dash {
+  height: clamp(24rem, 60vh, 40rem);
+}
+
+.co-found-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  max-width: 40ch;
+}
+
+/* ---- Company operating loop --------------------------------------------- */
+.co-operating-loop {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+.co-operating-loop li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-control);
+}
+.co-loop-number {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.co-operating-loop b,
+.co-operating-loop small {
+  display: block;
+}
+.co-operating-loop b {
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: 1.3;
+}
+.co-operating-loop small {
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.co-company-list-title {
+  margin: 0.4rem 0 0.9rem;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+}
+.co-open-company {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ---- Founder command deck ------------------------------------------------ */
+.co-command-deck {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  margin: 1.1rem 0 0;
+  padding: clamp(1rem, 2.5vw, 1.4rem);
+  border: 1px solid color-mix(in srgb, var(--primary) 32%, var(--hairline));
+  border-radius: calc(var(--radius) * 1.6);
+  background: color-mix(in srgb, var(--primary) 4%, var(--ink-panel));
+  min-width: 0;
+  max-width: 100%;
+}
+.co-command-deck > * {
+  min-width: 0;
+}
+.co-command-deck h2 {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.co-command-deck p {
+  margin: 0.55rem 0 0;
+  max-width: 64ch;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+.co-command-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  min-width: 13rem;
+}
+.co-command-actions .lp-btn {
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* ---- Founding moment: the draft banner ------------------------------------ */
+.co-draft {
+  margin: 1.1rem 0 1.3rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--hairline));
+  border-radius: calc(var(--radius) * 1.6);
+  background: color-mix(in srgb, var(--primary) 3%, var(--ink-panel));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 8%, transparent),
+    var(--shadow-sm);
+}
+.co-draft-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.co-draft-kicker::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+}
+.co-draft-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0.45rem 0 0;
+  text-wrap: balance;
+}
+.co-draft-sub {
+  margin: 0.5rem 0 0;
+  max-width: 64ch;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+.co-draft-list {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem;
+}
+.co-draft-list li {
+  padding: 0.65rem 0.8rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.co-draft-list b {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--text-xs);
+}
+.co-draft-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.co-draft-actions .co-found-note {
+  max-width: 34rem;
+}
+
+/* ---- Dashboard header stats ----------------------------------------------- */
+.co-stats {
+  margin-top: 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.75rem, 1fr));
+  gap: var(--space-4);
+  max-width: 46rem;
+}
+
+/* ---- View toggle (Org chart | List) --------------------------------------- */
+.co-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--canvas-bg);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+}
+.co-toggle button {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 999px;
+  padding: 0.32rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.14s ease, background-color 0.14s ease, box-shadow 0.14s ease;
+}
+.co-toggle button:hover {
+  color: var(--text-primary);
+}
+.co-toggle button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+.co-toggle button[aria-pressed="true"] {
+  background: var(--ink-panel);
+  border-color: var(--hairline);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-chip-card,
+  .co-toggle button {
+    transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .co-operating-loop {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .co-command-deck {
+    grid-template-columns: 1fr;
+  }
+  .co-command-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .co-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
+  }
+  .co-stats .lp-stat {
+    display: block;
+  }
+  .co-stats .lp-stat b {
+    min-width: 0;
+  }
+  .co-operating-loop {
+    grid-template-columns: 1fr;
+  }
+  .co-command-actions {
+    display: grid;
+  }
+  .co-open-company {
+    width: 100%;
+  }
+}
+
+/* ---- Signed-out template showcase ---------------------------------------- */
+/* The board card's mono frame bar carries the template slug; long slugs
+   (rights-precheck-shop) were wrapping mid-name into an orphaned line.
+   The kicker string itself is now sized to fit (CompanyPreviewCard dropped
+   the "company · " prefix), and this ellipsis stays as the last-resort
+   backstop so an overlong future slug degrades to one clipped line, never
+   an orphaned wrap. Loads after chrome.css (same specificity), so this
+   wins the tie on /company. */
+.lp-org-frame-bar b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Signed-out story (CompanySignedOutStory) ----------------------------- */
+/* Editorial body for the signed-out page: deep-dive roster, catalog
+   gallery, and sign-off band. All colors derive from tokens (or color-mix
+   over them), so dark mode needs no per-theme overrides here either. */
+
+.co-caps-note {
+  margin: 0.55rem 0 0;
+  max-width: 60ch;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+/* Deep-dive roster: every seat the featured template ships with. */
+.co-roster {
+  margin-top: 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.co-roster-dept-name {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.co-roster-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.co-roster-seat {
+  padding: 0.75rem 0.9rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.co-roster-seat-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+}
+.co-roster-seat-head b {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+.co-gated-pill {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+}
+.co-roster-seat-role {
+  margin: 0.4rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+.co-roster-seat-flow {
+  margin: 0.45rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* Catalog gallery: all templates with the picker's facts-strip register. */
+.co-gallery {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+.co-gallery-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem 1.1rem;
+  background: var(--ink-panel);
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) * 1.4);
+  box-shadow: var(--shadow-sm);
+}
+.co-gallery-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.7rem;
+  border-bottom: 1px solid var(--hairline);
+}
+/* Slugs are hyphenated, so they break at hyphens instead of ellipsizing
+   mid-name; never clip a template's identity in the gallery. */
+.co-gallery-kicker b {
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.co-gallery-vertical {
+  color: var(--violet);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.co-gallery-card h3 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.005em;
+  color: var(--text-primary);
+}
+.co-gallery-mission {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+.co-facts--card {
+  gap: 0.35rem 0.85rem;
+  margin-top: 0.7rem;
+}
+.co-gallery-seats {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0.65rem 0 0;
+  border-top: 1px dashed var(--hairline);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.co-gallery-seats li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.co-gallery-seat-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 0;
+}
+
+/* TriggerChip's quiet "on demand" register is scoped to .lp-seat-body in
+   chrome.css; give the roster and gallery surfaces the same mono treatment
+   so on-demand seats read at chip register, not body copy. */
+.co-roster-seat-head .meta,
+.co-gallery-seats .meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.co-roster-seat-head .meta i,
+.co-gallery-seats .meta i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex: none;
+}
+
+/* Sign-off band. */
+.co-signoff {
+  padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.2rem, 2.8vw, 1.8rem);
+  border: 1px solid color-mix(in srgb, var(--primary) 26%, var(--hairline));
+  border-radius: calc(var(--radius) * 1.6);
+  background: color-mix(in srgb, var(--primary) 3%, var(--ink-panel));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 8%, transparent),
+    var(--shadow-sm);
+}
+
+/* Seat status (Paperclip list anatomy). */
+.co-seat-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.co-status-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.co-status-dot.is-pulsing {
+  animation: co-pulse-run 2.2s ease-out infinite;
+}
+@keyframes co-pulse-run {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--registry-cyan) 45%, transparent); }
+  70% { box-shadow: 0 0 0 5px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.co-status-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.co-seat-meta {
+  overflow-wrap: anywhere;
+}
+.co-status-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  margin: 0 0 0.8rem;
+}
+.co-status-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-status-dot.is-pulsing {
+    animation: none;
+  }
+}
+/* Mobile backstop: the org chart is desktop-only. The picker frame
+   (.co-chart-frame--picker) stays visible everywhere. */
+@media (max-width: 767px) {
+  .co-toggle-chart {
+    display: none;
+  }
+  .co-chart-frame--dash {
+    display: none;
+  }
+}
+
+/* ---- Signed-out hero: definition line + in-page wayfinding --------------- */
+.co-hero-def {
+  margin: 0.55rem 0 0;
+  max-width: 640px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.co-jump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+  margin-top: 1rem;
+}
+.co-jump a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--ink-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.co-jump a:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline));
+}
+.co-jump a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-jump a {
+    transition: none;
+  }
+}
+#how-a-company-runs,
+#inside-a-template,
+#templates,
+#founding-faq {
+  scroll-margin-top: 5rem;
+}

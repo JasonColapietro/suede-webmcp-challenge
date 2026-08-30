@@ -1,0 +1,149 @@
+/* /articles + /articles/[slug] — page-scoped layer over chrome.css +
+   site.css. Tokens only, so dark mode (:root[data-theme="dark"]) inherits
+   automatically. Article body content comes from src/lib/articles.ts and is
+   not styled beyond the shell classes here. */
+
+.ar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.ar-card {
+  display: block;
+  position: relative;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem 1.75rem;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+.ar-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.ar-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.ar-card:hover::before {
+  opacity: 1;
+}
+.ar-card .lp-eyebrow {
+  display: block;
+}
+.ar-card h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  letter-spacing: -0.012em;
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+.ar-card p {
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+  font-size: var(--text-sm);
+  max-width: 68ch;
+}
+.ar-card .go {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-card,
+  .ar-card::before {
+    transition: none;
+  }
+  .ar-card:hover {
+    transform: none;
+  }
+}
+
+/* Quiet reference panel shared by the index footer and the slug footer. */
+.ar-panel {
+  padding: 1.75rem 2rem;
+  background: var(--canvas-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline);
+}
+.ar-panel p {
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+.ar-panel a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  text-underline-offset: 3px;
+}
+.ar-panel a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Article body shell (typed blocks from articles.ts). */
+.ar-body h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  letter-spacing: -0.012em;
+  margin: 2.25rem 0 0.75rem;
+}
+.ar-body h3 {
+  margin: 1.75rem 0 0.5rem;
+}
+.ar-body p {
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin: 0 0 1.1rem;
+}
+.ar-body ul {
+  margin: 0 0 1.1rem;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.ar-body li {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.ar-body .lp-code {
+  margin: 1.1rem 0;
+}
+
+.ar-related {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.ar-related a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--primary);
+  text-decoration: none;
+}
+.ar-related a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

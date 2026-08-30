@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suede Agent Studio Marketing Assets</title>
+  <style>
+    :root {
+      --ink: #17171c;
+      --muted: #666873;
+      --hairline: #d9dbe5;
+      --paper: #ffffff;
+      --wash: #f5f6fb;
+      --indigo: #4d4ee8;
+      --indigo-2: #7d7ef0;
+      --indigo-soft: #ededff;
+      --green: #176b55;
+      --green-soft: #eaf7f1;
+      --display: Georgia, "Times New Roman", serif;
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: #cfd2dc;
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .asset {
+      display: none;
+      position: relative;
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 76% 10%, rgba(77, 78, 232, 0.09), transparent 29%),
+        linear-gradient(180deg, #fff 0%, #fbfbfd 100%);
+      isolation: isolate;
+    }
+
+    .asset.active { display: block; }
+
+    .asset.square {
+      width: 1080px;
+      height: 1080px;
+    }
+
+    .dots {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.45;
+      background-image: radial-gradient(#b9bbc9 0.7px, transparent 0.7px);
+      background-size: 18px 18px;
+      mask-image: linear-gradient(90deg, transparent, #000 55%, #000);
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    .eyebrow {
+      font: 700 13px/1 var(--mono);
+      letter-spacing: 0.21em;
+      text-transform: uppercase;
+      color: var(--indigo);
+    }
+
+    h1, h2, p { margin: 0; }
+
+    h1 {
+      font: 400 64px/0.98 var(--display);
+      letter-spacing: -0.045em;
+    }
+
+    .lede {
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.48;
+      letter-spacing: -0.01em;
+    }
+
+    .brand {
+      font: 700 13px/1 var(--mono);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--indigo);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: rgba(255,255,255,0.92);
+      font: 700 11px/1 var(--mono);
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .chip::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--green);
+      content: "";
+    }
+
+    .ui-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #bfc2cf;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(21, 22, 45, 0.15);
+    }
+
+    .ui-frame::before {
+      display: block;
+      height: 24px;
+      border-bottom: 1px solid #d8dae4;
+      background:
+        radial-gradient(circle at 16px 12px, #ff756e 0 3px, transparent 3.4px),
+        radial-gradient(circle at 28px 12px, #f6bd4a 0 3px, transparent 3.4px),
+        radial-gradient(circle at 40px 12px, #4fc978 0 3px, transparent 3.4px),
+        #f7f7fa;
+      content: "";
+    }
+
+    .ui-frame img {
+      display: block;
+      width: 100%;
+      height: calc(100% - 24px);
+      object-fit: cover;
+      object-position: top left;
+    }
+
+    .footer {
+      position: absolute;
+      left: 56px;
+      right: 56px;
+      bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font: 700 11px/1 var(--mono);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* 01 */
+    #company-as-software-hero .copy {
+      position: absolute;
+      top: 58px;
+      left: 58px;
+      width: 490px;
+      z-index: 2;
+    }
+
+    #company-as-software-hero h1 {
+      max-width: 480px;
+      margin-top: 24px;
+    }
+
+    #company-as-software-hero .lede {
+      max-width: 465px;
+      margin-top: 24px;
+    }
+
+    #company-as-software-hero .ui-frame {
+      position: absolute;
+      top: 42px;
+      right: -155px;
+      width: 720px;
+      height: 510px;
+      transform: rotate(-1.5deg);
+    }
+
+    #company-as-software-hero .ui-frame img {
+      width: 1584px;
+      height: 990px;
+      max-width: none;
+      transform: translate(-860px, -84px);
+    }
+
+    #company-as-software-hero .mechanism {
+      position: absolute;
+      left: 58px;
+      bottom: 82px;
+      padding: 15px 17px;
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.94);
+      font: 700 13px/1 var(--mono);
+      letter-spacing: 0.07em;
+    }
+
+    /* 02 */
+    #seat-flow-service {
+      padding: 44px 46px 42px;
+    }
+
+    #seat-flow-service .head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    #seat-flow-service h1 {
+      max-width: 870px;
+      margin-top: 15px;
+      font-size: 54px;
+    }
+
+    #seat-flow-service .frames {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    #seat-flow-service .step {
+      position: relative;
+    }
+
+    #seat-flow-service .step-label {
+      position: absolute;
+      z-index: 2;
+      top: 12px;
+      left: 12px;
+      padding: 8px 11px;
+      border: 1px solid rgba(77, 78, 232, 0.28);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.94);
+      color: var(--indigo);
+      font: 700 11px/1 var(--mono);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    #seat-flow-service .ui-frame {
+      width: 100%;
+      height: 350px;
+      border-radius: 12px;
+      box-shadow: 0 18px 40px rgba(21, 22, 45, 0.11);
+    }
+
+    #seat-flow-service .step:nth-child(1) img {
+      visibility: hidden;
+    }
+
+    #seat-flow-service .step:nth-child(2) img {
+      visibility: hidden;
+    }
+
+    #seat-flow-service .step:nth-child(3) img {
+      visibility: hidden;
+    }
+
+    #seat-flow-service .step:nth-child(1) .ui-frame {
+      background: #fff url("source-captures/company-templates-1440x900.png") -42px -88px / 720px 450px no-repeat;
+    }
+
+    #seat-flow-service .step:nth-child(2) .ui-frame {
+      background: #fff url("source-captures/studio-contract-scan-1440x900.png") -105px 8px / 568px 355px no-repeat;
+    }
+
+    #seat-flow-service .step:nth-child(3) .ui-frame {
+      background: #fff url("source-captures/public-agent-sales-scorecard-1440x900.png") -218px -20px / 936px 585px no-repeat;
+    }
+
+    #seat-flow-service .step:nth-child(3) .ui-frame::after {
+      position: absolute;
+      top: 112px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      height: 98px;
+      align-items: center;
+      padding: 11px 12px;
+      border: 1px solid rgba(77, 78, 232, 0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.97);
+      color: var(--indigo);
+      content: "Public service · $0.090 / call · Live · Free dry-run";
+      font: 700 10px/1.25 var(--mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #seat-flow-service .arrow {
+      position: absolute;
+      top: 170px;
+      right: -25px;
+      z-index: 4;
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--indigo);
+      font: 700 16px/1 var(--mono);
+      box-shadow: 0 8px 20px rgba(21, 22, 45, 0.12);
+    }
+
+    /* 03 */
+    #website-grounded-service .copy {
+      position: absolute;
+      left: 52px;
+      top: 48px;
+      width: 430px;
+    }
+
+    #website-grounded-service h1 {
+      margin-top: 22px;
+      font-size: 58px;
+    }
+
+    #website-grounded-service .lede {
+      margin-top: 22px;
+      max-width: 410px;
+      font-size: 18px;
+    }
+
+    #website-grounded-service .source-boundary {
+      margin-top: 26px;
+      display: grid;
+      gap: 8px;
+      font: 700 12px/1.4 var(--mono);
+      color: var(--green);
+    }
+
+    #website-grounded-service .ui-frame {
+      position: absolute;
+      top: 54px;
+      right: 45px;
+      width: 635px;
+      height: 520px;
+    }
+
+    #website-grounded-service .ui-frame img {
+      width: 1080px;
+      height: 675px;
+      max-width: none;
+      transform: translate(-82px, -338px);
+    }
+
+    /* 04 */
+    #proof-inventory {
+      padding: 46px 52px;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(77, 78, 232, 0.15), transparent 30%),
+        linear-gradient(135deg, #15151c 0%, #242546 58%, #4d4ee8 140%);
+      color: #fff;
+    }
+
+    #proof-inventory .brand,
+    #proof-inventory .eyebrow { color: #aaaaff; }
+
+    #proof-inventory h1 {
+      max-width: 780px;
+      margin-top: 16px;
+      font-size: 55px;
+    }
+
+    #proof-inventory .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 42px;
+    }
+
+    #proof-inventory .metric {
+      min-height: 184px;
+      padding: 25px 22px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(8px);
+    }
+
+    #proof-inventory .number {
+      font: 400 74px/0.9 var(--display);
+      letter-spacing: -0.05em;
+    }
+
+    #proof-inventory .label {
+      margin-top: 18px;
+      font-size: 17px;
+      line-height: 1.3;
+      color: #e5e5ee;
+    }
+
+    #proof-inventory .note {
+      position: absolute;
+      left: 52px;
+      right: 52px;
+      bottom: 31px;
+      display: flex;
+      justify-content: space-between;
+      color: #c9cad6;
+      font: 600 11px/1.4 var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* 05 */
+    #control-to-live {
+      padding: 42px 46px;
+    }
+
+    #control-to-live h1 {
+      margin-top: 14px;
+      font-size: 56px;
+    }
+
+    #control-to-live .sequence {
+      position: absolute;
+      top: 139px;
+      right: 46px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 700 10px/1 var(--mono);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    #control-to-live .sequence span {
+      padding: 9px 11px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: #fff;
+    }
+
+    #control-to-live .sequence b { color: var(--indigo); }
+
+    #control-to-live .proof-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    #control-to-live .ui-frame {
+      width: 100%;
+      height: 385px;
+      border-radius: 13px;
+    }
+
+    #control-to-live .proof-grid > :first-child img { object-position: 56% top; }
+    #control-to-live .proof-grid > :last-child img {
+      width: 936px;
+      height: 585px;
+      max-width: none;
+      transform: translate(-225px, -46px);
+    }
+
+    #control-to-live .proof-grid > :last-child::after {
+      position: absolute;
+      top: 164px;
+      left: 15px;
+      right: 15px;
+      display: flex;
+      height: 92px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid rgba(77, 78, 232, 0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.98);
+      color: var(--indigo);
+      content: "Public service · $0.090 / call · Live · Free dry-run";
+      font: 700 10px/1.3 var(--mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #control-to-live .overlay-note {
+      position: absolute;
+      right: 64px;
+      bottom: 55px;
+      width: 300px;
+      padding: 14px 16px;
+      border: 1px solid rgba(23, 107, 85, 0.25);
+      border-radius: 10px;
+      background: rgba(234,247,241,0.96);
+      color: var(--green);
+      font-size: 13px;
+      line-height: 1.35;
+      box-shadow: 0 12px 28px rgba(21, 22, 45, 0.12);
+    }
+
+    /* 06 */
+    #staff-and-sell-square {
+      padding: 66px;
+      background:
+        radial-gradient(circle at 78% 18%, rgba(77, 78, 232, 0.2), transparent 34%),
+        linear-gradient(180deg, #fff 0%, #f4f4fb 100%);
+    }
+
+    #staff-and-sell-square h1 {
+      width: 900px;
+      margin-top: 26px;
+      font-size: 102px;
+      line-height: 0.93;
+    }
+
+    #staff-and-sell-square .ui-frame {
+      position: absolute;
+      left: 66px;
+      right: 66px;
+      bottom: 92px;
+      height: 440px;
+      border-radius: 18px;
+    }
+
+    #staff-and-sell-square .ui-frame img {
+      width: 1728px;
+      height: 1080px;
+      max-width: none;
+      transform: translate(-880px, -104px);
+    }
+
+    #staff-and-sell-square .square-footer {
+      position: absolute;
+      left: 66px;
+      right: 66px;
+      bottom: 48px;
+      display: flex;
+      justify-content: space-between;
+      font: 700 12px/1 var(--mono);
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    #review {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+      padding: 32px;
+      overflow: auto;
+      background: #e9eaf0;
+    }
+
+    #review.active {
+      display: block;
+    }
+
+    #review h1 {
+      margin: 0 auto 28px;
+      max-width: 1200px;
+      font-size: 52px;
+    }
+
+    #review .review-grid {
+      display: grid;
+      max-width: 1200px;
+      margin: 0 auto;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    #review a {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #c7c9d2;
+      border-radius: 14px;
+      background: #fff;
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: 0 14px 34px rgba(21, 22, 45, 0.08);
+    }
+
+    #review img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    #review span {
+      display: block;
+      padding: 14px 16px;
+      font: 700 12px/1.2 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <section class="asset" id="company-as-software-hero" aria-label="Company as Software hero">
+    <div class="dots"></div>
+    <div class="copy">
+      <div class="eyebrow">The agent-company studio</div>
+      <h1>Build a company where every seat is a service.</h1>
+      <p class="lede">Define the mission, staff the org chart, and open any role as an inspectable workflow.</p>
+    </div>
+    <div class="mechanism">Seat &rarr; Flow &rarr; Service &rarr; Receipt</div>
+    <div class="ui-frame">
+      <img src="source-captures/homepage-hero-1440x900.png" alt="Live Suede Agent Studio homepage showing an agent-company org chart and workflow">
+    </div>
+    <div class="footer">
+      <span class="brand">Suede Agent Studio</span>
+      <span>Company as Software</span>
+    </div>
+  </section>
+
+  <section class="asset" id="seat-flow-service" aria-label="Seat to flow to service">
+    <div class="dots"></div>
+    <div class="head">
+      <div>
+        <div class="eyebrow">One connected agent</div>
+        <h1>The same agent is a seat, a flow, and a paid endpoint.</h1>
+      </div>
+      <span class="chip">Live product proof</span>
+    </div>
+    <div class="frames">
+      <div class="step">
+        <span class="step-label">Seat</span>
+        <div class="ui-frame"><img src="source-captures/company-templates-1440x900.png" alt="Agent company templates"></div>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="step">
+        <span class="step-label">Flow</span>
+        <div class="ui-frame"><img src="source-captures/studio-contract-scan-1440x900.png" alt="Contract scan workflow in Studio"></div>
+        <span class="arrow">&rarr;</span>
+      </div>
+      <div class="step">
+        <span class="step-label">Service</span>
+        <div class="ui-frame"><img src="source-captures/public-agent-sales-scorecard-1440x900.png" alt="Public priced agent service"></div>
+      </div>
+    </div>
+    <div class="footer">
+      <span class="brand">Suede Agent Studio</span>
+      <span>Seat &rarr; Flow &rarr; Service &rarr; Receipt</span>
+    </div>
+  </section>
+
+  <section class="asset" id="website-grounded-service" aria-label="Website to grounded service">
+    <div class="dots"></div>
+    <div class="copy">
+      <div class="eyebrow">Start from what exists</div>
+      <h1>Turn public knowledge into a grounded service draft.</h1>
+      <p class="lede">Paste a website. Review what Suede found. Draft a bounded agent for questions, lead qualification, or brand-voice writing.</p>
+      <div class="source-boundary">
+        <span>Home page + up to five more public pages</span>
+        <span>Robots-aware crawl</span>
+        <span>Source review before launch</span>
+      </div>
+    </div>
+    <div class="ui-frame">
+      <img src="source-captures/website-to-agent-1440x900.png" alt="Live website-to-agent interface">
+    </div>
+    <div class="footer">
+      <span class="brand">Suede Agent Studio</span>
+      <span>Grounded by the pages it reads</span>
+    </div>
+  </section>
+
+  <section class="asset" id="proof-inventory" aria-label="Verified product inventory">
+    <div class="eyebrow">Verified product inventory</div>
+    <h1>Proof of breadth, without pretending breadth is revenue.</h1>
+    <div class="metrics">
+      <div class="metric"><div class="number">87</div><div class="label">workflow templates</div></div>
+      <div class="metric"><div class="number">37</div><div class="label">canonical node types</div></div>
+      <div class="metric"><div class="number">8</div><div class="label">agent-company starters</div></div>
+      <div class="metric"><div class="number">29</div><div class="label">priced public services</div></div>
+    </div>
+    <div class="note">
+      <span>Repository and live surfaces verified July 28, 2026</span>
+      <span>Inventory is not settled-payment proof</span>
+    </div>
+  </section>
+
+  <section class="asset" id="control-to-live" aria-label="Draft to Live control">
+    <div class="dots"></div>
+    <div class="eyebrow">Governed agent operations</div>
+    <h1>Draft is not Test. Test is not Live.</h1>
+    <div class="sequence">
+      <span>Dry-run</span><b>&rarr;</b><span>Version</span><b>&rarr;</b><span>Promote</span><b>&rarr;</b><span>Service</span>
+    </div>
+    <div class="proof-grid">
+      <div class="ui-frame"><img src="source-captures/studio-contract-scan-1440x900.png" alt="Studio with Draft, Test, Live, version, and cost controls"></div>
+      <div class="ui-frame"><img src="source-captures/public-agent-sales-scorecard-1440x900.png" alt="Public priced service after launch"></div>
+    </div>
+    <div class="overlay-note">Dry-run keeps payment and external effects out of the first test. Live promotion binds an exact reviewed version.</div>
+    <div class="footer">
+      <span class="brand">Suede Agent Studio</span>
+      <span>Control before authority</span>
+    </div>
+  </section>
+
+  <section class="asset square" id="staff-and-sell-square" aria-label="Staff the company and sell the work">
+    <div class="dots"></div>
+    <div class="eyebrow">Company as Software</div>
+    <h1>Staff the company. Sell the work.</h1>
+    <div class="ui-frame">
+      <img src="source-captures/homepage-hero-1440x900.png" alt="Suede Agent Studio org chart and workflow">
+    </div>
+    <div class="square-footer">
+      <span class="brand">Suede Agent Studio</span>
+      <span>Seat &rarr; Flow &rarr; Service &rarr; Receipt</span>
+    </div>
+  </section>
+
+  <main id="review">
+    <h1>Suede Agent Studio asset suite</h1>
+    <div class="review-grid">
+      <a href="?asset=company-as-software-hero"><img src="exports/01-company-as-software-hero-1200x630.png" alt=""><span>01 Company as Software hero</span></a>
+      <a href="?asset=seat-flow-service"><img src="exports/02-seat-flow-service-1200x630.png" alt=""><span>02 Seat to flow to service</span></a>
+      <a href="?asset=website-grounded-service"><img src="exports/03-website-grounded-service-1200x630.png" alt=""><span>03 Website to grounded service</span></a>
+      <a href="?asset=proof-inventory"><img src="exports/04-proof-inventory-1200x630.png" alt=""><span>04 Verified product inventory</span></a>
+      <a href="?asset=control-to-live"><img src="exports/05-control-to-live-1200x630.png" alt=""><span>05 Draft to Live control</span></a>
+      <a href="?asset=staff-and-sell-square"><img src="exports/06-staff-and-sell-work-1080x1080.png" alt=""><span>06 Staff the company. Sell the work.</span></a>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const requested = params.get("asset");
+    const target = requested ? document.getElementById(requested) : document.getElementById("review");
+    if (target) target.classList.add("active");
+  </script>
+</body>
+</html>

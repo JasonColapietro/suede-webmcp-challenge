@@ -1,0 +1,726 @@
+.sos-page {
+  background:
+    linear-gradient(90deg, transparent 0, transparent calc(50% - 1px), var(--hairline) 50%, transparent calc(50% + 1px)),
+    var(--ink-deep);
+}
+
+.sos-shell {
+  max-width: 1500px;
+}
+
+.sos-subnav {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.8rem);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+}
+
+.sos-subnav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sos-subnav a[aria-current="page"] {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.sos-kicker {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.sos-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: end;
+  padding: clamp(1.5rem, 4vw, 4.5rem) 0 clamp(2rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--hairline-visible);
+}
+
+.sos-hero h1,
+.sos-signed-out h1 {
+  max-width: 760px;
+  margin: 0.4rem 0 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 7.4rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+.sos-hero > div:first-child > p,
+.sos-signed-out > p {
+  max-width: 660px;
+  margin: 1.4rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-lede);
+  line-height: 1.55;
+}
+
+.sos-review {
+  display: grid;
+  min-width: 230px;
+  gap: 0.55rem;
+  justify-items: start;
+}
+
+.sos-review span {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.sos-review code {
+  padding: 0.25rem 0.45rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  background: var(--ink-control);
+  font-size: var(--text-label);
+}
+
+.sos-executive {
+  padding: clamp(2rem, 5vw, 4rem) 0;
+  border-bottom: 1px solid var(--hairline-visible);
+}
+
+.sos-section-heading {
+  margin-bottom: 1.25rem;
+}
+
+.sos-section-heading h2,
+.sos-approvals h2 {
+  margin: 0.35rem 0 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.sos-section-heading p {
+  max-width: 720px;
+  margin: 0.65rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.sos-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--hairline-visible);
+}
+
+.sos-metrics > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-height: 92px;
+  padding: 1.15rem;
+  border-right: 1px solid var(--hairline-visible);
+}
+
+.sos-metrics > div:last-child {
+  border-right: 0;
+}
+
+.sos-metrics b {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.sos-metrics span {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+}
+
+.sos-executive__lists {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 1px;
+  background: var(--hairline-visible);
+}
+
+.sos-executive__lists > div {
+  padding: 1.25rem;
+  background: var(--ink-panel);
+}
+
+.sos-executive__lists h3 {
+  margin: 0 0 0.75rem;
+  font-size: var(--text-sm);
+}
+
+.sos-executive__lists ul,
+.sos-executive__lists ol {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.sos-executive__lists p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.sos-adapters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem 1.4rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--hairline-visible);
+}
+
+.sos-adapters > div {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.sos-adapters b,
+.sos-adapters small {
+  display: block;
+}
+
+.sos-adapters b {
+  font-size: var(--text-sm);
+}
+
+.sos-adapters small {
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.sos-adapters > p {
+  grid-column: 1 / -1;
+  max-width: 1000px;
+  margin: 0.45rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.sos-dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-top: 0.3rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 50%;
+  background: var(--ink-control);
+}
+
+.sos-dot--ready {
+  border-color: var(--text-success);
+  background: var(--verified-emerald);
+}
+
+.sos-dot--blocked {
+  border-color: var(--rights-red);
+  background: var(--rights-red);
+}
+
+.sos-dot--unknown {
+  border-color: var(--warning-amber);
+  background: var(--amber);
+}
+
+.sos-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.58fr) minmax(360px, 0.82fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+}
+
+.sos-projects,
+.sos-findings {
+  display: grid;
+  gap: 1rem;
+}
+
+.sos-project {
+  overflow: hidden;
+  border: 1px solid var(--hairline-visible);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--ink-panel);
+  box-shadow: var(--shadow-sm);
+}
+
+.sos-project__head {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.sos-project__head h3 {
+  margin: 0.25rem 0 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+}
+
+.sos-status,
+.sos-severity {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  background: var(--ink-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sos-status--good,
+.sos-status--milestone-complete {
+  border-color: color-mix(in srgb, var(--verified-emerald) 55%, var(--hairline));
+  color: var(--text-success);
+  background: var(--surface-success);
+}
+
+.sos-status--danger,
+.sos-status--milestone-blocked {
+  border-color: color-mix(in srgb, var(--rights-red) 55%, var(--hairline));
+  color: var(--rights-red);
+  background: var(--surface-error);
+}
+
+.sos-status--active,
+.sos-status--milestone-in-progress {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--hairline));
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--ink-control));
+}
+
+.sos-rail {
+  padding: 0 1.25rem 0 2.5rem;
+}
+
+.sos-rail__stop {
+  position: relative;
+  padding: 1.1rem 0 1.1rem 1.2rem;
+  border-left: 1px solid var(--hairline-visible);
+}
+
+.sos-rail__stop::before {
+  position: absolute;
+  top: 1.28rem;
+  left: -5px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--ink-panel);
+  border-radius: 50%;
+  outline: 1px solid var(--primary);
+  background: var(--primary);
+  content: "";
+}
+
+.sos-rail__stop--next::before {
+  outline-color: var(--verified-emerald);
+  background: var(--verified-emerald);
+}
+
+.sos-rail__stop p {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.sos-rail__stop > small,
+.sos-verified {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.sos-rail__label {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.sos-dependencies,
+.sos-citations {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sos-dependencies li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: start;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.sos-dependencies small {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+}
+
+.sos-citations li {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  background: var(--canvas-bg);
+}
+
+.sos-citations a,
+.sos-citations span {
+  display: block;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: 650;
+}
+
+.sos-citations a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.sos-citations small {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+}
+
+.sos-no-proof,
+.sos-muted {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.sos-milestones {
+  border-top: 1px solid var(--hairline);
+}
+
+.sos-milestones summary,
+.sos-finding details summary {
+  padding: 0.85rem 1.25rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 650;
+}
+
+.sos-milestones ul {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+  list-style: none;
+}
+
+.sos-milestones li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.sos-milestones li:last-child {
+  border-bottom: 0;
+}
+
+.sos-milestones p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.sos-milestones small {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--rights-red);
+}
+
+.sos-lens {
+  position: sticky;
+  top: 1.2rem;
+}
+
+.sos-finding {
+  padding: 1.1rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius);
+  background: var(--ink-panel);
+  box-shadow: var(--shadow-sm);
+}
+
+.sos-finding__meta {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  flex-wrap: wrap;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+}
+
+.sos-severity--critical,
+.sos-severity--high {
+  border-color: color-mix(in srgb, var(--rights-red) 55%, var(--hairline));
+  color: var(--rights-red);
+  background: var(--surface-error);
+}
+
+.sos-severity--medium {
+  border-color: color-mix(in srgb, var(--amber) 55%, var(--hairline));
+  color: var(--text-warning);
+  background: var(--surface-warning);
+}
+
+.sos-severity--low {
+  border-color: color-mix(in srgb, var(--proof-sky) 55%, var(--hairline));
+  color: var(--text-info);
+  background: var(--surface-info);
+}
+
+.sos-finding h3 {
+  margin: 0.75rem 0 0;
+  font-size: var(--text-base);
+}
+
+.sos-finding > p {
+  margin: 0.45rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.sos-finding__next {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.85rem;
+  padding: 0.75rem;
+  border-left: 3px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 6%, var(--ink-control));
+}
+
+.sos-finding__next span {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+}
+
+.sos-finding__next b {
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.sos-finding details {
+  margin: 0.7rem -1.1rem -1.1rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.sos-finding details .sos-citations {
+  padding: 0 1.1rem 1.1rem;
+}
+
+.sos-approvals,
+.sos-blocked-index {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hairline-visible);
+}
+
+.sos-approvals > p {
+  color: var(--text-muted);
+}
+
+.sos-approvals ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sos-approvals li {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.85rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius);
+  background: var(--ink-panel);
+}
+
+.sos-approvals li span,
+.sos-approvals li small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.sos-blocked-index ul {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sos-blocked-index a {
+  display: inline-flex;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  background: var(--ink-panel);
+  font-size: var(--text-xs);
+  text-decoration: none;
+}
+
+.sos-loading,
+.sos-error,
+.sos-signed-out {
+  padding: clamp(2rem, 8vw, 7rem) 0;
+}
+
+.sos-loading {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.sos-error {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--rights-red);
+  border-radius: var(--radius);
+  color: var(--rights-red);
+  background: var(--surface-error);
+}
+
+.sos-error p {
+  margin: 0.3rem 0 0.8rem;
+}
+
+.sos-signed-out .lp-btn {
+  margin-top: 1.4rem;
+}
+
+@media (max-width: 1080px) {
+  .sos-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .sos-lens {
+    position: static;
+  }
+}
+
+@media (max-width: 759px) {
+  .sos-page {
+    background: var(--ink-deep);
+  }
+
+  .sos-hero {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .sos-hero h1,
+  .sos-signed-out h1 {
+    font-size: clamp(3.1rem, 16vw, 5rem);
+  }
+
+  .sos-review {
+    min-width: 0;
+  }
+
+  .sos-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sos-metrics > div:nth-child(2) {
+    border-right: 0;
+  }
+
+  .sos-metrics > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--hairline-visible);
+  }
+
+  .sos-executive__lists,
+  .sos-adapters {
+    grid-template-columns: 1fr;
+  }
+
+  .sos-adapters > p {
+    grid-column: auto;
+  }
+
+  .sos-project__head,
+  .sos-approvals li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sos-rail {
+    padding-right: 1rem;
+    padding-left: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sos-page *,
+  .sos-page *::before,
+  .sos-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

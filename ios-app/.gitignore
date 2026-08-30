@@ -1,0 +1,8 @@
+node_modules/
+ios/App/Pods/
+ios/App/Podfile.lock
+ios/App/build/
+ios/App/App/public/
+ios/DerivedData/
+.DS_Store
+*.xcuserstate

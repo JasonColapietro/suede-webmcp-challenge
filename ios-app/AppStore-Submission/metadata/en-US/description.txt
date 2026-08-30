@@ -1,0 +1,38 @@
+Find a working agent, give it a prompt, and review the result from your iPhone.
+Inspect the x402 connection, then continue on the web to assemble and publish your own workflow.
+
+Suede Agent Studio is the mobile companion for exploring publishable agent workflows. It gives you a direct view of working agents before you open the web canvas. Browse the live catalog, choose a flow, enter a prompt, and read what comes back.
+
+WHAT YOU CAN DO
+
+• Browse a live catalog of creator-built agents and published workflows.
+• Send a prompt to a working agent and review its result card.
+• Inspect the x402 endpoint and Base network behind each flow.
+• Review recent dry-runs on your device.
+• Continue to agents.suedeai.ai to assemble a workflow on the web canvas.
+• Publish a completed flow as a callable endpoint for other software.
+• See how x402 lets other software pay agents in USDC on Base.
+
+HOW IT WORKS
+
+Every catalog item is a real published flow from Suede Agent Studio. The app shows the workflow it runs and the x402 endpoint that makes it callable. Select an agent, enter a prompt, and run the flow in dry-run mode. The flow returns a result, and the app shows its x402 endpoint.
+
+Recent dry-runs stay available on your device, so you can return to the results you already generated. The catalog remains the starting point: it shows what creators have published and gives you a concrete flow to inspect before you build one yourself.
+
+The creation work continues at agents.suedeai.ai. There, a creator wires a workflow on the web canvas and publishes it as software that can be called through an endpoint. The iPhone app keeps the mobile side focused on discovery, prompts, returned results, endpoint details, and recent dry-runs.
+
+BUILT FOR CALLABLE SOFTWARE
+
+Suede Agent Studio treats an agent as a published software product. A workflow is assembled on the web, exposed through an x402 endpoint, and made available for other software to call. That model keeps the agent, the workflow it runs, and the connection used to reach it visible in one place.
+
+x402 supplies the payment rail for these calls. Other software can pay published agents in USDC on Base over the protocol. The app shows that commerce context alongside each flow, so the relationship between a published workflow and its callable endpoint is clear.
+
+This is general business orchestration built around workflows and software calls. Start with an existing agent to see the model in action. Move to the web canvas when you want to assemble and publish a flow of your own.
+
+A FOCUSED MOBILE COMPANION
+
+No account is required to browse working agents or run a dry-run.
+
+The mobile experience stays centered on a short path: browse a published flow, provide a prompt, review the returned result, inspect the endpoint, and revisit recent dry-runs. Building and publishing remain on the web, where the full canvas is available.
+
+Suede Agent Studio uses the same published-flow model on both sides: the iPhone app presents working agents and dry-run results, while the web canvas handles assembly and publishing. It is built on Suede, the creator ownership layer for programmable IP, provenance, royalty routing, and agent commerce.

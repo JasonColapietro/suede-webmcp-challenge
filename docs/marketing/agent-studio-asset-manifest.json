@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "status": "historical_snapshot",
+  "currentUseGate": "Reverify claims and recapture live product surfaces before publication.",
+  "product": "Suede Agent Studio",
+  "createdAt": "2026-07-28",
+  "source": {
+    "repositoryCommit": "4f2201dc8f6447ccd9720701b59a06df7364e5cc",
+    "liveUrl": "https://agents.suedeai.ai",
+    "captureDate": "2026-07-28"
+  },
+  "positioning": {
+    "territory": "Company as Software",
+    "category": "agent-company operating studio",
+    "mechanism": "Seat -> Flow -> Service -> Receipt",
+    "coreClaim": "The same agent is a seat, a flow, and a paid endpoint."
+  },
+  "exports": [
+    {
+      "id": "company-as-software-hero",
+      "file": "assets/exports/01-company-as-software-hero-1200x630.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "5341bfd2c73648d2ff686a2ee6623cd8d93144300961d715ef8ce071e8fd6478",
+      "use": ["open-graph", "linkedin", "campaign-hero"]
+    },
+    {
+      "id": "seat-flow-service",
+      "file": "assets/exports/02-seat-flow-service-1200x630.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "d61c6d5696ee06d90b33b75b265cc79ef65421a206e1aa47f4e2bef5c04062d6",
+      "use": ["positioning", "sales", "product-story"]
+    },
+    {
+      "id": "website-grounded-service",
+      "file": "assets/exports/03-website-grounded-service-1200x630.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "8ae2fdc4d137e71609c3bef0d7da9b7fa4aa0fb901748b2dafa4567e5bd7a9f3",
+      "use": ["feature", "use-case", "social"]
+    },
+    {
+      "id": "proof-inventory",
+      "file": "assets/exports/04-proof-inventory-1200x630.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "8c9a7d26aeb8233f319374b1cd0e8901a447f2fc61e79d8dbc9c56dc0cbb4ccf",
+      "use": ["proof", "launch", "sales"]
+    },
+    {
+      "id": "control-to-live",
+      "file": "assets/exports/05-control-to-live-1200x630.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "9b05db847e6704bd77cbf7d4615d250e27e6a8b589927e8ccb1d14178c8518d1",
+      "use": ["governance", "safety", "technical"]
+    },
+    {
+      "id": "staff-and-sell-square",
+      "file": "assets/exports/06-staff-and-sell-work-1080x1080.png",
+      "width": 1080,
+      "height": 1080,
+      "sha256": "1d4f78f566204415eea1ac9faa9414eece0c7eb67f4cffd954b8c0c954d60272",
+      "use": ["instagram", "linkedin-square", "campaign"]
+    }
+  ],
+  "claimBoundaries": [
+    "Public call counts are not settled-payment proof.",
+    "Publishing creates availability, not demand.",
+    "Current per-call settlement is x402-compatible USDC on Base.",
+    "No company-wide shared memory or general autonomous delegation is claimed.",
+    "No enterprise certification or uptime percentage is claimed."
+  ]
+}

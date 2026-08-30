@@ -1,0 +1,7 @@
+node_modules/
+# dist/ is built output — tracked in this package so it can be installed directly
+# from the local path without requiring a build step on the consuming side.
+# The root .gitignore has "dist/" which would catch this; the negation below
+# overrides it for this package only.
+!dist/
+!dist/**

@@ -1,0 +1,328 @@
+/* /agents directory — storefront layer on top of chrome.css + site.css.
+   Tokens only: both light and dark themes inherit through the token layer
+   (:root[data-theme="dark"] swaps the variables, never these rules).
+   Vocabulary matches the org-chart seats: emerald is the live/earning
+   signal, mono is machine metadata, Instrument Serif carries the names. */
+
+/* ---- Page-head explainer + capability strip ------------------------------ */
+/* One plain-language line for a first-time visitor, then the capability
+   pills. Both carried inline styles on the page before; spacing lives here so
+   the head keeps the same rhythm as the other public routes. */
+.agdir-explainer {
+  margin: 0.9rem 0 0;
+  max-width: 64ch;
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--primary);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.agdir-caps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+.agdir-caps-kicker {
+  margin-right: 0.25rem;
+}
+.agdir-hidden-actions {
+  margin-bottom: 1rem;
+}
+.agdir-empty-actions {
+  margin-top: 1.1rem;
+}
+
+/* ---- Derived inventory strip under the page head -------------------------- */
+.agdir-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 1.7rem;
+  margin: 1.15rem 0 0;
+  padding: 0.8rem 1rem;
+  background: var(--ink-panel);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.agdir-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0;
+}
+.agdir-stat dt {
+  font: 600 var(--text-label)/1.2 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.agdir-stat dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.agdir-stat--live dd {
+  color: var(--text-success);
+}
+
+/* ---- Live inventory grid -------------------------------------------------- */
+.agdir-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: 0.9rem;
+}
+.agdir-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.95rem 1rem 0.85rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+.agdir-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-card);
+}
+.agdir-card:focus-visible {
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.agdir-card h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: 1.12;
+  margin: 0;
+}
+.agdir-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+/* The one LIVE treatment, same anatomy as the org-chart seats: pulsing
+   emerald dot + mono label. Every directory entry is live by construction
+   (the catalog only lists launched agents), so the badge is always honest. */
+.agdir-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-success);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.agdir-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 50%, transparent);
+  animation: agdir-pulse 1.8s ease-out infinite;
+}
+.agdir-calls {
+  font: 600 0.6rem/1.2 var(--font-mono);
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.agdir-desc {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.agdir-sum {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.agdir-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.2rem;
+}
+/* Per-call price in the seat-chip treatment: emerald means money here,
+   page-wide. */
+.agdir-price {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--text-success);
+  background: color-mix(in srgb, var(--verified-emerald) 8%, var(--ink-control));
+  border: 1px solid color-mix(in srgb, var(--verified-emerald) 35%, var(--ink-control));
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+.agdir-chip {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--primary) 4%, transparent);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.agdir-chip--sched {
+  color: var(--text-secondary);
+  border-color: color-mix(in srgb, var(--amber) 40%, var(--hairline));
+  background: color-mix(in srgb, var(--amber) 7%, transparent);
+}
+.agdir-chip--wallet {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* The call affordance: real machine endpoint on the left, human invitation
+   on the right, both inside the card link. */
+.agdir-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  min-width: 0;
+  margin-top: 0.35rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--hairline);
+}
+.agdir-endpoint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 600 0.6rem/1.5 var(--font-mono);
+  /* Small mono text on a tinted row needs --text-secondary to clear 4.5:1. */
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.agdir-go {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+/* ---- Launch-ready blueprint shelf (sparse-directory backfill) -------------
+   Deliberately NOT the live-card treatment: dashed hairline and a violet
+   TEMPLATE tag so a blueprint can never be mistaken for live inventory. */
+.agdir-shelf-note {
+  margin: 0 0 0.9rem;
+  max-width: 640px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+.agdir-shelf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 0.9rem;
+}
+.agdir-tpl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: color-mix(in srgb, var(--ink-panel) 60%, transparent);
+  border: 1px dashed var(--hairline-visible);
+  border-radius: var(--radius);
+  padding: 0.95rem 1rem 0.85rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+.agdir-tpl:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.agdir-tpl:focus-visible {
+  border-color: var(--primary);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.agdir-tpl h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: 1.12;
+  margin: 0;
+}
+.agdir-tpl > p {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.agdir-tpl-tag {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet);
+  background: color-mix(in srgb, var(--violet) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--violet) 35%, transparent);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.agdir-tpl .agdir-go {
+  margin-top: 0.3rem;
+}
+
+@keyframes agdir-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 50%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agdir-live i {
+    animation: none;
+  }
+  .agdir-card,
+  .agdir-tpl {
+    transition: none;
+  }
+  .agdir-card:hover,
+  .agdir-tpl:hover {
+    transform: none;
+  }
+}

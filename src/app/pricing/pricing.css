@@ -1,0 +1,193 @@
+/* /pricing — page-local presentation. Composes with chrome.css + site.css and
+   uses tokens only, so :root[data-theme="dark"] restyles it with no extra
+   rules. No animation here beyond hover transitions, so reduced-motion needs
+   no override. */
+
+/* ---- At-a-glance strip: what costs money, in three columns ---------------- */
+.pricing-glance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+}
+.pricing-glance-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.2rem 1.3rem;
+  box-shadow: var(--shadow-card);
+}
+.pricing-glance-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--c, var(--primary));
+}
+.pricing-glance-card .k {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c, var(--primary));
+}
+.pricing-glance-card .v {
+  display: block;
+  margin: var(--space-2) 0 0.35rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* The glance figure is the loudest number on the page and was rendering
+     smaller than the committed-use charge below it. Same ramp as .charge. */
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.pricing-glance-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+@media (max-width: 720px) {
+  .pricing-glance {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Payout centerpiece --------------------------------------------------- */
+.pricing-payout {
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) + 2px);
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 5vw, 3rem);
+  box-shadow: var(--shadow-card);
+}
+.pricing-payout h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h2);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  margin: 0.45rem 0 0.4em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+.pricing-payout p {
+  color: var(--text-muted);
+  font-size: var(--text-lede);
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0;
+}
+.pricing-payout-rails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* ---- Endpoint ledger groups ------------------------------------------------ */
+/* The ledger is grouped by vertical behind native details/summary: the
+   general rails ship open, the music vertical ships collapsed, so the table
+   is a shelf to opt into instead of a ~3,000px wall on phones. No client JS:
+   the rows are server-rendered inside the element either way. */
+.pricing-rails-group {
+  margin-top: var(--space-4);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-panel);
+}
+.pricing-rails-group > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h);
+  padding: 0.55rem var(--space-4);
+  cursor: pointer;
+  list-style: none;
+}
+.pricing-rails-group > summary::-webkit-details-marker {
+  display: none;
+}
+.pricing-rails-group > summary::before {
+  content: "+";
+  color: var(--primary);
+  font: 500 1.15rem/1 var(--font-mono);
+}
+.pricing-rails-group[open] > summary::before {
+  content: "−";
+}
+.pricing-rails-group > summary .k {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.pricing-rails-group > summary .n {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.pricing-rails-group > summary:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
+}
+.pricing-rails-group > .lp-rows {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+/* ---- Committed-use tier cards --------------------------------------------- */
+.pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: 1.25rem;
+}
+.pricing-tier {
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.2rem 1.3rem;
+  box-shadow: var(--shadow-card);
+}
+.pricing-tier .charge {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
+  line-height: 1;
+  color: var(--text-primary);
+}
+.pricing-tier .label {
+  display: block;
+  margin-top: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.pricing-tier .credit {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-success);
+  border: 1px solid color-mix(in srgb, var(--verified-emerald) 45%, var(--hairline));
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 720px) {
+  .pricing-tiers {
+    grid-template-columns: 1fr;
+  }
+}

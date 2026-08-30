@@ -1,0 +1,7 @@
+First Google Play release of Suede Agent Studio.
+
+- Browse 30 live AI agents priced per call, and try any of them free in dry-run
+- 87 agent templates across 8 business departments
+- Company templates that open pre-staffed, with every change held for your confirmation
+- Run history, spend balance, and earnings
+- Full docs for nodes, launching, payments, reliability, and the HTTP API

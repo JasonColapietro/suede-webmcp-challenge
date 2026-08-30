@@ -1,0 +1,3393 @@
+/* Suede Agent Studio — shared chrome + landing surfaces. Editorial-tech, bright, indigo.
+   Builds on the global design tokens (tokens.css). */
+
+.lp {
+  --lp-edge: clamp(1.25rem, 4vw, 3.5rem);
+  --lp-maxw: 1240px;
+  --lp-nav-h: 64px;
+  color: var(--text-primary);
+  background: var(--ink-deep);
+  padding-top: var(--lp-nav-h);
+  overflow-x: clip;
+}
+
+.lp :where([id]) {
+  scroll-margin-top: calc(var(--lp-nav-h) + 1rem);
+}
+
+.lp-shell {
+  max-width: var(--lp-maxw);
+  margin-inline: auto;
+  padding-inline: var(--lp-edge);
+}
+
+/* ---- Nav ---------------------------------------------------------------- */
+.lp-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  background: color-mix(in srgb, var(--ink-deep) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--hairline);
+}
+.lp-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--lp-nav-h);
+  gap: var(--space-6);
+}
+.lp-nav-inner > .lp-btn {
+  flex-shrink: 0;
+}
+.lp-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--hairline);
+  background: var(--ink-control);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 160ms ease-out, color 160ms ease-out;
+}
+.lp-theme-toggle:hover {
+  border-color: var(--hairline-visible);
+  color: var(--text-primary);
+}
+.lp-theme-toggle:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+.lp-theme-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+/* Coarse pointers get a full 44px touch target. */
+@media (pointer: coarse) {
+  .lp-theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+}
+.lp-wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.lp-wordmark b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+}
+.lp-wordmark span {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+  border: 1px solid var(--hairline-cyan);
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+.lp-nav-links {
+  display: flex;
+  gap: 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lp-nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 140ms ease;
+  white-space: nowrap;
+  /* WCAG 2.5.8 (AA) wants a 24x24 target. These mono caps rendered a 16px
+     box and sit ~18px apart, so the spacing exception did not rescue them
+     either. As flex items they take vertical padding directly: this puts the
+     hit area at 27px. The row keeps its height because the wordmark (29px)
+     and the primary button (38px) were always the tall items, and the
+     current-page underline still follows the text baseline. */
+  padding-block: 0.32rem;
+}
+.lp-nav-links a:hover {
+  color: var(--text-primary);
+}
+.lp-nav-links a[aria-current="page"] {
+  color: var(--text-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 7px;
+}
+/* ---- Build disclosure ---------------------------------------------------
+   "Build" is the one nav item that is a menu rather than a link: the three
+   settings (Guided, Studio, Code) have to be visible where the choice is made.
+   It sits inside .lp-nav-links and inherits the row's mono/uppercase register,
+   so it costs the same width as the link it replaced. */
+.lp-nav-build {
+  position: relative;
+}
+.lp-nav-build-summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 140ms ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.lp-nav-build-summary::-webkit-details-marker {
+  display: none;
+}
+.lp-nav-build-summary::after {
+  content: "";
+  width: 0.34rem;
+  height: 0.34rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+  transition: transform 140ms ease;
+}
+.lp-nav-build[open] .lp-nav-build-summary::after {
+  transform: translateY(1px) rotate(-135deg);
+}
+.lp-nav-build-summary:hover {
+  color: var(--text-primary);
+}
+.lp-nav-build-summary:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.lp-nav-build-summary[data-active="true"] {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+.lp-nav-build-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  z-index: 60;
+  width: min(23rem, calc(100vw - 2rem));
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3);
+  background: var(--ink-control);
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.lp-nav-build-lede {
+  margin: 0 0 var(--space-2);
+  padding: 0 0.55rem;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-secondary);
+}
+.lp-nav-build-setting {
+  display: grid;
+  gap: 2px;
+  padding: 0.55rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 140ms ease;
+}
+.lp-nav-build-setting:hover,
+.lp-nav-build-setting:focus-visible {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+.lp-nav-build-setting b {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.lp-nav-build-setting span {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-muted);
+}
+.lp-nav-build-more {
+  display: flex;
+  gap: 1.1rem;
+  margin-top: var(--space-2);
+  padding: var(--space-2) 0.55rem 0;
+  border-top: 1px solid var(--hairline);
+}
+.lp-nav-build-more a {
+  color: var(--text-muted);
+}
+/* The hamburger panel's Build group — same three settings, stacked. */
+.lp-nav-menu-build {
+  display: grid;
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--hairline);
+}
+.lp-nav-menu-build-head {
+  padding: 0.35rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.lp-nav-account {
+  /* The one nav item allowed to compress: every sibling is shrink-0, so the
+     signed-in email ellipsizes instead of pushing the row past the viewport.
+     The floor keeps the signed-out "Sign in" label from ellipsizing to
+     "Sign …" when a wide context pill squeezes the row. */
+  flex-shrink: 1;
+  min-width: 7ch;
+  max-width: 18ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 140ms ease;
+  /* 23px is one pixel under the WCAG 2.5.8 (AA) floor. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+.lp-nav-account:hover {
+  color: var(--text-primary);
+}
+.lp-nav-account:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.lp-nav-menu {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+}
+.lp-nav-summary {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-content: center;
+  gap: var(--space-1);
+  list-style: none;
+  /* The one control a phone visitor has for the whole nav. Its fill matches
+     the panels behind it, so the border is the button — 3:1 divider token. */
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius-sm);
+  background: var(--ink-control);
+  cursor: pointer;
+}
+.lp-nav-summary::-webkit-details-marker {
+  display: none;
+}
+.lp-nav-summary span:not(.sr-only) {
+  display: block;
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text-primary);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lp-nav-summary span:not(.sr-only) {
+    transition: transform 160ms ease, opacity 120ms ease;
+  }
+}
+/* Open state: the three bars fold into an X so the same control reads as
+   "close". The sr-only label is the first span, so the bars are the last
+   three. Bars are 2px tall on a 4px grid gap, which puts the outer bars'
+   centers 12px apart — a 6px translate meets them in the middle. */
+.lp-nav-menu[open] .lp-nav-summary span:nth-last-of-type(3) {
+  transform: translateY(6px) rotate(45deg);
+}
+.lp-nav-menu[open] .lp-nav-summary span:nth-last-of-type(2) {
+  opacity: 0;
+}
+.lp-nav-menu[open] .lp-nav-summary span:nth-last-of-type(1) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+/* Scrim behind the open panel. It is part of the summary, so tapping
+   anywhere outside the panel toggles the details closed — no JS. Fixed
+   positioning resolves against .lp-nav (its backdrop-filter makes it the
+   containing block), so top: 100% starts the scrim exactly under the bar
+   while the explicit viewport units still cover the page below it. */
+.lp-nav-menu[open] .lp-nav-summary::before {
+  content: "";
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: var(--scrim);
+}
+.lp-nav-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  width: min(78vw, 280px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-control);
+  box-shadow: var(--shadow-card);
+}
+.lp-nav-menu-panel a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.7rem var(--space-3);
+  border-radius: var(--radius-sm);
+}
+.lp-nav-menu-panel a:hover,
+.lp-nav-menu-panel a:focus-visible {
+  color: var(--text-primary);
+  background: var(--ink-panel);
+}
+.lp-nav-menu-panel .lp-nav-menu-cta {
+  justify-content: center;
+  margin-top: var(--space-1);
+  color: var(--on-primary);
+  background: var(--primary);
+  text-align: center;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 1400px) {
+  .lp-nav-links {
+    gap: 1.1rem;
+    font-size: 0.66rem;
+  }
+}
+/* Collapse to the hamburger only while even a trimmed row cannot fit. The
+   nav now carries six links (Build, Directory, Companies, Pricing, Docs,
+   Workspace), comfortably under the ~1190px the old 8-link row needed.
+   Instead of jumping straight to a hamburger over a dead center gap (QA
+   round-2 finding 10), the 1025-1220 band keeps a trimmed inline row:
+   Workspace (also in the footer and back at 1221px+) drops out via
+   data-trim, the wordmark's context badge yields its width, and the gaps
+   tighten. Below 1024 the hamburger takes over. */
+@media (max-width: 1220px) {
+  .lp-nav-inner {
+    gap: var(--space-4);
+  }
+  .lp-nav-links {
+    gap: 0.9rem;
+  }
+  .lp-nav-links a[data-trim="true"] {
+    display: none;
+  }
+  .lp-wordmark span {
+    display: none;
+  }
+}
+@media (max-width: 1024px) {
+  .lp-nav-links {
+    display: none;
+  }
+  .lp-nav-menu {
+    display: block;
+  }
+  .lp-nav-inner {
+    gap: var(--space-6);
+  }
+  /* The badge returns once the link row is gone — the bar has room again. */
+  .lp-wordmark span {
+    display: inline;
+  }
+}
+@media (max-width: 620px) {
+  .lp-nav-inner > .lp-btn {
+    display: none;
+  }
+  .lp-nav-inner {
+    gap: 0.8rem;
+  }
+  .lp-wordmark b {
+    font-size: 1.18rem;
+  }
+  /* With the bar CTA hidden, the hamburger sits mid-bar, so a right:0
+     absolute panel hangs past the left viewport edge on every portrait
+     phone. Anchor to the nav's box instead (.lp-nav is the fixed,
+     full-width containing block — backdrop-filter makes it one). */
+  .lp-nav-menu-panel {
+    position: fixed;
+    top: calc(var(--lp-nav-h) + 8px);
+    left: var(--space-3);
+    right: var(--space-3);
+    width: auto;
+  }
+}
+@media (max-width: 420px) {
+  .lp-wordmark span {
+    display: none;
+  }
+}
+
+/* ---- Buttons ------------------------------------------------------------ */
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: var(--control-h);
+  padding-inline: 1.35rem;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+.lp-btn--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 28%, transparent);
+}
+.lp-btn--primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--primary) 34%, transparent);
+}
+.lp-btn--ghost {
+  background: var(--ink-control);
+  color: var(--text-primary);
+  /* Secondary CTA: its fill is the panel white, one 2% step off the page, so
+     the border is what makes it a button — the panel hairline left it reading
+     as plain text beside the filled primary. Hover still steps to --primary. */
+  border: 1px solid var(--hairline-visible);
+}
+.lp-btn--ghost:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+.lp-btn--sm {
+  height: 38px;
+  padding-inline: var(--space-4);
+}
+/* Coarse pointers get full 44px touch targets on the small variants. */
+@media (pointer: coarse) {
+  .lp-btn--sm {
+    height: auto;
+    min-height: 44px;
+  }
+}
+.lp-btn:focus-visible,
+.lp-nav-summary:focus-visible,
+.lp-nav-links a:focus-visible,
+.lp-footer a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+.lp-btn:disabled {
+  cursor: not-allowed;
+  background: var(--unavailable-surface, var(--ink-deep));
+  border-color: var(--unavailable-border, var(--hairline));
+  color: var(--unavailable-ink, var(--text-secondary));
+  transform: none;
+  box-shadow: none;
+}
+/* The primary keeps its indigo identity while unavailable. /start's own
+   submit is disabled until the visitor types, and the old half-opacity wash
+   rendered the page's reason-for-existing as broken chrome beside the nav's
+   full-saturation CTA. Pending, not broken: indigo-tinted surface, indigo
+   ink, full label legibility — AA in both themes because the mix rides the
+   theme's own tokens (5.49:1 light, 5.12:1 dark). */
+.lp-btn--primary:disabled {
+  background: color-mix(in srgb, var(--primary) 10%, var(--ink-panel));
+  border-color: color-mix(in srgb, var(--primary) 38%, var(--ink-panel));
+  color: var(--primary);
+}
+
+/* ---- Hero --------------------------------------------------------------- */
+.lp-hero {
+  position: relative;
+  /* Contain the ::before texture in the hero's own stacking context so it can
+     sit at z-index:-1 — below ALL hero content, including pages (404, launch)
+     that put content in a bare .lp-shell with no lifted wrapper. */
+  isolation: isolate;
+  padding-top: clamp(2rem, 4vw, 3.25rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+.lp-hero::before {
+  /* faint product-grid texture + indigo glow, tying landing to the canvas */
+  content: "";
+  position: absolute;
+  inset: -10% -20% auto -20%;
+  height: 760px;
+  /* Short heroes (404) must not spill the texture over what follows; tall
+     heroes (landing) are unaffected because 120% exceeds 760px there. */
+  max-height: 120%;
+  z-index: -1;
+  background:
+    radial-gradient(60% 50% at 70% 18%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 70%),
+    radial-gradient(40% 40% at 18% 0%, color-mix(in srgb, var(--registry-cyan) 8%, transparent), transparent 70%),
+    linear-gradient(var(--hairline) 1px, transparent 1px) 0 0 / 100% 26px,
+    linear-gradient(90deg, var(--hairline) 1px, transparent 1px) 0 0 / 26px 100%;
+  -webkit-mask-image: linear-gradient(#000 55%, transparent);
+  mask-image: linear-gradient(#000 55%, transparent);
+  pointer-events: none;
+}
+.lp-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+@media (max-width: 880px) {
+  .lp-hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Grid items default to min-width:auto, which refuses to shrink below a
+   descendant's intrinsic content width. Force both hero columns to respect
+   the actual track width instead. */
+.lp-hero-grid > * {
+  min-width: 0;
+}
+.lp-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.lp-kicker::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--primary);
+}
+.lp-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 1.3rem + 3.2vw, 3.8rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  margin: 0.9rem 0 0;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.lp-h1 em {
+  font-style: italic;
+  color: var(--primary);
+}
+.lp-lede {
+  margin-top: var(--space-4);
+  max-width: 56ch;
+  font-size: var(--text-lede);
+  line-height: 1.5;
+  /* Orphan control on the paragraph every visitor actually reads. */
+  text-wrap: pretty;
+  color: var(--text-muted);
+}
+.lp-lede b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+/* First-screen capabilities strip (/, /start, /launch): the label owns its
+   own line so the pill row below wraps on a clean left edge instead of
+   trailing the label mid-row. */
+.lp-caps {
+  margin: 1.05rem 0 0.25rem;
+}
+.lp-caps > .lp-eyebrow {
+  display: block;
+  margin-bottom: 0.55rem;
+}
+.lp-caps-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lp-hero-note {
+  margin-top: 0.9rem;
+  max-width: 46ch;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--hairline);
+}
+.lp-hero-note a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lp-hero-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.lp-hero-meta {
+  margin-top: 1.15rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  max-width: 38rem;
+}
+.lp-stat {
+  min-width: 0;
+}
+.lp-stat b {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  display: block;
+  color: var(--text-primary);
+}
+.lp-stat span {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+@media (max-width: 620px) {
+  .lp-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .lp-hero-actions .lp-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Three stats can't wrap 2-up without an orphan row; stack them as
+     value-plus-label rows instead so the rhythm stays even. */
+  .lp-hero-meta {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+  .lp-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+  }
+  .lp-stat b {
+    flex: none;
+    min-width: 4.9rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* ---- Rails ticker ------------------------------------------------------- */
+.lp-ticker {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  border-block: 1px solid var(--hairline);
+  padding-block: 0.6rem;
+  /* The pause pill gets its own flex lane after the scroll region, so no
+     glyph ever passes underneath it. */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+/* The clip + edge fade live on an inner viewport; both edges fade so glyphs
+   dissolve rather than hard-clip, on the left and under the pause lane. */
+.lp-ticker-viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.lp-ticker-track {
+  display: inline-flex;
+  gap: 2.5rem;
+  white-space: nowrap;
+  animation: lp-marquee 26s linear infinite;
+}
+/* WCAG 2.2.2: moving content that starts automatically and runs longer than
+   5s needs an on-page stop. The button is the conforming mechanism; hover and
+   focus pause as a courtesy. */
+.lp-ticker:hover .lp-ticker-track,
+.lp-ticker:focus-within .lp-ticker-track,
+.lp-ticker[data-paused="true"] .lp-ticker-track {
+  animation-play-state: paused;
+}
+.lp-ticker-pause {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 999px;
+  background: var(--ink-control);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.lp-ticker-pause:hover {
+  color: var(--text-primary);
+}
+.lp-ticker-pause:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+/* Coarse pointers get a full 44px touch target. */
+@media (pointer: coarse) {
+  .lp-ticker-pause {
+    min-height: 44px;
+    padding-inline: 0.9rem;
+  }
+}
+.lp-ticker-track span {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+.lp-ticker-track span::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--registry-cyan);
+}
+
+/* ---- Sections ----------------------------------------------------------- */
+.lp-section {
+  /* Section rhythm carries the page's hierarchy. At a 28px floor the bands ran
+     together, so a scanning visitor met one continuous column of prose instead
+     of discrete answers. */
+  padding-block: clamp(2.25rem, 4.5vw, 3.75rem);
+}
+.lp-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  /* Tracks the global .eyebrow: the section label is the scan path's first
+     rung and should not share body prose's ink. */
+  color: var(--text-secondary);
+}
+/* Eyebrow section titles rendered as real headings (so AT heading navigation
+   works) — pin the properties the global h2/h3 rule would change, keeping
+   them pixel-identical to the span version. */
+h2.lp-eyebrow,
+h3.lp-eyebrow {
+  margin: 0;
+  font-weight: 450;
+  line-height: 1.55;
+  letter-spacing: 0.18em;
+}
+.lp-section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.55rem, 1.1rem + 1.6vw, 2.35rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  margin: 0.45rem 0 0;
+  max-width: 26ch;
+  text-wrap: balance;
+}
+.lp-section-sub {
+  margin-top: 0.6rem;
+  /* 70ch overran a comfortable measure at 1440; 62ch keeps the sub scannable
+     directly under its title. */
+  max-width: 62ch;
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* ---- Bento features ----------------------------------------------------- */
+.lp-bento {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 820px) {
+  .lp-bento {
+    grid-template-columns: 1fr;
+  }
+}
+.lp-feature {
+  position: relative;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.1rem 1.2rem;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.lp-feature::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--feat, var(--primary));
+}
+.lp-feature-no {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--feat, var(--primary));
+}
+.lp-feature h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.3rem;
+  margin: var(--space-2) 0 0.35rem;
+  letter-spacing: -0.01em;
+}
+.lp-feature p {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ---- Orchestration relay ------------------------------------------------ */
+.lp-relay {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.55rem;
+}
+.lp-relay-step {
+  flex: 1 1 200px;
+  position: relative;
+  background: color-mix(in srgb, var(--c, var(--primary)) 4%, var(--ink-control));
+  border: 1px solid color-mix(in srgb, var(--c, var(--primary)) 34%, var(--hairline));
+  border-radius: var(--radius);
+  padding: 1.2rem 1.2rem 1.3rem;
+  box-shadow: var(--shadow-card);
+}
+.lp-relay-step .num {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--c, var(--primary));
+}
+.lp-relay-step .role {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  margin: var(--space-2) 0 0.35rem;
+}
+.lp-relay-step .desc {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.lp-relay-arrow {
+  align-self: center;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+@media (max-width: 820px) {
+  .lp-relay-arrow {
+    display: none;
+  }
+}
+.lp-relay-caption {
+  margin-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+/* ---- Bring your own agent ------------------------------------------------ */
+.lp-boya-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+/* Grid items default to min-width auto; the four-seat org row's min-content
+   width (~454px) would otherwise stretch the column past a phone viewport
+   and clip the lede with no scroll to reach it. */
+.lp-boya-grid > * {
+  min-width: 0;
+}
+@media (max-width: 880px) {
+  .lp-boya-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.lp-boya-eyebrow {
+  display: block;
+  margin-top: 1.8rem;
+}
+.lp-agent-grid {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: var(--space-2) var(--space-6);
+  justify-content: start;
+}
+@media (max-width: 520px) {
+  .lp-agent-grid {
+    grid-template-columns: repeat(2, auto);
+  }
+}
+.lp-agent-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.lp-agent-chip .mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+.lp-agent-chip .mark svg,
+.lp-agent-chip .mark img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+.lp-agent-chip .label {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.76rem;
+  color: var(--text-primary);
+}
+
+/* ---- Unified org-chart language ------------------------------------------
+   One visual vocabulary for every org depiction on the landing page: the hero
+   chart (HeroOrgChart), the bring-your-own-agent tree (AgentOrgCard), the
+   autonomous-company board (CompanyPreviewCard), and the journey's seat panel
+   (JourneyAltitudes). Same seat-card anatomy (.lp-seat), same elbow
+   connectors (--org-edge), same LIVE treatment (.lp-live), same price chip
+   (.lp-price-chip) and cadence chip (.lp-sched-chip). The hero renders the
+   full thirteen-seat company (CEO, two department rows, elbow reports); the
+   card variant is a pruned cut of the same data on the same atoms. */
+.lp-org-card-frame {
+  background: var(--canvas-bg);
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) * 1.6);
+  padding: clamp(1.6rem, 3vw, 2.4rem) 1.1rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  justify-content: center;
+}
+/* One connector shade for every org visual — slightly firmer than a hairline
+   so the reporting structure reads at a glance in both themes. Defined on the
+   visuals' own roots (CompanyPreviewCard also renders outside the landing). */
+.lp-org-tree,
+.lp-company-preview,
+.lp-alt-panel {
+  --org-edge: color-mix(in srgb, var(--hairline-visible) 45%, var(--hairline));
+}
+.lp-org-tree {
+  --org-drop: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lp-org-tree--hero {
+  --org-drop: 30px;
+}
+.lp-org-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+.lp-org-row--single .lp-seat {
+  min-width: 148px;
+}
+.lp-org-row--three {
+  max-width: 420px;
+  margin: 0 auto;
+  padding-top: var(--org-drop, 20px);
+}
+.lp-org-row--four {
+  max-width: 500px;
+  margin: 0 auto;
+  padding-top: var(--org-drop, 20px);
+}
+.lp-org-row--two {
+  max-width: 360px;
+  margin: 0 auto;
+  padding-top: var(--org-drop, 20px);
+}
+.lp-org-row--three .lp-seat,
+.lp-org-row--four .lp-seat,
+.lp-org-row--two .lp-seat {
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* Card variant (byoa column, ~500px): four seats across cannot carry full
+   role + agent labels at any viewport, so the card's head row always wraps
+   2x2 — the same treatment the hero earned at phone widths. Hero keeps its
+   own row logic (it has the width). */
+.lp-org-tree:not(.lp-org-tree--hero) .lp-org-row--four {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.lp-org-tree:not(.lp-org-tree--hero) .lp-org-row--four .lp-seat {
+  flex: 1 1 42%;
+  min-width: 42%;
+}
+/* Phones: four seats cannot compress legibly into 375px; wrap 2x2 instead.
+   The min-width floor beats the shrink-to-fit rule above so the wrap
+   actually triggers. */
+@media (max-width: 520px) {
+  .lp-org-row--four {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .lp-org-row--four .lp-seat {
+    flex: 1 1 42%;
+    min-width: 42%;
+  }
+}
+.lp-org-row--three::before,
+.lp-org-row--four::before,
+.lp-org-row--two::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 1px;
+  background: var(--org-edge, var(--hairline));
+  z-index: 1;
+}
+.lp-org-row--three::before {
+  left: calc(16.6667% - 3.33px);
+  right: calc(16.6667% - 3.33px);
+}
+.lp-org-row--four::before {
+  left: calc(12.5% - 2.5px);
+  right: calc(12.5% - 2.5px);
+}
+.lp-org-row--two::before {
+  left: calc(25% - 2.5px);
+  right: calc(25% - 2.5px);
+}
+.lp-org-row--three .lp-seat::before,
+.lp-org-row--four .lp-seat::before,
+.lp-org-row--two .lp-seat::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--org-drop, 20px) * -1);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: var(--org-drop, 20px);
+  background: var(--org-edge, var(--hairline));
+  z-index: 1;
+}
+/* Earning seats hang on emerald threads — the connector itself carries the
+   live signal, so the earning path reads before any label does. */
+.lp-org-row--three .lp-seat--live::before,
+.lp-org-row--four .lp-seat--live::before,
+.lp-org-row--two .lp-seat--live::before {
+  background: color-mix(in srgb, var(--verified-emerald) 60%, var(--org-edge, var(--hairline)));
+}
+.lp-org-stem {
+  width: 1px;
+  height: 20px;
+  background: var(--org-edge, var(--hairline));
+}
+.lp-org-tree .lp-org-stem {
+  height: var(--org-drop, 20px);
+}
+
+/* The seat card: agent brand mark in a department-tinted tile, role first,
+   agent name beneath with the department dot, LIVE + price only where the
+   seat actually earns. Scale is token-driven so the hero variant is the same
+   card, larger. */
+.lp-seat {
+  --seat-mark: 26px;
+  --seat-name: 0.76rem;
+  --seat-meta: 0.6rem;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.65rem;
+  box-shadow: var(--shadow-sm);
+}
+.lp-seat--live {
+  border-color: color-mix(in srgb, var(--verified-emerald) 55%, var(--hairline));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--verified-emerald) 22%, transparent),
+    var(--shadow-sm);
+}
+/* The hero turns seats into native radio choices. The visually hidden input
+   owns selection and keyboard semantics; its label preserves the exact seat
+   card anatomy and expands the touch target to the whole card. */
+.lp-seat--choice {
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+.lp-seat-flow-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.lp-seat--choice:is(:hover, :focus-within) {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--hairline));
+}
+.lp-seat--choice:has(input:checked) {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 5%, var(--ink-control));
+}
+.lp-seat--choice:has(input:focus-visible) {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+/* Reserve the top-right corner for the LIVE badge so the role never runs
+   underneath it. */
+.lp-seat--live .lp-seat-body {
+  padding-right: 1.9rem;
+}
+.lp-seat-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--seat-mark, 26px);
+  height: var(--seat-mark, 26px);
+  flex: none;
+  border-radius: 7px;
+  /* Soft top-lit gradient + inset ring so the tile reads as a finished token
+     rather than a flat swatch — one treatment shared by every org surface. */
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c, var(--primary)) 17%, transparent),
+    color-mix(in srgb, var(--c, var(--primary)) 9%, transparent)
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c, var(--primary)) 20%, transparent);
+  color: var(--c, var(--primary));
+}
+.lp-seat-mark svg {
+  display: block;
+  max-width: 66%;
+  max-height: 66%;
+}
+.lp-seat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.lp-seat-body .name {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--seat-name, 0.78rem);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-seat-body .meta {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: var(--seat-meta, 0.6rem);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-seat-body .meta i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c, var(--primary));
+  flex: none;
+}
+/* The one LIVE treatment: pulsing status dot + mono label, top-right of the
+   seat. Emerald is reserved page-wide for the live / earning signal. */
+.lp-live {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-success);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lp-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 50%, transparent);
+  animation: hg-pulse 1.8s ease-out infinite;
+}
+/* Per-call USDC price on earning seats — ties the chart to the payout story. */
+.lp-price-chip {
+  position: relative;
+  align-self: flex-start;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--text-success);
+  background: color-mix(in srgb, var(--verified-emerald) 8%, var(--ink-control));
+  border: 1px solid color-mix(in srgb, var(--verified-emerald) 35%, var(--ink-control));
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+/* The earn tick: the seat's own per-call price floats up and fades — "this
+   seat gets paid, per call", animated with transform/opacity only. Content
+   comes from data-earn (the real price, not a running total). Duration is the
+   shared 16s call cycle; per-seat delays live in the call-pulse section below
+   so each tick fires the moment its seat's call settles. */
+.lp-price-chip::after {
+  content: attr(data-earn);
+  position: absolute;
+  top: 0;
+  left: calc(100% + 6px);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--text-success);
+  opacity: 0;
+  pointer-events: none;
+  animation: lp-earn-tick 16s ease-out infinite;
+}
+/* Between 881-1199px the hero runs two columns and its seats are too narrow
+   to give the tick a clean lane beside the chip (it would spawn over the
+   price text or drift past the card edge). The tick sits that band out; the
+   call pulse itself still runs, and the tick returns on both sides of the
+   band. */
+@media (min-width: 881px) and (max-width: 1199px) {
+  .lp-org-tree--hero .lp-price-chip::after {
+    animation: none;
+  }
+}
+/* Cron cadence on scheduled seats — the quiet sibling of the price chip:
+   department-tinted instead of emerald, because a schedule is work on a
+   timer, not money on a call. Both themes inherit from the tokens. */
+.lp-sched-chip {
+  align-self: flex-start;
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--c, var(--primary)) 7%, var(--ink-control));
+  border: 1px solid color-mix(in srgb, var(--c, var(--primary)) 24%, var(--ink-control));
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+.lp-sched-chip::before {
+  content: "↻";
+  font-size: 0.62rem;
+  line-height: 1;
+  color: color-mix(in srgb, var(--c, var(--primary)) 75%, var(--text-muted));
+}
+/* The tick spawns beside the chip (never on top of its price text: the old
+   top-right-corner origin covered the chip through its whole fade-in) and
+   drifts up-and-right into the empty corner of the seat card, gone within
+   ~1.6s of firing. It stays below the agent label's baseline, so a straight
+   rise would collide; the shallow angled rise doesn't. Percentages are of
+   the 16s call cycle. */
+@keyframes lp-earn-tick {
+  0%, 1% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  3.5% {
+    opacity: 1;
+  }
+  10%, 100% {
+    opacity: 0;
+    transform: translate(9px, -9px);
+  }
+}
+/* Hero scale: same seat, larger — role and agent legible from across the
+   fold. Hero seats also get real card elevation and a staggered cascade
+   (CEO, then the four heads, then reports, then third-level seats) so the
+   whole company assembles top-down on load. */
+.lp-org-tree--hero .lp-seat {
+  --seat-mark: 32px;
+  --seat-name: 0.85rem;
+  --seat-meta: 0.65rem;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: calc(var(--radius) + 3px);
+  box-shadow: var(--shadow-card);
+  animation: lp-seat-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.lp-org-tree--hero .lp-seat--live {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--verified-emerald) 22%, transparent),
+    var(--shadow-card);
+}
+/* The marquee visual never clips its own cast: hero role labels wrap to a
+   second line instead of ellipsizing ("Lead Scor…" at 375, "Frontend E…" at
+   1024). Clamped at two lines so a pathological role can't stretch a seat;
+   seats grow taller when wrapped, which the elbow connectors absorb (they
+   anchor to the seat's top 20px, not its full height). */
+/* Seat names wrap to two lines rather than ellipsize: the chart must never
+   clip its own cast. The card variant needs it as much as the hero — its
+   column is narrower still ("Frontend Eng" clipped at 375). */
+.lp-org-tree--hero .lp-seat-body .name,
+.lp-org-tree:not(.lp-org-tree--hero) .lp-seat-body .name {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.18;
+}
+/* While the LIVE word is spelled out (it collapses to its dot below 560px),
+   reserve the badge's true footprint so a long role wraps instead of running
+   into it ("Lead Scorer LIVE" at 1024). */
+@media (min-width: 561px) {
+  .lp-org-tree--hero .lp-seat--live .lp-seat-body {
+    padding-right: 2.75rem;
+  }
+}
+@keyframes lp-seat-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+/* The CEO seat anchors the chart: a step larger, indigo-ringed, so hierarchy
+   reads from weight before anyone parses a label. */
+.lp-org-tree--hero .lp-org-row--single .lp-seat {
+  --seat-mark: 40px;
+  --seat-name: 0.95rem;
+  --seat-meta: 0.68rem;
+  min-width: 200px;
+  padding: 0.75rem 0.95rem;
+  border-color: color-mix(in srgb, var(--primary) 32%, var(--hairline));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent),
+    var(--shadow-card);
+}
+/* Department rows: two departments per row so thirteen seats stay legible in
+   the hero column. Each row hangs off a T-bar; the first row also carries the
+   trunk that continues down its center gutter to the second row's bar, so the
+   whole company reads as one connected chart. */
+.lp-org-tree--hero .lp-org-deptrow {
+  --deptrow-gap: 26px;
+  --dept-gutter: clamp(1rem, 2.5vw, 1.6rem);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--dept-gutter);
+  width: 100%;
+  max-width: 580px;
+  padding-top: var(--org-drop);
+}
+.lp-org-tree--hero .lp-org-deptrow + .lp-org-deptrow {
+  margin-top: var(--deptrow-gap);
+}
+/* The bar ends exactly above each department's drop: column centers sit a
+   quarter-gutter inside the 25% marks. */
+.lp-org-tree--hero .lp-org-deptrow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(25% - var(--dept-gutter) / 4);
+  right: calc(25% - var(--dept-gutter) / 4);
+  height: 1px;
+  background: var(--org-edge);
+  z-index: 1;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: calc(-1 * var(--deptrow-gap));
+  left: 50%;
+  width: 1px;
+  background: var(--org-edge);
+  z-index: 1;
+}
+.lp-org-dept {
+  /* One rhythm for the whole column: the head-to-reports gap equals the
+     report gap, which equals the elbow's upward reach, so every spine
+     touches the seat above it with no seam. */
+  --report-gap: 7px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--report-gap);
+  min-width: 0;
+}
+.lp-org-dept::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--org-drop));
+  left: 50%;
+  width: 1px;
+  height: var(--org-drop);
+  background: var(--org-edge);
+  z-index: 1;
+}
+/* Earning department heads hang on emerald threads — same rule as the card
+   rows: the connector itself carries the live signal. */
+.lp-org-dept--live::before {
+  background: color-mix(in srgb, var(--verified-emerald) 60%, var(--org-edge));
+}
+/* Reports hang off an elbow spine below their head, third-level seats one
+   indent further — the same crisp file-tree grammar at every depth. */
+.lp-org-reports {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--report-gap);
+}
+.lp-org-reports .lp-org-reports {
+  margin-top: var(--report-gap);
+}
+.lp-org-reports > li {
+  position: relative;
+}
+/* The elbow: down from the seat above, then right into this seat, with a
+   soft radius so the corner reads drawn, not collided. */
+.lp-org-reports > li::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: calc(-1 * var(--report-gap));
+  width: 10px;
+  height: calc(var(--report-gap) + 20px);
+  border-left: 1px solid var(--org-edge);
+  border-bottom: 1px solid var(--org-edge);
+  border-bottom-left-radius: 6px;
+}
+/* The spine continues past this seat (and its whole subtree) to the next
+   sibling, so multi-report departments stay on one visible thread. */
+.lp-org-reports > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 19px;
+  bottom: calc(-1 * var(--report-gap));
+  width: 1px;
+  background: var(--org-edge);
+}
+.lp-org-reports > li.is-live::before {
+  border-color: color-mix(in srgb, var(--verified-emerald) 60%, var(--org-edge));
+}
+/* Reports are a half-step smaller than their head so each department reads
+   as head plus staff at a glance. */
+.lp-org-reports .lp-seat {
+  --seat-mark: 26px;
+  --seat-name: 0.76rem;
+  --seat-meta: 0.6rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+/* Assembly cascade, level by level. */
+.lp-org-tree--hero .lp-org-row--single .lp-seat {
+  animation-delay: 0.45s;
+}
+.lp-org-tree--hero .lp-org-dept > .lp-seat {
+  animation-delay: 0.6s;
+}
+.lp-org-tree--hero .lp-org-reports .lp-seat {
+  animation-delay: 0.75s;
+}
+.lp-org-tree--hero .lp-org-reports .lp-org-reports .lp-seat {
+  animation-delay: 0.9s;
+}
+
+/* ---- Call pulse: work visibly moving through the company -----------------
+   Purely decorative (the whole chart sits behind role="img"; no data or aria
+   change) and pure CSS on free pseudo-element slots — no extra markup, no JS.
+   One shared 16s cycle carries two paid calls through the hero chart:
+
+     0.0s  CEO seat glows (a call arrives at the company)
+     0.8s  request dot glides down the trunk        (CEO stem ::after)
+     1.4s  T-bar flashes as the call routes left    (deptrow--linked ::before)
+     1.8s  dot drops into Growth                    (dept:first-child ::after)
+     2.4s  CMO seat glows · 2.5s its earn tick fires (call settled)
+     3.0s  elbow flashes down to the first report
+     3.6s  Lead Scorer glows · 3.7s its tick fires
+     6.0s  CFO tick — an off-screen call settling quietly
+     8.0s  same route through Engineering (CEO → CTO → Frontend Eng)
+    14.0s  Support Triage tick — second off-screen settlement
+
+   Color grammar: the request is indigo (--primary, the product color); money
+   stays emerald (the tick). Requests come in indigo, revenue leaves emerald.
+   The routes are structural, not role-named: "first department / last
+   department of the linked row, then that head's first report" — if the org
+   data reorders, the pulse follows the same shape. All movement is
+   transform/opacity on 5px dots; the bar/elbow "flash" animates the color of
+   1px lines that already exist. Everything shuts off under
+   prefers-reduced-motion in the shared block below. */
+
+/* The request dot descending the CEO trunk — two passes per cycle. */
+.lp-org-tree--hero > .lp-org-stem {
+  position: relative;
+}
+.lp-org-tree--hero > .lp-org-stem::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 60%, transparent);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: lp-call-stem 16s linear infinite;
+}
+@keyframes lp-call-stem {
+  0%, 5% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  5.6% {
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  9% {
+    opacity: 1;
+    transform: translate(-50%, calc(var(--org-drop) - 5px));
+  }
+  9.4%, 55% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  55.6% {
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  59% {
+    opacity: 1;
+    transform: translate(-50%, calc(var(--org-drop) - 5px));
+  }
+  59.4%, 100% {
+    opacity: 0;
+  }
+}
+
+/* The routing bar brightens as each call crosses it. */
+.lp-org-tree--hero .lp-org-deptrow--linked::before {
+  animation: lp-call-bar 16s linear infinite;
+}
+@keyframes lp-call-bar {
+  0%, 8.75% {
+    background-color: var(--org-edge);
+  }
+  11% {
+    background-color: color-mix(in srgb, var(--primary) 45%, var(--org-edge));
+  }
+  13.75%, 58.75% {
+    background-color: var(--org-edge);
+  }
+  61% {
+    background-color: color-mix(in srgb, var(--primary) 45%, var(--org-edge));
+  }
+  63.75%, 100% {
+    background-color: var(--org-edge);
+  }
+}
+
+/* The dot dropping from the bar into a department head. One keyframe shape,
+   phase-shifted per department by animation-delay (delays persist as phase on
+   infinite loops). */
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept::after {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--org-drop));
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 60%, transparent);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:first-child::after {
+  animation: lp-call-drop 16s linear 1.8s infinite;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:last-child::after {
+  animation: lp-call-drop 16s linear 9.8s infinite;
+}
+@keyframes lp-call-drop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  0.6% {
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  4% {
+    opacity: 1;
+    transform: translate(-50%, calc(var(--org-drop) - 5px));
+  }
+  4.4%, 100% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* The elbow into the first report flashes as the call passes. Both route
+   elbows hang under live seats, so the rest color is the is-live emerald mix
+   from the elbow rules above — keep the two in step if that mix changes. */
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:first-child .lp-org-reports > li:first-child::before {
+  animation: lp-call-elbow 16s linear 3s infinite;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:last-child .lp-org-reports > li:first-child::before {
+  animation: lp-call-elbow 16s linear 11s infinite;
+}
+@keyframes lp-call-elbow {
+  0% {
+    border-color: color-mix(in srgb, var(--verified-emerald) 60%, var(--org-edge));
+  }
+  1.6% {
+    border-color: color-mix(in srgb, var(--primary) 55%, var(--org-edge));
+  }
+  5%, 100% {
+    border-color: color-mix(in srgb, var(--verified-emerald) 60%, var(--org-edge));
+  }
+}
+
+/* Visited seats acknowledge the call: a soft indigo ring fades up and out on
+   the seat's own radius. Static opacity 0 keeps the ring invisible before a
+   delayed animation's first cycle and on every non-visited frame. */
+.lp-org-tree--hero .lp-org-row--single .lp-seat::after,
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept > .lp-seat::after,
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept .lp-org-reports > li:first-child > .lp-seat::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 45%, transparent),
+    0 0 18px color-mix(in srgb, var(--primary) 22%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+/* The CEO fields both calls, so its glow gets a two-window keyframe set
+   instead of a phase delay. */
+.lp-org-tree--hero .lp-org-row--single .lp-seat::after {
+  animation: lp-call-glow-ceo 16s linear infinite;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:first-child > .lp-seat::after {
+  animation: lp-call-glow 16s linear 2.4s infinite;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:first-child .lp-org-reports > li:first-child > .lp-seat::after {
+  animation: lp-call-glow 16s linear 3.6s infinite;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:last-child > .lp-seat::after {
+  animation: lp-call-glow 16s linear 10.4s infinite;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:last-child .lp-org-reports > li:first-child > .lp-seat::after {
+  animation: lp-call-glow 16s linear 11.6s infinite;
+}
+@keyframes lp-call-glow {
+  0% {
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  7.5%, 100% {
+    opacity: 0;
+  }
+}
+@keyframes lp-call-glow-ceo {
+  0% {
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  7.5%, 50% {
+    opacity: 0;
+  }
+  52% {
+    opacity: 1;
+  }
+  57.5%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Earn ticks fire in step with the pulse: routed seats settle as their call
+   lands; CFO and Support Triage settle between routes, so the whole company
+   keeps earning without every tick needing a visible dot. */
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:first-child > .lp-seat .lp-price-chip::after {
+  animation-delay: 2.5s;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:first-child .lp-org-reports .lp-price-chip::after {
+  animation-delay: 3.7s;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:last-child > .lp-seat .lp-price-chip::after {
+  animation-delay: 10.5s;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept:last-child .lp-org-reports .lp-price-chip::after {
+  animation-delay: 11.7s;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked + .lp-org-deptrow .lp-org-dept:first-child .lp-price-chip::after {
+  animation-delay: 6s;
+}
+.lp-org-tree--hero .lp-org-deptrow--linked + .lp-org-deptrow .lp-org-dept:last-child .lp-price-chip::after {
+  animation-delay: 14s;
+}
+
+/* ---- Product org-chart canvas pill (company /orgchart surface) -----------
+   Used by OrgChartNode on the interactive company canvas — a separate,
+   denser anatomy from the marketing .lp-seat above. Keep stable. */
+.lp-org-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  box-shadow: var(--shadow-sm);
+}
+.lp-org-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--c, var(--primary)) 12%, transparent);
+  color: var(--c, var(--primary));
+}
+.lp-org-card-icon svg {
+  width: 15px;
+  height: 15px;
+}
+.lp-org-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.lp-org-card-body .name {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-org-card-body .model {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Interactive org-chart canvas cards only (OrgChartNode) — the layout engine
+   spaces siblings at a fixed pitch, so these need a width cap the static
+   marketing org-card mockups (which size via their own row flex-basis)
+   don't. Without it, a long job description or wallet line grows the card
+   past its allotted slot and overlaps its neighbor. */
+.lp-orgchart-card {
+  max-width: 190px;
+}
+.lp-orgchart-card .lp-org-card-body {
+  min-width: 0;
+}
+.lp-org-card-body .model i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c, var(--primary));
+  flex: none;
+}
+/* Per-employee payout line — real settled earnings, shared company wallet
+   until per-agent wallets ship. Muted by default; tints emerald only once
+   this employee has actually settled revenue for the loaded period. */
+.lp-org-card-wallet {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.lp-org-card-wallet svg {
+  width: 10px;
+  height: 10px;
+  flex: none;
+}
+.lp-org-card-wallet.is-earning {
+  color: var(--text-success);
+}
+
+/* ---- Autonomous company preview ----------------------------------------- */
+/* Reuses the unified seat atoms above (.lp-seat / .lp-seat-mark /
+   .lp-seat-body / .lp-org-stem) and only adds the founder org-board
+   layout: company head, the split to two departments, and stacked employees. */
+.lp-company-preview {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Frame header for the company board — the hero frame's status bar, zoomed
+   out: template identity on the left, an honest seat census on the right,
+   both read from the template so the bar can never disagree with the board. */
+.lp-org-frame-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  padding: 0 var(--space-1) var(--space-3);
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.lp-org-frame-bar b {
+  font-weight: 600;
+}
+.lp-org-frame-bar .tabular {
+  /* Numeric variant comes from the global .tabular utility. */
+  white-space: nowrap;
+}
+/* Seats the pruned board doesn't show — same quiet mono register as the
+   journey panel's "+ other departments" line. */
+.lp-company-more {
+  display: block;
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-muted);
+}
+.lp-company-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 320px;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+.lp-company-head-body {
+  min-width: 0;
+}
+.lp-company-head-body .name {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+.lp-company-head-body .mission {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.lp-company-depts {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem var(--space-4);
+}
+.lp-company-depts::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(25% - 2.5px);
+  right: calc(25% - 2.5px);
+  height: 1px;
+  background: var(--org-edge, var(--hairline));
+  z-index: 1;
+}
+.lp-company-dept {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+.lp-company-dept::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 20px;
+  background: var(--org-edge, var(--hairline));
+  z-index: 1;
+}
+.lp-company-dept-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.lp-company-dept-label::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--c, var(--primary));
+}
+.lp-company-emps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.lp-company-emps .lp-seat {
+  width: 100%;
+}
+@media (max-width: 880px) {
+  .lp-company-depts {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    gap: var(--space-4);
+  }
+  .lp-company-depts::before {
+    display: none;
+  }
+  .lp-company-dept::before {
+    display: none;
+  }
+}
+.lp-company-steps {
+  margin-top: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  counter-reset: lp-company-step;
+}
+.lp-company-step {
+  position: relative;
+  padding-left: 2.5rem;
+}
+.lp-company-step::before {
+  counter-increment: lp-company-step;
+  content: counter(lp-company-step);
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  width: 1.65rem;
+  height: 1.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  border-radius: 999px;
+}
+.lp-company-step h3 {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+  margin: 0.1rem 0 0.2rem;
+}
+.lp-company-step p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.lp-company-proof {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+}
+
+/* ---- Node category showcase --------------------------------------------- */
+.lp-nodes {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: color-mix(in srgb, var(--c, var(--primary)) 5%, var(--ink-control));
+  border: 1px solid color-mix(in srgb, var(--c, var(--primary)) 38%, var(--hairline));
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.8rem;
+  box-shadow: var(--shadow-sm);
+}
+.lp-chip b {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.86rem;
+}
+.lp-chip span {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--c, var(--primary));
+}
+
+/* ---- Endpoint ledger ---------------------------------------------------- */
+.lp-ledger {
+  margin-top: 1.25rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ink-control);
+  box-shadow: var(--shadow-card);
+}
+.lp-ledger-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--hairline);
+}
+.lp-ledger-row:first-child {
+  border-top: none;
+}
+.lp-ledger-row .m {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.lp-ledger-row .name {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+.lp-ledger-row .price {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--text-success);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Templates ---------------------------------------------------------- */
+.lp-templates {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 0.8rem;
+}
+@media (max-width: 820px) {
+  .lp-templates {
+    grid-template-columns: 1fr;
+  }
+}
+.lp-tpl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: var(--space-4) 1.05rem;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+.lp-tpl:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+}
+.lp-tpl-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lp-tpl-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  align-items: center;
+}
+.lp-tpl-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--d, var(--primary));
+}
+.lp-tpl-arrow {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.lp-tpl h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.lp-tpl p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.lp-tpl-go {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+/* ---- Template card cell wrapper (card + secondary proof/guide links) ---- */
+.lp-tpl-cell {
+  display: flex;
+  flex-direction: column;
+}
+/* When a card carries utility links, the row docks into the card frame as a
+   footer instead of floating in the row gutter: the cell becomes the shadowed
+   unit, the card sheds its bottom edge, and the row inherits the frame. */
+.lp-tpl-cell:has(.lp-tpl-more) {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.lp-tpl-cell:has(.lp-tpl-more) .lp-tpl {
+  box-shadow: none;
+  border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  flex: 1;
+}
+.lp-tpl-cell:has(.lp-tpl-more) .lp-tpl:hover {
+  transform: none;
+}
+.lp-tpl-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-top: 1px dashed var(--hairline);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 0.55rem 1.05rem 0.7rem;
+}
+.lp-tpl-more-link {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.lp-tpl-more-link:hover {
+  color: var(--primary);
+}
+
+/* ---- Template card usefulness signals (badge / who-pays / earnings) ----- */
+.lp-tpl-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.lp-tpl-tag--core {
+  color: var(--primary);
+  border-color: var(--hairline-cyan);
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+}
+.lp-tpl-tag--rails {
+  color: var(--text-info);
+  border-color: color-mix(in srgb, var(--registry-cyan) 35%, transparent);
+  background: color-mix(in srgb, var(--registry-cyan) 8%, transparent);
+}
+.lp-tpl-who {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.lp-tpl-who-k {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-right: 0.45em;
+  white-space: nowrap;
+}
+.lp-tpl-est {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+/* In gallery cards, the estimate always gets its own line: with flex-wrap it
+   landed inline on some cards and wrapped on others, so sibling cards
+   disagreed about their own layout. Row layouts (/start, /flows) keep it inline. */
+.lp-dir-meta .lp-tpl-est {
+  flex-basis: 100%;
+}
+
+/* ---- CTA band + footer -------------------------------------------------- */
+.lp-cta-band {
+  position: relative;
+  margin-block: clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(1.75rem, 3.5vw, 2.75rem) var(--lp-edge);
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) * 2);
+  background:
+    radial-gradient(60% 120% at 80% 10%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 60%),
+    linear-gradient(180deg, color-mix(in srgb, var(--primary) 5%, var(--ink-panel)), var(--ink-panel));
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.lp-cta-band h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 1.1rem + 2vw, 2.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: var(--space-2) 0 1.1rem;
+}
+.lp-proof-band {
+  position: relative;
+  padding: clamp(1.5rem, 4vw, 3rem) var(--lp-edge);
+  border-block: 1px solid var(--hairline);
+  background: var(--canvas-bg);
+}
+.lp-proof-figure {
+  width: min(100%, 70rem);
+  margin: 0 auto;
+}
+.lp-proof-media {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--hairline-visible);
+  border-radius: calc(var(--radius) * 1.5);
+  background: var(--ink-panel);
+  box-shadow: var(--shadow-card);
+}
+.lp-proof-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.lp-proof-figure[data-editorial-proof="staff-company-sell-work"] .lp-proof-image {
+  width: auto;
+  max-width: 100%;
+  max-height: min(72vh, 48rem);
+}
+.lp-proof-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-8);
+  padding: 0.8rem 0.15rem 0;
+  color: var(--text-secondary);
+  font: 500 var(--text-sm)/1.5 var(--font-ui);
+}
+.lp-proof-label {
+  flex: 0 0 auto;
+  color: var(--primary);
+  font: 700 var(--text-label)/1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+/* A dated snapshot label doubles as the link to the live surface it depicts —
+   quiet at rest, underlined on intent. */
+a.lp-proof-label {
+  text-decoration: none;
+}
+a.lp-proof-label:hover,
+a.lp-proof-label:focus-visible {
+  text-decoration: underline;
+}
+.lp-footer {
+  /* Positioned so the footer paints above the hero's ambient grid texture on
+     short pages (404) where the fixed-height overlay outruns the hero. */
+  position: relative;
+  border-top: 1px solid var(--hairline);
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+.lp-footer-inner {
+  display: grid;
+  gap: var(--space-8);
+}
+.lp-footer-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: start;
+}
+.lp-footer-brand {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+  font: 400 1.35rem/1 var(--font-display);
+  text-decoration: none;
+}
+.lp-footer p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  max-width: 52ch;
+}
+.lp-footer p a {
+  color: inherit;
+  /* A reset upstream strips anchor underlines; restore them here so in-text
+     links never rely on color alone (axe link-in-text-block). */
+  text-decoration-line: underline;
+  text-underline-offset: 3px;
+}
+.lp-footer-intro p a {
+  color: var(--primary);
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+}
+.lp-footer-intro p a:hover {
+  text-decoration-color: currentColor;
+}
+.lp-footer-press {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3) 1.25rem;
+  align-items: baseline;
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--hairline);
+}
+.lp-footer-press-links {
+  display: flex;
+  flex-wrap: wrap;
+  /* Wrapped to one link per row on narrow viewports, the old 0.45rem row gap
+     left 7px between 23px targets: under the WCAG 2.5.8 (AA) size floor with
+     too little spacing to qualify for the exception. */
+  gap: 0.6rem var(--space-4);
+}
+.lp-footer-press a {
+  font-size: var(--text-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+.lp-footer-nav {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+.lp-footer-group h2 {
+  margin: 0 0 0.65rem;
+  color: var(--text-primary);
+  font: 700 var(--text-label)/1.2 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lp-footer-group-links {
+  display: grid;
+  gap: 0.45rem;
+}
+.lp-footer-group a {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
+  font: 500 var(--text-xs)/1.3 var(--font-ui);
+  text-decoration: none;
+}
+.lp-footer-group a:hover,
+.lp-footer-press a:hover {
+  color: var(--primary);
+}
+.lp-footer-bottom {
+  width: 100%;
+  max-width: none !important;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--hairline);
+}
+@media (max-width: 880px) {
+  .lp-footer-intro {
+    grid-template-columns: 1fr;
+  }
+  .lp-footer-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .lp-proof-band {
+    padding: var(--space-6) var(--lp-edge);
+  }
+  .lp-proof-media {
+    border-radius: var(--radius);
+  }
+  .lp-proof-caption {
+    display: grid;
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+  }
+  .lp-footer-intro {
+    gap: 1.25rem;
+  }
+  .lp-footer-press {
+    grid-template-columns: 1fr;
+  }
+  .lp-footer-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) 1.25rem;
+  }
+  .lp-footer-group a {
+    min-height: 44px;
+  }
+}
+
+/* ---- Muse cross-promo (footer strip) ------------------------------------ */
+.lp-muse-promo {
+  margin-top: 1.75rem;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--hairline);
+  max-width: 42ch;
+}
+.lp-muse-promo-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  margin: var(--space-2) 0 0.3rem;
+}
+.lp-muse-promo-text {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  margin: 0 0 0.55rem;
+}
+.lp-muse-promo a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  text-decoration: none;
+}
+.lp-muse-promo a:hover {
+  color: var(--primary-hover);
+}
+
+/* ---- Reveal animation --------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: lp-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* LCP: above-the-fold hero copy must be painted on the first frame. An
+   element animating up from opacity 0 is invisible to that paint, which
+   pushed the measured LCP behind the whole entry cadence (~0.9s after FCP).
+   Hero reveals keep the identical rise (duration, curve, per-element
+   stagger) but skip only the opacity fade, so the headline, lede, and stats
+   are on screen immediately and then settle into place. Sections below the
+   fold keep the full fade + rise.
+
+   Belt and suspenders: the ancestor selector plus the hero copy classes
+   themselves, so the exemption survives any future re-wrapping of the hero
+   container (production Lighthouse kept flagging .lp-lede as the LCP element
+   waiting out its delay at opacity 0). */
+.lp-hero .reveal,
+.lp-hero-grid .reveal,
+.lp-kicker.reveal,
+.lp-h1.reveal,
+.lp-lede.reveal,
+.lp-hero-actions.reveal,
+.lp-hero-meta.reveal,
+.lp-hero-note.reveal {
+  opacity: 1;
+}
+
+@keyframes lp-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes lp-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .lp-ticker-track {
+    animation: none;
+  }
+}
+
+/* ---- Hero graph (signature product visual) ------------------------------
+   One frame, chart first: the org chart is the primary scene, and the compact
+   flow strip beneath the divider is the secondary "each seat opens into a
+   flow" beat. */
+.hg-frame {
+  position: relative;
+  min-inline-size: 0;
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--radius) * 2);
+  background:
+    radial-gradient(120% 120% at 100% 0%, color-mix(in srgb, var(--primary) 6%, transparent), transparent 55%),
+    var(--ink-control);
+  /* Deep elevation + a faint indigo halo — the one framed object on the page
+     that reads as sitting above it, not printed on it. */
+  box-shadow:
+    var(--shadow-lg),
+    0 0 90px color-mix(in srgb, var(--primary) 12%, transparent);
+  padding: 16px;
+}
+/* Frame header: company identity left, live-seat status right — information
+   in place of window-dressing. */
+.hg-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  padding: 2px var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--hairline);
+}
+.hg-bar b {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.hg-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-success);
+}
+.hg-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 50%, transparent);
+  /* 1.6s = exactly ten beats per 16s call cycle, so the frame header breathes
+     in phase with the chart's call pulse instead of drifting against it. */
+  animation: hg-pulse 1.6s ease-out infinite;
+}
+/* Connects the org chart to the flow strip below it inside one shared
+   frame, so the two read as one scene instead of two stacked cards. */
+.hg-divider {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 12px;
+}
+.hg-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--hairline);
+}
+.hg-divider span {
+  position: relative;
+  background: var(--ink-control);
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.hg-divider em {
+  font-style: normal;
+  color: color-mix(in srgb, var(--text-muted) 68%, transparent);
+}
+/* The hero chart wrapper — breathing room around the full-size org tree, on
+   the same dot grid as the real build canvas so the chart reads as product,
+   not illustration. */
+.hg-org {
+  padding: clamp(1.1rem, 2vw, 1.6rem) 0.4rem 0.5rem;
+  background:
+    radial-gradient(color-mix(in srgb, var(--canvas-dot) 60%, transparent) 1px, transparent 1px)
+    50% 0 / 18px 18px;
+}
+/* One strip per seat, stacked in the same grid cell. The default remains
+   useful in browsers without :has(); current browsers replace it from the
+   native radio state, with hover taking priority over keyboard focus. */
+.hg-strips {
+  display: grid;
+}
+.hg-strips > .hg-strip {
+  grid-area: 1 / 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+.hg-strips > .hg-strip[data-seat="lead-scorer"] {
+  opacity: 1;
+}
+.hg-frame:has(.lp-seat-flow-radio:checked) .hg-strips > .hg-strip[data-seat="lead-scorer"] {
+  opacity: 0;
+}
+.hg-frame:has(.lp-seat--choice[data-seat="ceo"] input:checked) .hg-strips > .hg-strip[data-seat="ceo"],
+.hg-frame:has(.lp-seat--choice[data-seat="cmo"] input:checked) .hg-strips > .hg-strip[data-seat="cmo"],
+.hg-frame:has(.lp-seat--choice[data-seat="lead-scorer"] input:checked) .hg-strips > .hg-strip[data-seat="lead-scorer"],
+.hg-frame:has(.lp-seat--choice[data-seat="outreach-writer"] input:checked) .hg-strips > .hg-strip[data-seat="outreach-writer"],
+.hg-frame:has(.lp-seat--choice[data-seat="cto"] input:checked) .hg-strips > .hg-strip[data-seat="cto"],
+.hg-frame:has(.lp-seat--choice[data-seat="frontend-eng"] input:checked) .hg-strips > .hg-strip[data-seat="frontend-eng"],
+.hg-frame:has(.lp-seat--choice[data-seat="on-call-sre"] input:checked) .hg-strips > .hg-strip[data-seat="on-call-sre"],
+.hg-frame:has(.lp-seat--choice[data-seat="cfo"] input:checked) .hg-strips > .hg-strip[data-seat="cfo"],
+.hg-frame:has(.lp-seat--choice[data-seat="invoice-chaser"] input:checked) .hg-strips > .hg-strip[data-seat="invoice-chaser"],
+.hg-frame:has(.lp-seat--choice[data-seat="expense-audit"] input:checked) .hg-strips > .hg-strip[data-seat="expense-audit"],
+.hg-frame:has(.lp-seat--choice[data-seat="coo"] input:checked) .hg-strips > .hg-strip[data-seat="coo"],
+.hg-frame:has(.lp-seat--choice[data-seat="support-triage"] input:checked) .hg-strips > .hg-strip[data-seat="support-triage"],
+.hg-frame:has(.lp-seat--choice[data-seat="crm-sync"] input:checked) .hg-strips > .hg-strip[data-seat="crm-sync"] {
+  opacity: 1;
+}
+/* Pointer preview overrides the parked radio selection. */
+.hg-frame:has(.lp-seat--choice:hover) .hg-strips > .hg-strip {
+  opacity: 0;
+}
+.hg-frame:has(.lp-seat--choice[data-seat="ceo"]:hover) .hg-strips > .hg-strip[data-seat="ceo"],
+.hg-frame:has(.lp-seat--choice[data-seat="cmo"]:hover) .hg-strips > .hg-strip[data-seat="cmo"],
+.hg-frame:has(.lp-seat--choice[data-seat="lead-scorer"]:hover) .hg-strips > .hg-strip[data-seat="lead-scorer"],
+.hg-frame:has(.lp-seat--choice[data-seat="outreach-writer"]:hover) .hg-strips > .hg-strip[data-seat="outreach-writer"],
+.hg-frame:has(.lp-seat--choice[data-seat="cto"]:hover) .hg-strips > .hg-strip[data-seat="cto"],
+.hg-frame:has(.lp-seat--choice[data-seat="frontend-eng"]:hover) .hg-strips > .hg-strip[data-seat="frontend-eng"],
+.hg-frame:has(.lp-seat--choice[data-seat="on-call-sre"]:hover) .hg-strips > .hg-strip[data-seat="on-call-sre"],
+.hg-frame:has(.lp-seat--choice[data-seat="cfo"]:hover) .hg-strips > .hg-strip[data-seat="cfo"],
+.hg-frame:has(.lp-seat--choice[data-seat="invoice-chaser"]:hover) .hg-strips > .hg-strip[data-seat="invoice-chaser"],
+.hg-frame:has(.lp-seat--choice[data-seat="expense-audit"]:hover) .hg-strips > .hg-strip[data-seat="expense-audit"],
+.hg-frame:has(.lp-seat--choice[data-seat="coo"]:hover) .hg-strips > .hg-strip[data-seat="coo"],
+.hg-frame:has(.lp-seat--choice[data-seat="support-triage"]:hover) .hg-strips > .hg-strip[data-seat="support-triage"],
+.hg-frame:has(.lp-seat--choice[data-seat="crm-sync"]:hover) .hg-strips > .hg-strip[data-seat="crm-sync"] {
+  opacity: 1;
+}
+/* When there is no pointer preview, keyboard focus gets the same priority. */
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice:focus-within) .hg-strips > .hg-strip {
+  opacity: 0;
+}
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="ceo"]:focus-within) .hg-strips > .hg-strip[data-seat="ceo"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="cmo"]:focus-within) .hg-strips > .hg-strip[data-seat="cmo"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="lead-scorer"]:focus-within) .hg-strips > .hg-strip[data-seat="lead-scorer"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="outreach-writer"]:focus-within) .hg-strips > .hg-strip[data-seat="outreach-writer"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="cto"]:focus-within) .hg-strips > .hg-strip[data-seat="cto"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="frontend-eng"]:focus-within) .hg-strips > .hg-strip[data-seat="frontend-eng"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="on-call-sre"]:focus-within) .hg-strips > .hg-strip[data-seat="on-call-sre"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="cfo"]:focus-within) .hg-strips > .hg-strip[data-seat="cfo"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="invoice-chaser"]:focus-within) .hg-strips > .hg-strip[data-seat="invoice-chaser"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="expense-audit"]:focus-within) .hg-strips > .hg-strip[data-seat="expense-audit"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="coo"]:focus-within) .hg-strips > .hg-strip[data-seat="coo"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="support-triage"]:focus-within) .hg-strips > .hg-strip[data-seat="support-triage"],
+.hg-frame:not(:has(.lp-seat--choice:hover)):has(.lp-seat--choice[data-seat="crm-sync"]:focus-within) .hg-strips > .hg-strip[data-seat="crm-sync"] {
+  opacity: 1;
+}
+/* The secondary beat: a recessed mini canvas with the seat's flow and its
+   dry-run cost. Canvas-dot texture ties it to the real build surface. */
+.hg-strip {
+  background:
+    radial-gradient(var(--canvas-dot) 1px, transparent 1px) 0 0 / 14px 14px,
+    var(--canvas-bg);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.75rem 0.7rem;
+}
+.hg-strip-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.hg-strip-head > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.hg-strip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c, var(--primary));
+  flex: none;
+}
+.hg-strip-head b {
+  color: var(--text-success);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.hg-strip-head b.is-quiet {
+  color: var(--text-secondary);
+}
+.hg-strip-flow {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  gap: 6px;
+  margin-top: 0.55rem;
+}
+.hg-chip {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--ink-control);
+  border: 1px solid color-mix(in srgb, var(--c, var(--primary)) 45%, var(--hairline));
+  border-radius: var(--radius-sm);
+  padding: 6px 9px;
+  box-shadow: var(--shadow-sm);
+}
+/* Chips never compress below their label: the strip wraps to a second row
+   instead of ellipsizing node names ("Inp…", "Score L…" at 1024, where the
+   two-column hero squeezes the frame). */
+.hg-chip {
+  flex: 1 1 auto;
+  min-width: max-content;
+}
+.hg-chip b {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.58rem;
+  color: var(--ci, var(--text-secondary));
+  text-transform: lowercase;
+}
+.hg-chip > span {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.74rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Settled cost on the node that actually bills — anchored bottom-right so
+   the strip's money beat sits where the head's total points. */
+.hg-chip-cost {
+  position: absolute;
+  right: 8px;
+  bottom: 7px;
+  font: 600 0.55rem/1 var(--font-mono);
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-success);
+}
+.hg-chip:has(.hg-chip-cost) {
+  padding-right: 44px;
+}
+.hg-chip-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 50%, transparent);
+  animation: hg-pulse 1.8s ease-out infinite;
+}
+.hg-wire {
+  flex: 0 0 14px;
+  align-self: center;
+  height: 2px;
+  background-image: repeating-linear-gradient(90deg, var(--primary) 0 5px, transparent 5px 10px);
+  opacity: 0.55;
+  animation: hg-wire-flow 1.1s linear infinite;
+}
+
+/* ---- Collapsible FAQ ----------------------------------------------------- */
+.lp-faq-title {
+  margin: 0.45rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 400;
+}
+.lp-faq-list {
+  max-width: 58rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--hairline-visible);
+}
+.lp-faq-item {
+  border-bottom: 1px solid var(--hairline-visible);
+}
+.lp-faq-item summary {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: 0.85rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-weight: 650;
+  list-style: none;
+}
+.lp-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.lp-faq-item summary::after {
+  content: "+";
+  color: var(--primary);
+  font: 500 1.25rem/1 var(--font-mono);
+}
+.lp-faq-item[open] summary::after {
+  content: "−";
+}
+.lp-faq-item p {
+  max-width: 72ch;
+  margin: -0.15rem 0 var(--space-4);
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+@keyframes hg-wire-flow {
+  to {
+    background-position: -10px 0;
+  }
+}
+@keyframes hg-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 50%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hg-wire,
+  .hg-chip-dot,
+  .hg-live i,
+  .lp-live i,
+  .lp-org-tree--hero .lp-seat {
+    animation: none;
+  }
+  .lp-seat--choice,
+  .hg-strips > .hg-strip {
+    transition: none;
+  }
+  /* The earn tick starts invisible; with its animation off it must stay so. */
+  .lp-price-chip::after {
+    animation: none;
+    opacity: 0;
+  }
+  /* Call pulse off wholesale: the dots and glows rest at opacity 0, and the
+     bar/elbow lines fall back to their static colors. !important because the
+     per-route rules (:first-child / :last-child variants) out-specify this
+     grouped override — without it the drop dots and glows kept animating
+     under reduced motion. */
+  .lp-org-tree--hero > .lp-org-stem::after,
+  .lp-org-tree--hero .lp-org-deptrow--linked::before,
+  .lp-org-tree--hero .lp-org-deptrow--linked .lp-org-dept::after,
+  .lp-org-tree--hero .lp-org-reports > li::before,
+  .lp-org-tree--hero .lp-seat::after {
+    animation: none !important;
+  }
+}
+
+/* Mobile: every org chart simplifies (smaller seats, no price chips, LIVE
+   collapses to its status dot) and the flow strip wraps to a two-by-two
+   grid — no horizontal overflow at 375px. */
+@media (max-width: 560px) {
+  .lp-org-tree--hero .lp-seat {
+    --seat-mark: 24px;
+    --seat-name: 0.72rem;
+    --seat-meta: 0.56rem;
+    gap: 0.4rem;
+    padding: 0.45rem 0.5rem;
+  }
+  .lp-org-tree--hero .lp-seat .lp-price-chip,
+  .lp-org-tree--hero .lp-seat .lp-sched-chip {
+    display: none;
+  }
+  /* The CEO seat keeps its ring but sheds the desktop step-up so the top of
+     the tree doesn't dwarf a 375px viewport. */
+  .lp-org-tree--hero .lp-org-row--single .lp-seat {
+    --seat-mark: 28px;
+    --seat-name: 0.78rem;
+    --seat-meta: 0.58rem;
+    min-width: 148px;
+    padding: 0.5rem 0.6rem;
+  }
+  /* Tighter gutters and elbow indents so both department columns fit a 375px
+     viewport without horizontal overflow. */
+  .lp-org-tree--hero .lp-org-deptrow {
+    --dept-gutter: 0.55rem;
+  }
+  .lp-org-reports {
+    padding-left: 12px;
+  }
+  .lp-org-reports > li::before,
+  .lp-org-reports > li:not(:last-child)::after {
+    left: -7px;
+  }
+  .lp-org-reports > li::before {
+    width: 7px;
+  }
+  /* Narrow seats keep the pulsing dot and emerald border; the LIVE word
+     returns at wider viewports. */
+  .lp-live {
+    gap: 0;
+    font-size: 0;
+  }
+  .lp-seat--live .lp-seat-body {
+    padding-right: 0.8rem;
+  }
+  /* The department accent already tints the mark tile — drop the meta dot on
+     narrow seats so the agent name keeps its pixels. */
+  .lp-org-tree--hero .lp-seat-body .meta i {
+    display: none;
+  }
+  .hg-divider em {
+    display: none;
+  }
+  .hg-strip-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .hg-strip-flow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .hg-chip {
+    min-width: 0;
+  }
+  .hg-chip > span {
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+  }
+  .hg-wire {
+    display: none;
+  }
+}
+
+/* ---- Journey altitudes (org chart / canvas / code) ---------------------- */
+.lp-alt-grid {
+  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+@media (max-width: 960px) {
+  .lp-alt-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.lp-alt-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-panel);
+  padding: 1.1rem 1.15rem 1.15rem;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+.lp-alt-head {
+  margin-bottom: 0.9rem;
+}
+.lp-alt-persona {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c, var(--primary));
+  border: 1px solid color-mix(in oklab, var(--c, var(--primary)) 45%, transparent);
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+}
+.lp-alt-head h3 {
+  margin: 0.55rem 0 0;
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+.lp-alt-body {
+  flex: 1;
+  min-width: 0;
+}
+.lp-alt-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+}
+.lp-alt-seat {
+  width: 100%;
+}
+.lp-alt-seat.is-featured {
+  border-color: var(--c, var(--registry-cyan));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--c, var(--registry-cyan)) 55%, transparent);
+}
+.lp-alt-more {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-muted);
+}
+.lp-alt-caption {
+  margin: 0.9rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.lp-alt-link {
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+.lp-alt-link::after {
+  content: " \2192";
+}
+.lp-alt-link:hover,
+.lp-alt-link:focus-visible {
+  text-decoration: underline;
+}
+
+/* Canvas altitude */
+.lp-canvas-flowname {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin-bottom: 0.7rem;
+}
+.lp-canvas-flowname b {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+.lp-canvas-flowname span {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-success);
+}
+.lp-canvas-chain {
+  display: flex;
+  flex-direction: column;
+}
+.lp-canvas-hop {
+  display: flex;
+  flex-direction: column;
+}
+.lp-canvas-wire {
+  width: 2px;
+  height: 14px;
+  margin-left: 1.1rem;
+  background: var(--hairline-cyan);
+}
+.lp-canvas-node {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  background: color-mix(in srgb, var(--c, var(--primary)) 5%, var(--ink-control));
+  border: 1px solid color-mix(in srgb, var(--c, var(--primary)) 38%, var(--hairline));
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  box-shadow: var(--shadow-sm);
+}
+.lp-canvas-node .type {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.lp-canvas-node .id {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--text-muted);
+}
+.lp-canvas-attach {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.3rem 0 0.1rem 2.2rem;
+}
+.lp-canvas-attach-wire {
+  width: 16px;
+  border-top: 1px dashed var(--hairline-cyan);
+}
+.lp-canvas-attach-pill {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  border: 1px dashed var(--hairline);
+  border-radius: 999px;
+  padding: 0.14rem var(--space-2);
+}
+
+/* Code altitude */
+.lp-alt-code {
+  margin: 0;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 0.95rem;
+  overflow-x: auto;
+}
+.lp-alt-code code {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  white-space: pre;
+}
+
+/* Journey rail */
+.lp-journey {
+  list-style: none;
+  margin: 2.25rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+@media (max-width: 960px) {
+  .lp-journey {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .lp-journey {
+    grid-template-columns: 1fr;
+  }
+}
+.lp-journey-stop {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  border-top: 1px solid var(--hairline);
+  padding-top: 0.85rem;
+}
+.lp-journey-no {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--primary);
+  border: 1px solid var(--hairline-cyan);
+  border-radius: 999px;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lp-journey-body a {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.lp-journey-body a:hover,
+.lp-journey-body a:focus-visible {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.lp-journey-body p {
+  margin: var(--space-1) 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* ---- Action ladder + fact rail ------------------------------------------ */
+/* Rank 3 — quiet. A row of co-equal ghost buttons expresses one secondary and
+   the rest quiet: same geometry, same touch target, borderless at rest so the
+   row reads secondary-first instead of three equal shouts. Hover and focus
+   restore the ghost affordance, so quiet never reads inert. Declared after
+   .lp-btn--ghost so the modifier wins the tie when both classes are present. */
+.lp-btn--rank3 {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  box-shadow: none;
+}
+.lp-btn--rank3:hover {
+  background: var(--ink-control);
+  border-color: var(--hairline-visible);
+  color: var(--text-primary);
+}
+
+/* Fact rail — fixed slots so fact chips align column-for-column across
+   stacked rows. On phones the wrapper dissolves (display: contents) and the
+   chips flow inline exactly as before; from 720px up the rail is a fixed
+   three-column grid — state | how-it-runs | price — and an absent fact
+   leaves an empty cell, no placeholder glyph, so every schedule and every
+   price share a left edge down the list. Prices sit flush right, ledger
+   style, since the pills already use tabular numerals. */
+.lp-factrail {
+  display: contents;
+}
+@media (min-width: 720px) {
+  .lp-factrail {
+    display: grid;
+    grid-template-columns:
+      var(--factrail-col-state, max-content)
+      var(--factrail-col-how, max-content)
+      var(--factrail-col-price, max-content);
+    gap: var(--space-2);
+    align-items: center;
+    justify-items: start;
+    flex-shrink: 0;
+  }
+  .lp-fact--state {
+    grid-column: 1;
+  }
+  .lp-fact--how {
+    grid-column: 2;
+  }
+  .lp-fact--price {
+    grid-column: 3;
+    justify-self: end;
+  }
+}

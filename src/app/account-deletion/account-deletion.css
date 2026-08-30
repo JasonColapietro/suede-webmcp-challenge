@@ -1,0 +1,53 @@
+/* /account-deletion — page-scoped layer over chrome.css + site.css. Tokens
+   only, so dark mode (:root[data-theme="dark"]) inherits automatically.
+
+   Presentation only. What gets deleted, what is retained, and where each
+   request goes are unchanged. */
+
+.ad-page section {
+  padding-block: 1.5rem;
+}
+.ad-page section:first-of-type {
+  padding-top: 0;
+}
+
+/* These were rendering at body size (16px) against /privacy's 41.6px, so the
+   two-step structure read as one undifferentiated block of prose. */
+.ad-page section h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h2);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0.3em 0 0.85rem;
+  max-width: 24ch;
+}
+.ad-page section > .lp-eyebrow {
+  display: block;
+}
+
+.ad-prose {
+  color: var(--text-muted);
+  max-width: 64ch;
+  line-height: 1.65;
+}
+.ad-prose + .ad-prose {
+  margin-top: 0.9rem;
+}
+
+/* Prose links were inheriting --text-muted with no underline. On a page whose
+   whole job is routing someone to the right control, an invisible link is a
+   dead end. */
+.ad-page section a:not(.lp-btn) {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  text-underline-offset: 3px;
+}
+.ad-page section a:not(.lp-btn):hover {
+  text-decoration-color: currentColor;
+}
+
+.ad-action {
+  margin-top: 1.25rem;
+}

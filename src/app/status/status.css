@@ -1,0 +1,154 @@
+/* /status — page-scoped layer over chrome.css + site.css. Tokens only, so
+   dark mode (:root[data-theme="dark"]) inherits automatically. Presentation
+   only: every number on the page is computed from real checks. */
+
+.st-card {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-control);
+  box-shadow: var(--shadow-sm);
+  padding: 1.1rem 1.25rem;
+  min-width: 0;
+}
+
+.st-banner {
+  padding: 1.25rem 1.35rem;
+}
+.st-banner-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+.st-banner-row strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.45rem;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.st-checked {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.st-deps {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.st-dep {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding-block: 0.35rem;
+  border-top: 1px solid var(--hairline);
+}
+.st-dep .label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.st-dep .state {
+  margin-left: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.st-dep .latency {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.st-eyebrow-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.st-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+.st-grid--narrow {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+.st-big {
+  font-family: var(--font-mono);
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-top: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+.st-measuring {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.35rem;
+  color: var(--text-primary);
+  margin-top: 0.35rem;
+  line-height: 1.2;
+}
+.st-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+.st-caption {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  max-width: 70ch;
+  line-height: 1.55;
+}
+
+.st-section {
+  margin-top: 2.25rem;
+}
+.st-facts {
+  margin-top: 1rem;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  max-width: 68ch;
+  line-height: 1.55;
+}
+.st-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}
+.st-note a,
+.st-machine a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  text-underline-offset: 3px;
+}
+.st-note a:hover,
+.st-machine a:hover {
+  text-decoration-color: currentColor;
+}
+.st-machine {
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  max-width: 68ch;
+  line-height: 1.55;
+}
+.st-machine code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}

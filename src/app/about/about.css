@@ -1,0 +1,232 @@
+/* /about — page-scoped layer over chrome.css + site.css. Tokens only, so
+   dark mode (:root[data-theme="dark"]) inherits automatically. */
+
+.ab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius);
+  background: var(--ink-control);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-block: clamp(1.25rem, 3vw, 2rem);
+}
+.ab-stat {
+  padding: 1rem 1.15rem 1.1rem;
+  border-left: 1px solid var(--hairline);
+  min-width: 0;
+}
+.ab-stat:first-child {
+  border-left: none;
+}
+.ab-stat b {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.ab-stat span {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+@media (max-width: 759px) {
+  .ab-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ab-stat:nth-child(3) {
+    border-left: none;
+  }
+  .ab-stat:nth-child(n + 3) {
+    border-top: 1px solid var(--hairline);
+  }
+}
+
+.ab-surfaces {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 0.8rem;
+}
+.ab-surface {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.05rem 1.1rem 1.15rem;
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+.ab-surface:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+.ab-surface .k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.ab-surface .n {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.ab-surface p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-surface {
+    transition: none;
+  }
+  .ab-surface:hover {
+    transform: none;
+  }
+}
+
+.ab-updated {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-top: 2rem;
+}
+
+/* ---- Hero: the one-line definition of a flow ----------------------------- */
+.ab-hero-def {
+  margin: 0.55rem 0 0;
+  max-width: 62ch;
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* ---- In-page jump links (the hero "On this page" rail) ------------------- */
+.ab-jump {
+  text-decoration: none;
+  color: inherit;
+}
+.ab-jump:hover {
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline));
+}
+.ab-jump:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+#what-we-build,
+#how-a-flow-works,
+#whos-behind-it,
+#surfaces {
+  scroll-margin-top: 5rem;
+}
+
+/* ---- Flow anatomy: what a node graph actually is ------------------------- */
+.ab-anatomy {
+  list-style: none;
+  margin: 1.15rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0.8rem;
+  align-items: stretch;
+}
+.ab-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 0.95rem 1.05rem 1.05rem;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+.ab-node .s {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.ab-node .n {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.ab-node p {
+  margin: 0.15rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+/* The connector only reads as a graph when the four nodes sit on one row. */
+@media (min-width: 900px) {
+  .ab-anatomy {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .ab-node + .ab-node::before {
+    content: "\2192";
+    position: absolute;
+    top: 1.05rem;
+    left: -0.4rem;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1;
+    color: color-mix(in srgb, var(--primary) 65%, transparent);
+  }
+}
+.ab-anatomy-note {
+  margin: 0.9rem 0 0;
+  max-width: 68ch;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+/* ---- Start in three steps ----------------------------------------------- */
+.ab-start-title {
+  margin: 2rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.ab-start {
+  margin: 0.85rem 0 0;
+  padding-left: 1.35rem;
+  display: grid;
+  gap: 0.55rem;
+  max-width: 68ch;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.ab-start li::marker {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  color: var(--primary);
+}
+.ab-start b {
+  color: var(--text-primary);
+  font-weight: 600;
+}

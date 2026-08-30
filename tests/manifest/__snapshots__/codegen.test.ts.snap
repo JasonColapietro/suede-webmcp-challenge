@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`codegen snapshot > emits expected source for the minimal manifest (snapshot) 1`] = `
+"import { defineAgent, schedule, paidCall, suede } from "@suedeai/agents";
+
+export default defineAgent({
+  name: "price-watcher",
+  description: "Watches a product page.",
+  triggers: [
+    schedule("0 13 * * *"),
+    paidCall(0.25),
+  ],
+  async run({ input, memory, trigger }) {
+    // step: s1 (input)
+    await suede.run("input", {});
+    // step: s2 (llm)
+    await suede.run("llm", {
+  "prompt": "Extract the price."
+});
+    // step: s3 (output)
+    await suede.run("output", {});
+  },
+});
+"
+`;

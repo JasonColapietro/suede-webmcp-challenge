@@ -1,0 +1,315 @@
+/* Canvas builder polish — presentation layer for the node-graph surface.
+   Owned by src/components/canvas/**. Every color resolves through
+   src/styles/tokens.css (directly or via color-mix over tokens) so the
+   opt-in dark theme ([data-theme="dark"]) works without extra rules here.
+   Loaded after @xyflow/react/dist/style.css and after site.css's canvas
+   blocks; selectors are scoped or doubled where they must win ties. */
+
+/* ---- Node cards ---------------------------------------------------------- */
+/* Structure (borders, padding, category accent) stays inline in SuedeNode.tsx
+   per the node-definition-ui source contract; elevation, motion, and state
+   glows live here so hover/selected/running read as real states instead of
+   JS-toggled inline styles. */
+.suede-node-card {
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+.suede-node-card:hover {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--node-accent, var(--primary)) 30%, transparent),
+    var(--shadow-card);
+  transform: translateY(-1px);
+}
+/* Run states ring the whole card in the status color so a test run visibly
+   walks the graph node by node. */
+.suede-node-card[data-run-status="running"] {
+  animation: suede-node-running 1.5s ease-in-out infinite;
+}
+.suede-node-card[data-run-status="done"] {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--verified-emerald) 28%, transparent),
+    var(--shadow-card);
+}
+.suede-node-card[data-run-status="error"] {
+  box-shadow: 0 0 0 3px var(--glow-red), var(--shadow-card);
+}
+/* Selection is the loudest state: solid indigo ring, always. */
+.suede-node-card[data-selected="true"],
+.suede-node-card[data-selected="true"]:hover {
+  box-shadow: 0 0 0 3px var(--glow-cyan), var(--shadow-card);
+}
+@keyframes suede-node-running {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--warning-amber) 18%, transparent),
+      var(--shadow-card);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--warning-amber) 36%, transparent),
+      var(--shadow-card);
+  }
+}
+
+/* Status chip: spin the running glyph so "running" moves even at a glance. */
+.suede-node-status[data-status="running"] > span[aria-hidden="true"] {
+  display: inline-block;
+  animation: suede-status-spin 1.1s linear infinite;
+}
+@keyframes suede-status-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Ports --------------------------------------------------------------- */
+/* The 24px hit target and category-colored ring dot stay inline; hover and
+   keyboard focus get a soft halo so "this is where wires attach" is felt
+   before the first drag. */
+.suede-node-card .react-flow__handle {
+  cursor: crosshair;
+  border-radius: 50%;
+  transition: box-shadow 120ms ease;
+}
+.suede-node-card .react-flow__handle:hover {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--node-accent, var(--primary)) 22%, transparent);
+}
+.suede-node-card .react-flow__handle:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+/* While a wire is being dragged, light the origin and any hovered target. */
+.suede-node-card .react-flow__handle.connectingfrom,
+.suede-node-card .react-flow__handle.connectingto {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary) 26%, transparent);
+}
+
+/* ---- Wires --------------------------------------------------------------- */
+/* In-flight connection line matches the org-chart vocabulary: indigo, dashed
+   until it lands. */
+.react-flow .react-flow__connection-path {
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+/* Untyped-edge label ("Unknown schema") — xyflow's defaults are theme-blind. */
+.react-flow .react-flow__edge-text {
+  fill: var(--text-warning);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+.react-flow .react-flow__edge-textbg {
+  fill: var(--ink-panel);
+}
+@media (prefers-reduced-motion: reduce) {
+  .react-flow .react-flow__edge.animated path {
+    animation: none;
+  }
+}
+
+/* ---- Canvas chrome (controls, minimap, selection) ------------------------ */
+.react-flow .react-flow__controls {
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.react-flow .react-flow__controls-button {
+  background: var(--ink-panel);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--text-secondary);
+  transition: background 120ms ease, color 120ms ease;
+}
+.react-flow .react-flow__controls-button svg {
+  fill: currentColor;
+}
+.react-flow .react-flow__controls-button:hover {
+  background: color-mix(in srgb, var(--primary) 9%, var(--ink-panel));
+  color: var(--primary);
+}
+.react-flow .react-flow__minimap {
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.react-flow .react-flow__selection,
+.react-flow .react-flow__nodesselection-rect {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  border: 1px dashed var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Connection feedback toast ------------------------------------------- */
+.canvas-connection-toast {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(520px, 86%);
+  padding: 8px 14px;
+  color: var(--text-warning);
+  background: var(--ink-panel);
+  border: 1px solid var(--warning-amber);
+  border-left-width: 3px;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  box-shadow: var(--shadow-lg);
+  animation: canvas-toast-in 180ms ease;
+}
+.canvas-connection-toast > span[aria-hidden="true"] {
+  flex: none;
+  line-height: 1;
+}
+@keyframes canvas-toast-in {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---- Empty canvas -------------------------------------------------------- */
+.canvas-empty-state .canvas-empty-state__hint {
+  display: block;
+  margin-top: 0.6rem;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+.canvas-empty-state kbd {
+  padding: 1px 5px;
+  color: var(--text-secondary);
+  background: var(--canvas-bg);
+  border: 1px solid var(--hairline-visible);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+}
+
+/* ---- Node palette -------------------------------------------------------- */
+/* Doubled class beats the site.css-era same-specificity rules regardless of
+   stylesheet load order. */
+.node-palette-chip.node-palette-chip {
+  position: relative;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--chip-accent, var(--hairline-visible));
+  border-radius: var(--radius);
+  transition: border-color 140ms ease, background 140ms ease,
+    box-shadow 140ms ease, transform 140ms ease;
+}
+.node-palette-chip.node-palette-chip:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--chip-accent, var(--primary)) 6%, var(--ink-control));
+  border-color: color-mix(in srgb, var(--chip-accent, var(--primary)) 55%, var(--hairline));
+  border-left-color: var(--chip-accent, var(--primary));
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+.node-palette-chip.node-palette-chip:active:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+}
+/* Unavailable is a stated surface, not an opacity wash — same action-ladder
+   vocabulary as .lp-btn:disabled in chrome.css. The category accent stays at
+   reduced strength (identity, not availability) and the label ink is left
+   alone so the chip's name never dims below legibility. */
+.node-palette-chip.node-palette-chip:disabled {
+  cursor: not-allowed;
+  background: var(--unavailable-surface, var(--ink-deep));
+  border-color: var(--unavailable-border, var(--hairline));
+  border-left-color: color-mix(
+    in srgb,
+    var(--chip-accent, var(--hairline-visible)) 35%,
+    var(--unavailable-border, var(--hairline))
+  );
+}
+.node-palette-group__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  transition: color 120ms ease;
+}
+.node-palette-group__toggle:hover {
+  color: var(--text-primary);
+}
+.node-palette-group__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+/* Category color key: same hue the group's node cards wear on the canvas. */
+.node-palette-group__key {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.node-palette-filter {
+  transition: border-color 120ms ease;
+}
+.node-palette-filter:hover {
+  border-color: var(--hairline-visible);
+}
+
+/* ---- Run dock ------------------------------------------------------------ */
+.rundock-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.rundock-status__dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.rundock-status[data-status="running"] .rundock-status__dot {
+  animation: rundock-dot-pulse 1s ease-in-out infinite;
+}
+@keyframes rundock-dot-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+/* Live rows tint so the eye tracks execution down the ledger. */
+tr.rundock-ledger-row[data-status="running"] > td {
+  background: color-mix(in srgb, var(--warning-amber) 7%, transparent);
+}
+tr.rundock-ledger-row[data-status="error"] > td {
+  background: color-mix(in srgb, var(--rights-red) 6%, transparent);
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .suede-node-card,
+  .suede-node-card:hover,
+  .node-palette-chip.node-palette-chip,
+  .node-palette-chip.node-palette-chip:hover:not(:disabled) {
+    transition: none;
+    transform: none;
+  }
+  .suede-node-card[data-run-status="running"],
+  .suede-node-status[data-status="running"] > span[aria-hidden="true"],
+  .rundock-status[data-status="running"] .rundock-status__dot,
+  .canvas-connection-toast {
+    animation: none;
+  }
+  /* Hold the steady (non-pulsing) running ring so state is still visible. */
+  .suede-node-card[data-run-status="running"] {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--warning-amber) 28%, transparent),
+      var(--shadow-card);
+  }
+}

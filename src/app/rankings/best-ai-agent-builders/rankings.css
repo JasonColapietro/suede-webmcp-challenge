@@ -1,0 +1,401 @@
+/* Rankings page (/rankings/best-ai-agent-builders) — editorial ranked list.
+   Follows the nc-*/cmp-* conventions: hairline grids over ink panels,
+   Instrument Serif display headlines, mono eyebrows, token colors only
+   (dark mode comes free), reduced motion respected. */
+
+.rk-page {
+  --rk-copy: 68ch;
+}
+
+/* ---------- Hero ---------- */
+
+.rk-hero {
+  padding-top: clamp(3rem, 7vw, 6.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  border-bottom: 1px solid var(--hairline-visible);
+}
+
+.rk-hero__title,
+.rk-section__intro h2,
+.rk-cta h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.rk-hero__title {
+  max-width: 22ch;
+  margin: 0.7rem 0 0;
+  font-size: clamp(2.4rem, 1.6rem + 3.2vw, 4rem);
+  line-height: 1.02;
+}
+
+.rk-hero__lede {
+  max-width: 62ch;
+  margin: 1.4rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-lede);
+  line-height: 1.58;
+}
+
+/* Methodology: a labeled ledger strip, not a fine-print whisper. */
+
+.rk-method {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 2rem;
+  border: 1px solid var(--hairline-visible);
+  background: var(--ink-panel);
+}
+
+.rk-method > div {
+  padding: 1rem 1.2rem;
+  min-width: 0;
+}
+
+.rk-method > div + div {
+  border-left: 1px solid var(--hairline-visible);
+}
+
+.rk-method strong {
+  display: block;
+  color: var(--text-primary);
+  font: 700 var(--text-label)/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rk-method span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+/* ---------- Sections ---------- */
+
+.rk-section {
+  padding-top: clamp(3rem, 6vw, 5.5rem);
+}
+
+.rk-section__intro {
+  max-width: var(--rk-copy);
+}
+
+.rk-section__intro h2 {
+  margin: 0.55rem 0 0;
+  font-size: var(--text-h2);
+  line-height: 1.08;
+}
+
+.rk-section__intro p {
+  margin: 0.9rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.65;
+}
+
+/* ---------- Ranked list ---------- */
+
+.rk-list {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rk-card {
+  position: relative;
+  padding: clamp(1.4rem, 3vw, 1.9rem);
+  border: 1px solid var(--hairline-visible);
+  background: var(--ink-panel);
+  box-shadow: var(--shadow-sm);
+}
+
+.rk-card--top {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--hairline-visible));
+  box-shadow: var(--shadow-card);
+}
+
+.rk-card--top::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--primary);
+}
+
+.rk-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.rk-card__id {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.rk-rank {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 50%;
+  background: var(--ink-control);
+  color: var(--text-muted);
+  font: 700 var(--text-xs)/1 var(--font-mono);
+}
+
+.rk-card--top .rk-rank {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.rk-card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.rk-card--top .rk-card__name {
+  color: var(--primary);
+}
+
+.rk-card__tagline {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font: 600 var(--text-label)/1.5 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rk-chip {
+  padding: 3px 10px;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 999px;
+  background: var(--canvas-bg);
+  color: var(--text-muted);
+  font: 600 var(--text-label)/1.7 var(--font-mono);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.rk-chip--earns {
+  border-color: color-mix(in srgb, var(--verified-emerald) 28%, transparent);
+  background: color-mix(in srgb, var(--verified-emerald) 8%, transparent);
+  color: var(--text-success);
+}
+
+.rk-card__desc {
+  margin: 0 0 1rem;
+  max-width: 82ch;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.rk-card__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.rk-fact {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius-sm);
+  background: var(--canvas-bg);
+  min-width: 0;
+}
+
+.rk-fact--strength {
+  border-color: color-mix(in srgb, var(--verified-emerald) 20%, transparent);
+  background: color-mix(in srgb, var(--verified-emerald) 5%, transparent);
+}
+
+.rk-fact__label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--text-muted);
+  font: 700 var(--text-label)/1.3 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rk-fact--strength .rk-fact__label {
+  color: var(--text-success);
+}
+
+.rk-fact p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+.rk-fact--strength p {
+  color: var(--text-primary);
+}
+
+.rk-card__cta {
+  margin: 1.25rem 0 0;
+}
+
+.rk-footnote {
+  max-width: 78ch;
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+}
+
+/* ---------- Proof links ---------- */
+
+.rk-proof__links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 2rem;
+  border-top: 1px solid var(--hairline-visible);
+  border-left: 1px solid var(--hairline-visible);
+}
+
+.rk-proof__links a {
+  display: grid;
+  gap: 0.65rem;
+  min-height: 7.2rem;
+  align-content: space-between;
+  padding: 1.2rem;
+  border-right: 1px solid var(--hairline-visible);
+  border-bottom: 1px solid var(--hairline-visible);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.rk-proof__links a:hover {
+  background: var(--canvas-bg);
+}
+
+.rk-proof__links span {
+  color: var(--primary);
+  font: 700 var(--text-label)/1.3 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rk-proof__links strong {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.rk-proof__links a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
+}
+
+/* ---------- Closing CTA ---------- */
+
+.rk-cta {
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  margin-bottom: clamp(4rem, 8vw, 7rem);
+  padding: clamp(2rem, 5vw, 3.25rem);
+  border: 1px solid var(--hairline-visible);
+  background: var(--canvas-bg);
+  text-align: center;
+}
+
+.rk-cta h2 {
+  margin: 0.75rem 0 0;
+  font-size: var(--text-h2);
+}
+
+.rk-cta p {
+  max-width: 48ch;
+  margin: 1rem auto 1.75rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.rk-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .rk-method {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rk-method > div + div {
+    border-left: 0;
+  }
+
+  .rk-method > div:nth-child(even) {
+    border-left: 1px solid var(--hairline-visible);
+  }
+
+  .rk-method > div:nth-child(n + 3) {
+    border-top: 1px solid var(--hairline-visible);
+  }
+
+  .rk-proof__links {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .rk-method {
+    grid-template-columns: 1fr;
+  }
+
+  .rk-method > div:nth-child(even) {
+    border-left: 0;
+  }
+
+  .rk-method > div + div {
+    border-top: 1px solid var(--hairline-visible);
+  }
+
+  .rk-card__facts {
+    grid-template-columns: 1fr;
+  }
+
+  .rk-cta__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .rk-cta__actions .lp-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-page *,
+  .rk-page *::before,
+  .rk-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

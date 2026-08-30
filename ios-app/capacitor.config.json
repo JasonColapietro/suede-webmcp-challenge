@@ -1,0 +1,26 @@
+{
+  "appId": "ai.suede.agents",
+  "appName": "Suede Agents",
+  "webDir": "./www",
+  "server": {
+    "iosScheme": "suedeagents",
+    "cleartext": false,
+    "url": "https://agents.suedeai.ai",
+    "allowNavigation": [
+      "agents.suedeai.ai"
+    ]
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "limitsNavigationsToAppBoundDomains": true,
+    "backgroundColor": "#ffffffff"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 1200,
+      "backgroundColor": "#ffffff",
+      "showSpinner": false
+    }
+  }
+}

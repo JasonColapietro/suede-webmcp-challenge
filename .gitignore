@@ -1,0 +1,24 @@
+node_modules/
+.next/
+.env
+.env.local
+*.tsbuildinfo
+.DS_Store
+dist/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+.vercel
+.superpowers/
+.artifacts/
+playwright-report/
+test-results/
+
+# Capacitor Android wrap — release signing secrets, never commit.
+ios-app/android/keystore.properties
+ios-app/android/*.jks
+ios-app/android/*.keystore
+ios-app/android/local.properties
+.env*
+!.env.example

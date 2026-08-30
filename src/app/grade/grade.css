@@ -1,0 +1,232 @@
+/* /grade — the Agentix grader. Composes with chrome.css + site.css and the
+   token system in src/styles/tokens.css; every color routes through tokens so
+   both themes come for free. */
+
+/* ---- Capabilities strip in the page head ----------------------------------- */
+/* Answers "what can I do here" before the input moment. Same mono dialect as
+   the pillar strip; the bold kicker names the page's job. */
+.grade-caps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.85rem;
+  margin: 0.85rem 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.grade-caps b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.grade-caps span + span::before {
+  content: "·";
+  margin-right: 0.85rem;
+  color: var(--hairline-visible);
+}
+
+/* ---- Input moment --------------------------------------------------------- */
+.grade-form {
+  margin-top: 0.5rem;
+}
+.grade-input {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+/* The five pillars, named before anything is graded, so the empty state says
+   what happens next instead of showing a void. */
+.grade-pillar-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.grade-pillar-strip li {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.grade-pillar-strip li:not(:first-child)::before {
+  content: "·";
+  margin-right: 0.9rem;
+  color: var(--hairline-visible);
+}
+.grade-pillar-strip-lead {
+  color: var(--text-secondary);
+}
+
+/* ---- In-flight and error states ------------------------------------------ */
+.grade-status {
+  margin-top: 1.1rem;
+}
+.grade-alert {
+  margin-top: 1.1rem;
+}
+
+/* ---- Result --------------------------------------------------------------- */
+.grade-result {
+  display: grid;
+  gap: 1.4rem;
+  margin-top: 2rem;
+}
+/* Nested-grid landmine: without this, the pillar grid's min-content width
+   (auto-fill against an indefinite track) overflows the phone viewport. */
+.grade-result > * {
+  min-width: 0;
+}
+.grade-result-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.grade-result-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h2);
+  letter-spacing: -0.015em;
+}
+.grade-momentum {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.grade-momentum--up {
+  color: var(--text-success);
+}
+.grade-momentum--flat {
+  color: var(--text-muted);
+}
+.grade-momentum--down {
+  color: var(--text-warning);
+}
+
+/* Pillar cards: tier color rides on `color`, so the meter fill and the score
+   inherit it through currentColor without repeating the palette. */
+.grade-pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: var(--space-3);
+}
+.grade-tier--strong {
+  color: var(--text-success);
+}
+.grade-tier--mid {
+  color: var(--primary);
+}
+.grade-tier--low {
+  color: var(--text-warning);
+}
+.grade-score {
+  margin: 0.3rem 0 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.grade-score-max {
+  margin-left: 2px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.grade-meter {
+  height: 4px;
+  margin-bottom: 0.55rem;
+  background: var(--hairline);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.grade-meter-fill {
+  display: block;
+  height: 100%;
+  background: currentColor;
+  border-radius: inherit;
+}
+.grade-rationale {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* ---- Anti-gaming flags ---------------------------------------------------- */
+.grade-flags {
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.grade-flags-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.grade-flags ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.3rem;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+/* ---- Verdict CTA ---------------------------------------------------------- */
+.grade-cta {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+  border-radius: var(--radius);
+}
+.grade-cta > * {
+  min-width: 0;
+}
+.grade-cta-head {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.grade-cta-sub {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.grade-cta-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (max-width: 620px) {
+  .grade-cta-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .grade-cta-actions .lp-btn {
+    width: 100%;
+    justify-content: center;
+    /* The CTA label is long; nowrap would set the panel's min-content width
+       wider than a phone viewport. */
+    white-space: normal;
+    height: auto;
+    min-height: var(--control-h);
+    padding-block: 0.55rem;
+    text-align: center;
+  }
+}

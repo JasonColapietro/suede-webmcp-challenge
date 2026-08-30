@@ -1,0 +1,147 @@
+/* Suede Agent Studio — operator chrome (the workspace register).
+   Tool surfaces (Workspace, per-agent hub, Runs, Companies, Connections)
+   share this persistent tab strip and a compact tool header; the editorial
+   serif hero stays on marketing surfaces. Same tokens, denser register —
+   composes with tokens.css + chrome.css exactly like site.css does. */
+
+/* ---- Workspace tab strip ------------------------------------------------- */
+.ws-tabs {
+  border-bottom: 1px solid var(--hairline-visible);
+  background: var(--canvas-bg);
+}
+.ws-tabs-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ws-tabs-inner::-webkit-scrollbar {
+  display: none;
+}
+.ws-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(var(--control-h) + 0.35rem);
+  padding: 0.15rem 0.85rem 0;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.ws-tab:hover {
+  color: var(--primary-hover);
+}
+.ws-tab[aria-current="page"] {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.ws-tab--new {
+  margin-left: auto;
+  color: var(--primary);
+}
+.ws-tab--new:hover {
+  color: var(--primary-hover);
+}
+
+/* ---- Compact tool header -------------------------------------------------- */
+/* The operator already clicked their way here — the header confirms location
+   and hands over the controls instead of re-selling the surface. */
+.ws-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  margin: clamp(1.1rem, 2.5vw, 1.6rem) 0 clamp(0.9rem, 2vw, 1.3rem);
+}
+.ws-head h1 {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: var(--text-h3);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+}
+.ws-head-sub {
+  flex-basis: 100%;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  margin: 0;
+  max-width: 72ch;
+}
+.ws-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+.ws-head-stats {
+  display: inline-flex;
+  gap: 0.9rem;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+.ws-head-stats b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ---- Per-agent hub -------------------------------------------------------- */
+.ws-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: clamp(1rem, 2vw, 1.4rem);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ws-crumbs a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.ws-crumbs a:hover {
+  color: var(--primary-hover);
+}
+.ws-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 1px;
+  background: var(--hairline-visible);
+  border: 1px solid var(--hairline-visible);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: clamp(1.1rem, 2.5vw, 1.6rem);
+}
+.ws-fact {
+  background: var(--canvas-bg);
+  padding: 0.75rem 0.9rem;
+}
+.ws-fact dt {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 0.3rem;
+}
+.ws-fact dd {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+.ws-fact dd .sub {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: 400;
+}

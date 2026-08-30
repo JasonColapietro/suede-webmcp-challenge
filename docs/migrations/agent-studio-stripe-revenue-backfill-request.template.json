@@ -1,0 +1,36 @@
+{
+  "schema_version": "1",
+  "project_id": "suede-agent-studio",
+  "expected_event_count": "2",
+  "expected_total_amount_cents": "1000",
+  "events": [
+    {
+      "slot": 1,
+      "provider_event_id": "<VERIFIED_STRIPE_EVENT_ID_1>",
+      "owner_id": "<MATCHED_PRIVATE_OWNER_ID_1>",
+      "provider_checkout_session_id": "<VERIFIED_CHECKOUT_SESSION_ID_1>",
+      "provider_payment_intent_id": "<VERIFIED_PAYMENT_INTENT_ID_1>",
+      "amount_total_cents": 500,
+      "currency": "USD",
+      "terminal_status": "paid",
+      "refund_state": "none",
+      "provider_product_id": null,
+      "provider_price_id": null,
+      "occurred_at": "<VERIFIED_PROVIDER_EVENT_TIME_UTC_1>"
+    },
+    {
+      "slot": 2,
+      "provider_event_id": "<VERIFIED_STRIPE_EVENT_ID_2>",
+      "owner_id": "<MATCHED_PRIVATE_OWNER_ID_2>",
+      "provider_checkout_session_id": "<VERIFIED_CHECKOUT_SESSION_ID_2>",
+      "provider_payment_intent_id": "<VERIFIED_PAYMENT_INTENT_ID_2>",
+      "amount_total_cents": 500,
+      "currency": "USD",
+      "terminal_status": "paid",
+      "refund_state": "none",
+      "provider_product_id": null,
+      "provider_price_id": null,
+      "occurred_at": "<VERIFIED_PROVIDER_EVENT_TIME_UTC_2>"
+    }
+  ]
+}

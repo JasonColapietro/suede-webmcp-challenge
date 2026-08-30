@@ -1,0 +1,72 @@
+{
+  "sourceManifest": "Agent Studio Creative Production Export - 2026-07-28/.export-manifest.json",
+  "sourcePolicy": "preserved-originals-only",
+  "assets": [
+    {
+      "sourceFilename": "Company as Software hero.jpg",
+      "publicPath": "/creative/editorial-proof/company-as-software.jpg",
+      "sha256": "5341bfd2c73648d2ff686a2ee6623cd8d93144300961d715ef8ce071e8fd6478",
+      "width": 1200,
+      "height": 630,
+      "bytes": 66837,
+      "mimeType": "image/jpeg",
+      "exportedAt": "2026-07-28T09:06:17Z",
+      "role": "Company and org-chart proof"
+    },
+    {
+      "sourceFilename": "Seat to flow to service.jpg",
+      "publicPath": "/creative/editorial-proof/seat-flow-service.jpg",
+      "sha256": "d61c6d5696ee06d90b33b75b265cc79ef65421a206e1aa47f4e2bef5c04062d6",
+      "width": 1200,
+      "height": 630,
+      "bytes": 79380,
+      "mimeType": "image/jpeg",
+      "exportedAt": "2026-07-28T09:06:17Z",
+      "role": "Agent, template, x402, and default lifecycle proof"
+    },
+    {
+      "sourceFilename": "Website to grounded service.jpg",
+      "publicPath": "/creative/editorial-proof/website-grounded-service.jpg",
+      "sha256": "8ae2fdc4d137e71609c3bef0d7da9b7fa4aa0fb901748b2dafa4567e5bd7a9f3",
+      "width": 1200,
+      "height": 630,
+      "bytes": 71608,
+      "mimeType": "image/jpeg",
+      "exportedAt": "2026-07-28T09:06:17Z",
+      "role": "Website import and grounded-service proof"
+    },
+    {
+      "sourceFilename": "Verified product inventory.jpg",
+      "publicPath": "/creative/editorial-proof/verified-product-inventory.jpg",
+      "sha256": "8c9a7d26aeb8233f319374b1cd0e8901a447f2fc61e79d8dbc9c56dc0cbb4ccf",
+      "width": 1200,
+      "height": 630,
+      "bytes": 51607,
+      "mimeType": "image/jpeg",
+      "exportedAt": "2026-07-28T09:06:17Z",
+      "role": "Dated inventory snapshot for directory, pricing, rankings, nodes, and status"
+    },
+    {
+      "sourceFilename": "Draft to Live control.jpg",
+      "publicPath": "/creative/editorial-proof/draft-live-control.jpg",
+      "sha256": "9b05db847e6704bd77cbf7d4615d250e27e6a8b589927e8ccb1d14178c8518d1",
+      "width": 1200,
+      "height": 630,
+      "bytes": 73984,
+      "mimeType": "image/jpeg",
+      "exportedAt": "2026-07-28T09:06:17Z",
+      "role": "Launch, reliability, security, and promotion-control proof"
+    },
+    {
+      "sourceFilename": "Staff the company. Sell the work.jpg",
+      "publicPath": "/creative/editorial-proof/staff-company-sell-work.jpg",
+      "sha256": "1d4f78f566204415eea1ac9faa9414eece0c7eb67f4cffd954b8c0c954d60272",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 72700,
+      "mimeType": "image/jpeg",
+      "exportedAt": "2026-07-28T09:06:17Z",
+      "role": "Founder, about, contact, articles, and company-story proof"
+    }
+  ]
+}

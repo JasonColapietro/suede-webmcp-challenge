@@ -1,0 +1,1 @@
+{"openapi":"3.1.0","info":{"title":"Basic","version":"1"},"servers":[{"url":"https://api.example.com"}],"components":{"securitySchemes":{"Auth":{"type":"http","scheme":"basic"}}},"security":[{"Auth":[]}],"paths":{"/ok":{"get":{"operationId":"basicOk","responses":{"200":{"description":"ok","content":{"application/json":{"schema":{"type":"boolean"}}}}}}}}}

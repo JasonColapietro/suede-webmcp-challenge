@@ -1,0 +1,569 @@
+/* Compare page (/compare/gumloop-alternative) — editorial comparison layout.
+   Follows the nc-* conventions from no-code.css: hairline grids over ink
+   panels, Instrument Serif display headlines, mono eyebrows, token colors
+   only (dark mode comes free), reduced motion respected. */
+
+.cmp-page {
+  --cmp-copy: 68ch;
+}
+
+/* ---------- Hero: verdict copy + differentiator scorecard ---------- */
+
+.cmp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 0.95fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  padding-top: clamp(3rem, 7vw, 6.5rem);
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
+  border-bottom: 1px solid var(--hairline-visible);
+}
+
+.cmp-hero__copy,
+.cmp-section,
+.cmp-verdict,
+.cmp-proof__links > * {
+  min-width: 0;
+}
+
+.cmp-hero__title,
+.cmp-section__intro h2,
+.cmp-cta h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.cmp-hero__title {
+  max-width: 16ch;
+  margin: 0.7rem 0 0;
+  font-size: clamp(2.55rem, 1.65rem + 3.5vw, 4.25rem);
+  line-height: 1;
+}
+
+.cmp-hero__lede {
+  max-width: 58ch;
+  margin: 1.4rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-lede);
+  line-height: 1.58;
+}
+
+/* One plain-language line so a reader who has never used a visual builder can
+   follow the comparison beneath it. */
+.cmp-hero__plain {
+  max-width: 60ch;
+  margin: 1.1rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.cmp-caps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.cmp-caps-kicker {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cmp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: 1.6rem;
+}
+
+.cmp-hero__note {
+  max-width: 56ch;
+  margin: 1.2rem 0 0;
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--primary);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+/* The verdict card: the two verified differentiators, ledger style. */
+
+.cmp-verdict {
+  border: 1px solid var(--hairline-visible);
+  background: var(--ink-panel);
+  box-shadow: var(--shadow-card);
+}
+
+.cmp-verdict__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0.9rem var(--space-4);
+  border-bottom: 1px solid var(--hairline-visible);
+  font-family: var(--font-mono);
+}
+
+.cmp-verdict__head span {
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cmp-verdict__head strong {
+  color: var(--primary);
+  font-size: var(--text-xs);
+}
+
+.cmp-verdict__list {
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  list-style: none;
+}
+
+.cmp-verdict__item {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: 0.8rem 0;
+}
+
+.cmp-verdict__item + .cmp-verdict__item {
+  border-top: 1px solid var(--hairline);
+}
+
+.cmp-verdict__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--verified-emerald);
+  border-radius: 50%;
+  background: var(--ink-control);
+  color: var(--text-success);
+  font: 700 var(--text-xs)/1 var(--font-mono);
+}
+
+.cmp-verdict__item strong {
+  display: block;
+  font-size: var(--text-sm);
+}
+
+.cmp-verdict__item p {
+  margin: 0.3rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+.cmp-verdict__foot {
+  margin: 0;
+  padding: 0.8rem var(--space-4);
+  border-top: 1px solid var(--hairline-visible);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+.cmp-verdict__foot a {
+  color: var(--primary);
+}
+
+/* ---------- Sections ---------- */
+
+.cmp-section {
+  padding-top: clamp(3.5rem, 7vw, 6.5rem);
+}
+
+.cmp-section__intro {
+  max-width: var(--cmp-copy);
+}
+
+.cmp-section__intro h2 {
+  margin: 0.55rem 0 0;
+  font-size: var(--text-h2);
+  line-height: 1.08;
+}
+
+.cmp-section__intro p {
+  margin: 0.9rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.65;
+}
+
+/* ---------- Comparison table ---------- */
+
+.cmp-table-wrap {
+  margin-top: 2rem;
+  overflow-x: auto;
+  border: 1px solid var(--hairline-visible);
+}
+
+/* The wrapper scrolls on small screens but nothing signaled it (QA finding
+   10): a right-edge fade masks the clipped columns so the cut looks like a
+   continuation, not an edge. Where scroll-driven animations are supported
+   the fade lifts as the reader approaches scroll-end; elsewhere it stays as
+   a static hint. A mask is state tied to scroll position, not motion, so it
+   is exempt from the reduced-motion block below by nature — and the static
+   fallback still renders if the animation is neutered. */
+@media (max-width: 700px) {
+  .cmp-table-wrap {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.75rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.75rem), transparent);
+  }
+  @supports (animation-timeline: scroll(self inline)) {
+    .cmp-table-wrap {
+      animation: cmp-scroll-fade linear both;
+      animation-timeline: scroll(self inline);
+    }
+  }
+}
+
+@keyframes cmp-scroll-fade {
+  0%,
+  85% {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.75rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.75rem), transparent);
+  }
+  100% {
+    -webkit-mask-image: linear-gradient(to right, #000, #000);
+    mask-image: linear-gradient(to right, #000, #000);
+  }
+}
+
+/* Phone widths also get an explicit mono cue, pinned to the wrapper's left
+   edge so it holds still while the table scrolls beneath it. Decorative:
+   empty alt text keeps it out of the accessibility tree where supported. */
+@media (max-width: 560px) {
+  .cmp-table-wrap::before {
+    content: "scroll →";
+    content: "scroll →" / "";
+    display: block;
+    position: sticky;
+    left: 0;
+    padding: 0.6rem 1.1rem 0;
+    color: var(--text-muted);
+    font: 700 var(--text-label) / 1.4 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+}
+
+.cmp-table {
+  width: 100%;
+  min-width: 52rem;
+  border-collapse: collapse;
+  background: var(--ink-panel);
+  text-align: left;
+}
+
+.cmp-table th,
+.cmp-table td {
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: top;
+}
+
+.cmp-table thead th {
+  background: var(--canvas-bg);
+  color: var(--text-muted);
+  font: 700 var(--text-label)/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cmp-table thead th.cmp-table__us {
+  color: var(--primary);
+}
+
+.cmp-table tbody th {
+  width: 17%;
+  min-width: 9.5rem;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+}
+
+.cmp-table tbody td {
+  width: 27.6%;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.cmp-table tbody td.cmp-cell--us {
+  background: color-mix(in srgb, var(--primary) 4%, transparent);
+}
+
+.cmp-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.cmp-cell {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.cmp-cell__note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+/* Verdict badges: text mirrors the finding (Native / Not found / Partial),
+   never a stronger claim than the note beneath it. */
+
+.cmp-badge {
+  justify-self: start;
+  padding: 2px 9px;
+  border: 1px solid var(--hairline-visible);
+  border-radius: 999px;
+  font: 600 var(--text-label)/1.6 var(--font-mono);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.cmp-badge--yes {
+  border-color: color-mix(in srgb, var(--verified-emerald) 32%, transparent);
+  background: color-mix(in srgb, var(--verified-emerald) 8%, transparent);
+  color: var(--text-success);
+}
+
+.cmp-badge--no {
+  background: var(--canvas-bg);
+  color: var(--text-muted);
+}
+
+.cmp-badge--partial {
+  border-color: color-mix(in srgb, var(--text-warning) 30%, transparent);
+  background: color-mix(in srgb, var(--text-warning) 7%, transparent);
+  color: var(--text-warning);
+}
+
+.cmp-table-note {
+  max-width: 78ch;
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+}
+
+.cmp-table-note a {
+  color: var(--primary);
+}
+
+/* ---------- Differentiator panels ---------- */
+
+.cmp-diffs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 2rem;
+  border: 1px solid var(--hairline-visible);
+  background: var(--ink-panel);
+}
+
+.cmp-diffs article {
+  padding: clamp(1.4rem, 3vw, 2rem);
+}
+
+.cmp-diffs article + article {
+  border-left: 1px solid var(--hairline-visible);
+}
+
+.cmp-diffs article > span {
+  font: 700 var(--text-label)/1.3 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cmp-diffs h3 {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+}
+
+.cmp-diffs p {
+  margin: 0.7rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.cmp-diffs p a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ---------- Proof links ---------- */
+
+.cmp-proof__links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 2rem;
+  border-top: 1px solid var(--hairline-visible);
+  border-left: 1px solid var(--hairline-visible);
+}
+
+.cmp-proof__links a {
+  display: grid;
+  gap: 0.65rem;
+  min-height: 7.2rem;
+  align-content: space-between;
+  padding: 1.2rem;
+  border-right: 1px solid var(--hairline-visible);
+  border-bottom: 1px solid var(--hairline-visible);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.cmp-proof__links a:hover {
+  background: var(--canvas-bg);
+}
+
+.cmp-proof__links span {
+  color: var(--primary);
+  font: 700 var(--text-label)/1.3 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cmp-proof__links strong {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+/* ---------- FAQ ---------- */
+
+.cmp-faq__list {
+  max-width: 58rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--hairline-visible);
+}
+
+.cmp-faq details {
+  border-bottom: 1px solid var(--hairline-visible);
+}
+
+.cmp-faq summary {
+  min-height: 3.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0.9rem 0;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: var(--text-base);
+  font-weight: 700;
+  list-style: none;
+}
+
+.cmp-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.cmp-faq summary::after {
+  content: "+";
+  color: var(--primary);
+  font: 500 1.3rem/1 var(--font-mono);
+}
+
+.cmp-faq details[open] summary::after {
+  content: "−";
+}
+
+.cmp-faq details p {
+  max-width: 70ch;
+  margin: 0;
+  padding: 0 2.5rem 1.2rem 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+.cmp-proof__links a:focus-visible,
+.cmp-faq summary:focus-visible,
+.cmp-verdict__foot a:focus-visible,
+.cmp-table-note a:focus-visible,
+.cmp-diffs p a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
+}
+
+/* ---------- Closing CTA ---------- */
+
+.cmp-cta {
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  margin-bottom: clamp(4rem, 8vw, 7rem);
+  padding: clamp(2rem, 5vw, 3.25rem);
+  border: 1px solid var(--hairline-visible);
+  background: var(--canvas-bg);
+  text-align: center;
+}
+
+.cmp-cta h2 {
+  margin: 0.75rem 0 0;
+  font-size: var(--text-h2);
+}
+
+.cmp-cta p {
+  max-width: 46ch;
+  margin: 1rem auto 1.75rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .cmp-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .cmp-diffs,
+  .cmp-proof__links {
+    grid-template-columns: 1fr;
+  }
+
+  .cmp-diffs article + article {
+    border-top: 1px solid var(--hairline-visible);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .cmp-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .cmp-actions .lp-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmp-page *,
+  .cmp-page *::before,
+  .cmp-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "appId": "ai.suede.agents",
+  "appName": "Suede Agents",
+  "webDir": "./www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false,
+    "url": "https://android-agents.suedeai.ai",
+    "allowNavigation": [
+      "android-agents.suedeai.ai"
+    ]
+  },
+  "android": {
+    "backgroundColor": "#ffffffff"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 1200,
+      "backgroundColor": "#ffffff",
+      "showSpinner": false
+    }
+  }
+}

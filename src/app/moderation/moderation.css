@@ -1,0 +1,47 @@
+/* /moderation and /moderation/promo — reviewer-only queues behind an email
+   allowlist, so they never got the estate's page chrome. Presentation only:
+   nothing here changes what a reviewer sees, what the queue reports, or what a
+   decision writes back. Tokens only, so dark mode inherits automatically. */
+
+/* These pages carry .lp for its --lp-edge / --lp-maxw tokens but deliberately
+   render no SiteNav, so the fixed-nav offset .lp reserves would be dead space. */
+main.lp {
+  padding-top: clamp(1.5rem, 4vw, 3rem);
+  min-height: 100vh;
+}
+
+.md-signin {
+  margin-top: 0.9rem;
+  color: var(--text-muted);
+  max-width: 66ch;
+  line-height: 1.6;
+}
+.md-signin code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+.md-queue {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.md-back {
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.md-back a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  text-underline-offset: 3px;
+}
+.md-back a:hover {
+  text-decoration-color: currentColor;
+}

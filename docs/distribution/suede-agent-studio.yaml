@@ -1,0 +1,41 @@
+name: suede-agent-studio
+subdomain: suede-agent-studio
+title: 'Suede Agent Studio'
+description: 'Visual agent flows + TypeScript SDK (@suedeai/agents) published as machine-callable services. Each service reports preview, payment-enabled, or unavailable; payment-enabled calls use x402 v2 and exact USDC on Base.'
+category: ai_ml
+version: v1
+
+routing:
+  type: proxy
+  url: https://agents.suedeai.ai
+
+operator:
+  currencies:
+    usd: ['USDC']
+  network: eip155:8453
+  fee_payer: false
+
+endpoints:
+  - method: GET
+    path: '.well-known/x402'
+    description: 'Service-level x402 discovery manifest (free).'
+
+  - method: GET
+    path: 'api/catalog'
+    description: 'Machine-readable JSON catalog of all published agents (free).'
+
+  - method: GET
+    path: 'api/agents/{slug}/.well-known/x402'
+    description: 'Per-agent public-state manifest. Payment-enabled services include x402 v2 scheme, CAIP-2 network, atomic amount, asset, and payTo.'
+
+  - method: GET
+    path: 'api/agents/{slug}/.well-known/agent-card'
+    description: 'Per-agent capability description.'
+
+  - method: GET
+    path: 'api/agents/{slug}/a2a'
+    description: 'Agent-to-agent (A2A) integration endpoint.'
+
+  - method: POST
+    path: 'api/agents/{slug}/run'
+    description: 'Invoke a published flow. Behavior follows its advertised state: explicit preview, x402 v2 payment challenge, or unavailable.'

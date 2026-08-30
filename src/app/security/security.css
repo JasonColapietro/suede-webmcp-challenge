@@ -1,0 +1,109 @@
+/* /security — page-scoped layer over chrome.css + site.css. Tokens only, so
+   dark mode (:root[data-theme="dark"]) inherits automatically. */
+
+/* The certifications stance gets its own framed panel: it is the page's
+   sharpest claim and should read before the practice sections. */
+.sec-stance {
+  border: 1px solid var(--hairline-visible);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--ink-control);
+  box-shadow: var(--shadow-sm);
+  padding: 1.2rem 1.35rem 1.3rem;
+  max-width: 72ch;
+}
+.sec-stance .k {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.sec-stance h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  margin: 0.35rem 0 0.6rem;
+}
+.sec-stance p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* Practice sections: mono index + serif title on a hairline rule, so the
+   page reads as one numbered dossier instead of stacked paragraphs. */
+.sec-list {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--hairline-visible);
+}
+.sec-item {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-bottom: 1px solid var(--hairline-visible);
+}
+.sec-item .no {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--primary);
+  padding-top: 0.55rem;
+}
+.sec-item h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  letter-spacing: -0.012em;
+  margin: 0 0 0.65rem;
+  max-width: 36ch;
+}
+.sec-item p {
+  color: var(--text-muted);
+  max-width: 62ch;
+  line-height: 1.65;
+  margin: 0;
+}
+.sec-item p + p {
+  margin-top: 1rem;
+}
+.sec-item ul {
+  color: var(--text-muted);
+  max-width: 62ch;
+  line-height: 1.65;
+  padding-left: 1.25rem;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.sec-item strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.sec-item a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  text-underline-offset: 3px;
+}
+.sec-item a:hover {
+  text-decoration-color: currentColor;
+}
+@media (max-width: 620px) {
+  .sec-item {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+  .sec-item .no {
+    padding-top: 0;
+  }
+}
+
+.sec-updated {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-top: 2rem;
+}

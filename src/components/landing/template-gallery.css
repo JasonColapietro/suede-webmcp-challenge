@@ -1,0 +1,56 @@
+/*
+ * Template gallery extensions — layered on top of the lp-* gallery blocks in
+ * chrome.css / site.css (owned elsewhere this pass). Everything here is
+ * prefixed `tg-` and uses tokens only, so light and dark themes resolve via
+ * :root[data-theme="dark"] with no extra rules.
+ */
+
+/* Count badge inside a category / department filter chip. */
+.tg-chip-count {
+  margin-left: 7px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  /* --text-secondary, not --text-muted: at this size the chip is small text
+     and needs 4.5:1 on its tinted pill (Lighthouse color-contrast). */
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text-muted) 10%, transparent);
+  transition: color 120ms ease, background 120ms ease;
+}
+.lp-cat-chip[data-active="true"] .tg-chip-count {
+  /* Pure --primary on the primary-tinted pill sits at ~4.8:1 (light) and
+     ~4.0:1 (dark) — under or barely over the 4.5:1 small-text floor at
+     0.62rem. Pulling the ink 45% toward --text-primary keeps the indigo
+     cast while clearing AA in both themes (~8.4:1 light, ~6.6:1 dark). */
+  color: color-mix(in srgb, var(--text-primary) 45%, var(--primary));
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  font-weight: 700;
+}
+
+/* Step-count pill on template cards — neutral ink, sits beside the price pill. */
+.tg-pill-steps {
+  color: var(--text-muted);
+}
+
+/* The template's step names, spelled out under the blurb. The colored dot
+   strip on the card head reads as a shape; this is the line a first-time
+   visitor can actually follow. Clamped to one line so the cards keep an even
+   rhythm — the full chain stays in the strip's title and accessible name. */
+.tg-tpl-steps {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-chip-count {
+    transition: none;
+  }
+}

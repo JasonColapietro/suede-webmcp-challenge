@@ -1,0 +1,48 @@
+-- agents.settlement_live: flip the ONGOING column default TRUE -> FALSE.
+--
+-- WHY
+-- createAgent() in both repos writes an explicit settlement_live=false so a
+-- fresh launch cannot settle real money until its owner opts in (PR #108,
+-- 2026-07-20). That guarantee lived only in application code: the column
+-- default said the opposite, so any insert path that omitted the column
+-- produced a settlement-live agent.
+--
+-- Not hypothetical. Three agents created 2026-07-20 20:17 UTC — after PR #108
+-- landed but before the deploy carrying it — were inserted by the older code
+-- path, took the column default, and came out settlement-live. With
+-- X402_SKIP_SETTLEMENT="false" platform-wide they took the live run branch and
+-- returned 503 "published run unavailable" on every call, because a live run
+-- also needs a Test -> Live deployment they never had. See AI_HANDOFF
+-- "The three 503 agents — root cause (2026-07-26)".
+--
+-- WHAT THIS DOES NOT DO
+-- A column default applies to FUTURE inserts only. This statement does not
+-- read, rewrite, or reinterpret a single existing row. In particular it does
+-- NOT turn off settlement for any agent that is live today — including the
+-- three above, which Jason chose to promote to genuinely live and paid.
+--
+-- The ADD-TIME default stays TRUE in src/lib/db/schema.deploy.sql and must
+-- not be changed: it is what backfills rows that predate the column as LIVE
+-- (AI_HANDOFF Phase 9 SETTLEMENT-GATE HOTFIX). Production has had the column
+-- since Phase 9, so that path is already a no-op here.
+--
+-- SAFETY
+-- Idempotent: re-running sets the same default again. No table rewrite, no
+-- lock beyond a brief catalog update, no data movement.
+--
+-- ROLLBACK
+--   alter table agents alter column settlement_live set default true;
+
+alter table agents alter column settlement_live set default false;
+
+-- READBACK — expect column_default = 'false'
+--
+--   select column_name, column_default, is_nullable
+--   from information_schema.columns
+--   where table_schema = 'public'
+--     and table_name = 'agents'
+--     and column_name = 'settlement_live';
+--
+-- Confirm no row changed (counts must match the pre-apply readback):
+--
+--   select settlement_live, count(*) from agents group by 1 order by 1;

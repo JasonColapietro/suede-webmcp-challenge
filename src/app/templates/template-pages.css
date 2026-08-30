@@ -1,0 +1,202 @@
+/*
+ * /templates hub + detail-page styles. Layered on the lp-* system in
+ * chrome.css / site.css (owned elsewhere this pass); everything here is
+ * prefixed `tg-` and uses tokens only, so dark mode resolves through
+ * :root[data-theme="dark"] token values with no extra rules.
+ */
+
+/* ---- Derived stats band (hub header) -------------------------------------- */
+.tg-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-panel);
+}
+.tg-stat {
+  min-width: 0;
+}
+.tg-stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1.1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.tg-stat-label {
+  display: block;
+  margin-top: 0.3rem;
+  font: 500 var(--text-label) / 1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- Department anchor rail (deep links into the gallery filter) ----------- */
+.tg-anchor-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.tg-anchor {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 3px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--ink-panel);
+  color: var(--text-muted);
+  text-decoration: none;
+  font: 500 0.68rem / 1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.tg-anchor:hover {
+  color: var(--text-primary);
+  border-color: var(--primary);
+}
+.tg-anchor:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+.tg-anchor-count {
+  /* No opacity fade: at this size the count must clear 4.5:1 on white. */
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+@media (pointer: coarse) {
+  .tg-anchor {
+    min-height: 44px;
+  }
+}
+
+/* ---- Featured card extras -------------------------------------------------- */
+.tg-featured-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* ---- Detail-page facts band ------------------------------------------------ */
+.tg-facts {
+  margin-top: 2.25rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--ink-panel);
+}
+.tg-facts-eyebrow {
+  display: block;
+  margin-bottom: 0.85rem;
+  font: 700 var(--text-label) / 1.3 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.tg-facts-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.tg-step-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--ink-control);
+  color: var(--text-primary);
+  font: 500 var(--text-xs) / 1.3 var(--font-mono);
+  white-space: nowrap;
+}
+.tg-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tg-step-arrow {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  user-select: none;
+}
+.tg-facts-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.tg-facts-who {
+  margin: 0.9rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.tg-facts-who b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.tg-facts-cta {
+  margin-top: 1.25rem;
+}
+
+/* ---- Derived detail pages (/templates/[slug]) ------------------------------ */
+.tg-detail-desc {
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  max-width: 68ch;
+}
+.tg-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+.tg-related-card {
+  display: block;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: border-color 120ms ease;
+}
+.tg-related-card:hover {
+  border-color: var(--primary);
+}
+.tg-related-card:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+.tg-related-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+.tg-related-card p {
+  margin: 0 0 0.9rem;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.tg-detail-back {
+  margin-top: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-anchor,
+  .tg-related-card {
+    transition: none;
+  }
+}

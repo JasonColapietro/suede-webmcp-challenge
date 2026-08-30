@@ -1,0 +1,116 @@
+/* /code/[flowId] — page-scoped layer over chrome.css + site.css.
+
+   The source block uses the estate's terminal treatment (--code-*), the same
+   surface every curl/snippet block on the site already uses via .lp-code, so a
+   TypeScript export does not read as a second, softer kind of code. Presentation
+   only: the source itself comes from lib/code-view.ts untouched. */
+
+.cv-switch {
+  margin-bottom: 1.5rem;
+}
+.cv-context {
+  margin-bottom: 1.25rem;
+}
+
+.cv-section {
+  margin-top: 1.25rem;
+}
+.cv-section:first-of-type {
+  margin-top: 0;
+}
+
+/* ---- Source block ---------------------------------------------------------- */
+.cv-source {
+  /* Non-scrolling frame. The chip is anchored here, not inside the scroller, so
+     it stays pinned to the top-right no matter how far the code is scrolled. */
+  position: relative;
+  margin-top: 1.1rem;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+/* The scroll container: long lines scroll here instead of pushing the page
+   sideways at 375. */
+.cv-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.cv-source pre {
+  margin: 0;
+  padding: 1.35rem 1.15rem;
+  /* Clear the pinned copy chip so the first line never runs underneath it. */
+  padding-right: 5.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  color: var(--code-text);
+  tab-size: 2;
+  white-space: pre;
+  min-width: max-content;
+}
+.cv-source code {
+  font: inherit;
+  color: inherit;
+}
+
+.cv-copy {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* Opaque: long lines scroll beneath the chip, so it must fully occlude them. */
+  background: color-mix(in srgb, #ffffff 6%, var(--code-bg));
+  color: var(--code-chip-text);
+  border: 1px solid var(--code-chip-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) 0.65rem;
+  min-height: 32px;
+  cursor: pointer;
+}
+.cv-copy:hover {
+  color: var(--code-chip-text-hover);
+  border-color: var(--code-chip-border-hover);
+}
+.cv-copy:focus-visible {
+  outline: 2px solid var(--code-accent);
+  outline-offset: 2px;
+}
+@media (pointer: coarse) {
+  .cv-copy {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+.cv-actions {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* ---- Section head ---------------------------------------------------------- */
+.cv-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+.cv-head .lp-eyebrow {
+  display: block;
+}
+
+.cv-pins {
+  margin-top: 0.9rem;
+}
+.cv-pins > .code-version-receipt__key {
+  display: block;
+  margin-bottom: 0.4rem;
+}

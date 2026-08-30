@@ -1,0 +1,271 @@
+/* Suede Agent Studio — Gumloop-clean: white + indigo, color-coded nodes. */
+:root {
+  /* Native form controls (checkboxes, scrollbars, date pickers, etc.) follow
+     the app's chosen theme instead of the OS setting. */
+  color-scheme: light;
+
+  /* Brand faces are self-hosted (repo-local woff2 via next/font/local — no
+     remote or build-time font fetching), layered over system-local fallback
+     stacks that keep production builds deterministic and zero-egress. */
+  --font-display: var(--font-instrument-serif, "Iowan Old Style"), "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", Times, serif;
+  --font-ui: var(--font-geist-sans, ui-sans-serif), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono, ui-monospace), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Type scale — fluid clamp() */
+  --text-display: clamp(3rem, 1.6rem + 6vw, 6rem);
+  --text-h1: clamp(2.25rem, 1.6rem + 3.2vw, 3.75rem);
+  --text-h2: clamp(1.75rem, 1.4rem + 1.8vw, 2.6rem);
+  --text-h3: clamp(1.3rem, 1.1rem + 0.9vw, 1.7rem);
+  --text-lede: clamp(1.125rem, 1rem + 0.5vw, 1.35rem);
+  --text-base: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  --text-sm: 0.9375rem;
+  --text-xs: 0.8125rem;
+  --text-eyebrow: 0.75rem;
+  --text-label: 0.6875rem;
+
+  /* Surfaces — white panels on near-white paper. The page sits one ~2% step
+     below the panel/control whites so cards, rails and controls read as
+     objects placed on the page instead of outlines drawn on it; on a pure
+     #ffffff page every one of them leaned on a 1.2:1 hairline alone. Same cool
+     hue family as --canvas-bg (nothing warms against the indigo), and the dark
+     theme already stepped base -> panel -> control this way. */
+  --ink-deep: #fafbfd;    /* page background */
+  --ink-panel: #ffffff;   /* rails / panels (raised off the page) */
+  --ink-control: #ffffff; /* cards / chips / inputs */
+  --canvas-bg: #f7f8fc;   /* the flow canvas pane */
+  /* Dedicated zebra-stripe fill for alternating table rows — distinct from
+     --ink-deep/--canvas-bg so stripes stay a deliberate pairing instead of
+     repurposing surfaces that happen to be adjacent on the scale. */
+  --row-alt: #f3f4f9;
+
+  /* Primary = indigo (CTAs, active, links) */
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --on-primary: #ffffff;
+
+  /* Category / signal colors (node tags) */
+  --registry-cyan: #06b6d4;   /* Suede Tools */
+  --verified-emerald: #10b981; /* Rails / paid / done */
+  --violet: #8b5cf6;          /* Triggers */
+  --amber: #f59e0b;           /* Logic */
+  --proof-sky: #0ea5e9;
+  --category-docs: #2563eb;    /* Docs & Data */
+  --category-comms: #db2777;   /* Comms & CRM */
+  --category-finance: #0d9488; /* Finance & Ops */
+  --category-devops: #ea580c;  /* Dev & Infra */
+
+  /* Readable semantic text. Keep the brighter signals above for dots, fills,
+     and diagrams; use these darker roles for labels and status copy on white. */
+  --text-success: #047857;
+  --text-info: #0369a1;
+  --text-warning: #92400e;
+  /* Error copy on --surface-error needs a darker red than --rights-red:
+     #dc2626 on #fef2f2 is 4.41:1 (fails AA); #b91c1c holds 5.92:1. Keep
+     --rights-red for borders, icons, and fills. */
+  --text-error: #b91c1c;
+  /* Label ink on --warning-amber fills. Deliberately theme-stable dark ink:
+     both themes' ambers are light enough that white text fails AA. */
+  --on-warning: #111317;
+
+  /* True red — errors / destructive ONLY */
+  --rights-red: #dc2626;
+  --rights-red-bright: #ef4444;
+
+  /* Text — dark ink */
+  --text-primary: #111317;
+  --text-muted: #6b7280;
+  --text-secondary: #475467;
+  --text-on-accent: #ffffff;
+
+  /* Shared semantic aliases used by Guided and recovery surfaces. */
+  --text: var(--text-primary);
+  --primary-fg: var(--on-primary);
+  /* A raised surface has to step UP from the page in both themes. --canvas-bg
+     is the recessed canvas fill (below the paper in light, the darkest surface
+     in dark), so Guided cards and site-agent readbacks sat flush or sunk;
+     --ink-control is the card/control step in both themes. */
+  --surface-raised: var(--ink-control);
+  --border: var(--hairline);
+  --color-error: var(--rights-red);
+
+  /* Borders */
+  --hairline: #e6e8ef;
+  --hairline-cyan: rgba(79, 70, 229, 0.28);
+  /* High-contrast divider for sole-boundary cases (WCAG 2.2 SC 1.4.11, >=3:1):
+     3.60:1 vs #ffffff panels, 3.40:1 vs #f7f8fc canvas. Use only where a hairline
+     is the ONLY visual separator between flush, same-background elements
+     (no gap/shadow/bg difference) — not a general --hairline replacement. */
+  --hairline-visible: #818794;
+
+  /* Warning */
+  --warning-amber: #d97706;
+
+  /* Ambient / focus rings */
+  --glow-cyan: rgba(79, 70, 229, 0.16);
+  --glow-red: rgba(220, 38, 38, 0.14);
+
+  /* Shadows (soft, Gumloop-like) */
+  --shadow-sm: 0 1px 2px rgba(17, 19, 23, 0.06);
+  --shadow-card: 0 1px 3px rgba(17, 19, 23, 0.08), 0 6px 18px rgba(17, 19, 23, 0.06);
+  --shadow-md: var(--shadow-card);
+  /* Larger elevation for modals/dialogs/popovers that sit above cards. */
+  --shadow-lg: 0 4px 8px rgba(17, 19, 23, 0.1), 0 20px 48px rgba(17, 19, 23, 0.16);
+
+  /* Modal backdrop scrim. */
+  --scrim: rgba(17, 19, 23, 0.4);
+
+  /* Shared spacing keeps public pages and product rails on one rhythm. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Quiet semantic surfaces for reusable status and empty-state treatments. */
+  --surface-info: #f0f9ff;
+  --surface-success: #ecfdf5;
+  --surface-warning: #fffbeb;
+  --surface-error: #fef2f2;
+
+  /* Builder canvas chrome — dot grid and minimap fills that must track the
+     theme (ReactFlow reads these via inline style props). */
+  /* Graph edges are the graphic that conveys the flow, so they need the 3:1
+     non-text bar (WCAG 1.4.11) — the panel hairline tint sits near 1.5:1.
+     3.40:1 on --canvas-bg. Deliberately distinct from --hairline-cyan, which
+     stays tuned for 1px panel borders. */
+  --edge-stroke: #8079e8;
+  --canvas-dot: #d7dbe8;
+  --canvas-minimap-node: #c7cbe0;
+
+  /* Earnings chart gridlines — quieter than --hairline so data stays the
+     loudest thing on the chart. */
+  --chart-grid: #eef0f6;
+
+  /* Terminal-style code blocks — deliberately dark on the light theme. The
+     dark theme overrides these so the block steps up from the page like
+     other controls instead of dissolving into it. */
+  --code-bg: #0f1117;
+  --code-border: #1f2330;
+  --code-text: #e5e7ef;
+  --code-accent: #8b96ff;
+  --code-chip-bg: rgba(255, 255, 255, 0.06);
+  --code-chip-text: #aab2c8;
+  --code-chip-border: rgba(255, 255, 255, 0.12);
+  --code-chip-border-hover: rgba(255, 255, 255, 0.3);
+  --code-chip-text-hover: #ffffff;
+
+  /* Form */
+  --radius: 8px;
+  --radius-sm: 6px;
+  --border-width: 1px;
+  --control-h-sm: 36px;
+  --control-h: 44px;
+
+  /* Action ladder — the "unavailable" rank. A control that cannot be pressed
+     yet states that with its own surface, border and ink instead of a blanket
+     opacity wash that dims fill, border and label together (the old
+     .lp-btn:disabled treatment made /start's own primary read as a rendering
+     fault at first paint). Ink holds AA on the surface: #5b6270 on #eef0f5
+     is 5.38:1. */
+  --unavailable-surface: #eef0f5;
+  --unavailable-border: #d3d7e2;
+  --unavailable-ink: #5b6270;
+
+  /* Fact rail — fixed slot widths so fact chips align column-for-column
+     across stacked rows (state | how-it-runs | price). Dimensions, not
+     colors, so the dark theme shares them. */
+  --factrail-col-state: 6.5rem;
+  --factrail-col-how: 9.5rem;
+  --factrail-col-price: 4.5rem;
+}
+
+/* Dark theme. Opt-in only: data-theme="dark" is set before first paint by the
+   layout's inline init script, and solely when the SiteNav toggle has stored
+   that choice — the OS prefers-color-scheme is not consulted, so light is the
+   default for every visitor. Not an inversion: surfaces
+   step up in lightness (base -> panel -> control), separation leans on
+   borders more than shadow, and every saturated color below is the
+   established Tailwind 400-shade twin of its light 500/600-shade token
+   (same hue, chroma pulled back, lightened) so nothing reads neon. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ink-deep: #101114;    /* page background */
+  --ink-panel: #17181d;   /* rails / panels */
+  --ink-control: #1d1f26; /* cards / chips / inputs */
+  --canvas-bg: #0c0d10;   /* the flow canvas pane — recessed, darkest surface */
+  /* Zebra-stripe fill, tuned ~7 L* points above --ink-deep so alternating
+     table rows stay legible instead of flattening against the page. */
+  --row-alt: #1e2027;
+
+  --primary: #818cf8;
+  --primary-hover: #a5b4fc;
+  --on-primary: #131320;
+
+  --registry-cyan: #22d3ee;
+  --verified-emerald: #34d399;
+  --violet: #a78bfa;
+  --amber: #fbbf24;
+  --proof-sky: #38bdf8;
+  --category-docs: #60a5fa;
+  --category-comms: #f472b6;
+  --category-finance: #2dd4bf;
+  --category-devops: #fb923c;
+
+  --text-success: #6ee7b7;
+  --text-info: #7dd3fc;
+  --text-warning: #fcd34d;
+  /* On dark's --surface-error (#2c1214) the light red already passes (~6.3:1). */
+  --text-error: #f87171;
+  /* Dark theme's amber (#fbbf24) is even lighter — same dark ink passes (~11:1). */
+  --on-warning: #111317;
+
+  --rights-red: #f87171;
+  --rights-red-bright: #fca5a5;
+
+  --text-primary: #f4f5f7;
+  --text-muted: #9aa1b0;
+  --text-secondary: #c2c6cf;
+  --text-on-accent: #101114;
+
+  --hairline: #24262e;
+  --hairline-cyan: rgba(129, 140, 248, 0.32);
+  --hairline-visible: #4b4f5c;
+
+  --warning-amber: #fbbf24;
+
+  --glow-cyan: rgba(129, 140, 248, 0.22);
+  --glow-red: rgba(248, 113, 113, 0.18);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.55), 0 8px 22px rgba(0, 0, 0, 0.4);
+  --shadow-md: var(--shadow-card);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.6), 0 24px 56px rgba(0, 0, 0, 0.5);
+
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  --surface-info: #0e2433;
+  --surface-success: #0d2a20;
+  --surface-warning: #2c2308;
+  --surface-error: #2c1214;
+
+  /* Code blocks step up from the #101114 page (base -> control) so they
+     stay legible as blocks; accent lightened to hold contrast on the
+     raised surface. */
+  --code-bg: #1d1f26;
+  --code-border: #2c2f3a;
+  --code-accent: #a5b0ff;
+
+  /* 3.92:1 on dark --canvas-bg. */
+  --edge-stroke: #5c67c9;
+  --canvas-dot: #2a2c35;
+  --canvas-minimap-node: #3a3d4a;
+  --chart-grid: #24262e;
+
+  /* Action ladder unavailable rank — dark twins. Surface recessed a step
+     below --ink-control; ink holds AA: #8b93a5 on #191b21 is 5.55:1. */
+  --unavailable-surface: #191b21;
+  --unavailable-border: #2c2f3a;
+  --unavailable-ink: #8b93a5;
+}

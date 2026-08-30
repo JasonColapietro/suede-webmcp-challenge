@@ -1,0 +1,47 @@
+{
+  "name": "@suedeai/agents",
+  "version": "0.1.0",
+  "description": "Suede SDK — define, trigger, serve, and earn with agents on the Suede platform",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "suede": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.json && node -e \"const f=require('fs');const p='dist/cli.js';const c=f.readFileSync(p,'utf8');if(!c.startsWith('#!'))f.writeFileSync(p,'#!/usr/bin/env node\\n'+c);\"",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasonColapietro/agentix"
+  },
+  "keywords": [
+    "suede",
+    "agent",
+    "x402",
+    "ai-agent",
+    "sdk"
+  ]
+}

@@ -1,0 +1,344 @@
+/* Page-scoped storefront styles for /a/[slug] — the public agent detail page.
+   Layered on chrome.css + site.css: every class here is `ag-*` so nothing
+   here can collide with the shared estate classes. Tokens only. */
+
+/* ---- Owner-aware bar (owner only; buyer view never renders this) ---------- */
+.ag-owner-bar {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin-bottom: 1.1rem;
+}
+/* Links keep a resting underline: color alone must not be what separates
+   "Open its record" from the plain sentence beside it (WCAG 1.4.1). */
+.ag-owner-bar a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.ag-owner-bar a:hover {
+  color: var(--primary-hover);
+  border-bottom-color: var(--primary-hover);
+}
+
+/* ---- Breadcrumb ----------------------------------------------------------- */
+.ag-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: clamp(1rem, 2.5vw, 1.6rem);
+}
+.ag-crumbs a {
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.ag-crumbs a:hover {
+  color: var(--text-primary);
+  border-bottom-color: var(--hairline-visible);
+}
+.ag-crumbs span[aria-current] {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 22ch;
+}
+
+/* ---- Head ----------------------------------------------------------------- */
+/* Both selectors carry a .lp-page-head so they outrank `.lp-page-head p`,
+   which zeroes margins and would collapse the chain into the lede. */
+.lp-page-head .ag-chain {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  margin: 0.55rem 0 0;
+  /* A long node chain must wrap, never push the page sideways. */
+  overflow-wrap: anywhere;
+}
+.lp-page-head .ag-lede {
+  color: var(--text-secondary);
+  font-size: var(--text-lede);
+  line-height: 1.55;
+  max-width: 58ch;
+  margin: 0.9rem 0 0;
+}
+
+/* ---- The buy panel: price first, then how it settles, then the two ways in - */
+.ag-buy {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  /* The one emerald rule on the page: this is where the money is. */
+  border-left: 3px solid color-mix(in srgb, var(--verified-emerald) 70%, var(--hairline));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: clamp(1.1rem, 3vw, 1.6rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.ag-buy-top {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1rem, 3vw, 2rem);
+  flex-wrap: wrap;
+}
+.ag-price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.ag-price-figure {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 1.8rem + 2.6vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.ag-price-unit {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.ag-price-note {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  margin: 0.4rem 0 0;
+  max-width: 34ch;
+}
+.ag-price-note b {
+  color: var(--text-success);
+  font-weight: 600;
+}
+/* Facts column: everything a buyer checks before paying, one per line. */
+.ag-facts {
+  flex: 1 1 21rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-left: clamp(0rem, 2vw, 1.25rem);
+  border-left: 1px solid var(--hairline);
+}
+.ag-fact {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.ag-fact > dt {
+  flex: 0 0 5.6rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.ag-fact > dd {
+  margin: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.ag-fact > dd.mono {
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+.ag-buy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--hairline);
+}
+.ag-buy-actions .ag-posture {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  margin: 0;
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+/* ---- Status chip row ------------------------------------------------------- */
+.ag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+}
+
+/* ---- Interface ("what you send, what you get back") ------------------------ */
+.ag-io {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+.ag-io-card {
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 0.9rem 1rem;
+}
+.ag-io-card > h3 {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--text-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0 0 0.55rem;
+}
+.ag-io-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.ag-io-key {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  background: var(--canvas-bg);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 2px 7px;
+  overflow-wrap: anywhere;
+}
+.ag-io-card p {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ---- Active campaign banner (was inline styles) ---------------------------- */
+.ag-campaign {
+  margin-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--warning-amber);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.15rem;
+  box-shadow: var(--shadow-sm);
+}
+.ag-campaign-body {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+.ag-campaign-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-warning);
+  margin-bottom: 0.25rem;
+}
+.ag-campaign-name {
+  font-weight: 600;
+  font-size: var(--text-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ag-campaign-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ---- Safety, deliberately quiet and last --------------------------------- */
+.ag-safety {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--hairline);
+}
+.ag-safety p {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  max-width: 60ch;
+  margin: 0 0 0.7rem;
+}
+
+.ag-footnav {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* ---- Mobile hardening ------------------------------------------------------ */
+/* The run-endpoint chip inside TryIt is a long mono string; unconstrained it
+   pushes past the card edge at 375 (measured 429px right edge on a 375
+   viewport before this rule). Page-scoped so only this surface changes. */
+.ag-page .lp-try .lp-pill {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+/* Endpoint rows: paths are long and must wrap rather than ellipsis away the
+   part that identifies the route. */
+.ag-page .lp-row {
+  align-items: flex-start;
+}
+.ag-page .lp-row .name {
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+}
+/* The Copy chip is absolutely positioned over the code; on the first line a
+   long URL scrolled underneath it. Reserve a full chip-height gutter instead
+   of only right padding. */
+.ag-page .lp-code {
+  padding-top: 2.6rem;
+  padding-right: 1.1rem;
+}
+
+@media (max-width: 640px) {
+  .ag-facts {
+    padding-left: 0;
+    padding-top: 0.9rem;
+    border-left: none;
+    border-top: 1px solid var(--hairline);
+    width: 100%;
+  }
+  .ag-fact {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .ag-fact > dt {
+    flex: none;
+  }
+  .ag-buy-actions .lp-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}

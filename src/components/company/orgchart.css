@@ -1,0 +1,599 @@
+/* Org-chart canvas (OrgChartCanvas / OrgChartNode) — the company view's
+   operating org chart. Harmonized with chrome.css's .lp-org-card look
+   (ink-control pills, hairline borders, mono metadata, color-mix accent
+   tiles) but fully self-contained under an `oc-` prefix so it never
+   collides with landing-page classes.
+
+   Dark mode: every color here derives from tokens.css custom properties
+   (or color-mix over them), which :root[data-theme="dark"] already flips —
+   no literal colors, so no per-theme overrides are needed. */
+
+.oc-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.oc-node {
+  position: relative;
+  /* Department accent, set inline per node by OrgChartNode from
+     chart-graph's DEPARTMENT_ACCENT_VARS palette. */
+  --oc-accent: var(--primary);
+}
+
+/* Edges anchor top-center -> bottom-center; the handles themselves are
+   layout-only and must be invisible and inert. */
+.oc-node .oc-handle {
+  width: 2px;
+  height: 2px;
+  min-width: 0;
+  min-height: 0;
+  border: none;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Shared card atoms --------------------------------------------------- */
+.oc-card {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--ink-control);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-sm);
+}
+.oc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.oc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border-radius: 7px;
+}
+.oc-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Company root: the header of the whole chart ------------------------- */
+.oc-card--company {
+  width: 240px;
+  padding: 0.65rem 0.85rem;
+  border-radius: calc(var(--radius) * 1.4);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--hairline));
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--primary) 18%, transparent),
+    var(--shadow-card);
+}
+.oc-icon--company {
+  width: 32px;
+  height: 32px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+}
+.oc-icon--company svg {
+  width: 18px;
+  height: 18px;
+}
+.oc-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.oc-name {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.oc-mission {
+  margin-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Department: colored group marker ------------------------------------ */
+.oc-card--dept {
+  width: 176px;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--oc-accent) 8%, var(--ink-control));
+  border-color: color-mix(in srgb, var(--oc-accent) 38%, var(--hairline));
+}
+.oc-dept-swatch {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--oc-accent);
+}
+.oc-dept-name {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Employee: seat card carrying its department's accent ---------------- */
+.oc-card--emp {
+  width: 186px;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: flex-start;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
+}
+.oc-card--emp:hover {
+  border-color: color-mix(in srgb, var(--oc-accent) 45%, var(--hairline));
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--oc-accent) 12%, transparent),
+    var(--shadow-card);
+}
+.oc-card--emp:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.oc-icon--emp {
+  width: 26px;
+  height: 26px;
+  background: color-mix(in srgb, var(--oc-accent) 12%, transparent);
+  color: var(--oc-accent);
+}
+.oc-icon--emp svg {
+  width: 14px;
+  height: 14px;
+}
+.oc-emp-name {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.oc-caret {
+  flex: none;
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  transition: transform 0.15s ease;
+}
+.oc-caret svg {
+  width: 12px;
+  height: 12px;
+}
+.oc-caret.is-open {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-caret {
+    transition: none;
+  }
+  .oc-card--emp {
+    transition: none;
+  }
+  .oc-card--emp:hover {
+    transform: none;
+  }
+}
+
+/* Live seat — selling right now. Faint emerald border so live reads at any
+   zoom; the stronger earning ring below overrides once revenue settles. */
+.oc-card--emp.is-live {
+  border-color: color-mix(in srgb, var(--verified-emerald) 32%, var(--hairline));
+}
+/* Earning seat — the product story: this agent settled real revenue. Echoes
+   chrome.css's .lp-org-card.is-live emerald ring treatment. */
+.oc-card--emp.is-earning {
+  border-color: color-mix(in srgb, var(--verified-emerald) 50%, var(--hairline));
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--verified-emerald) 25%, transparent),
+    var(--shadow-sm);
+}
+/* Selected (expanded) seat — department-accent ring. Declared after
+   .is-earning so an earning seat still reads selected while its flow peek
+   is open. */
+.oc-card--emp.is-expanded {
+  border-color: color-mix(in srgb, var(--oc-accent) 55%, var(--hairline));
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--oc-accent) 30%, transparent),
+    var(--shadow-card);
+}
+
+/* ---- Seat status chips: live / price / schedule --------------------------- */
+.oc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 4px;
+  margin-top: 3px;
+  min-width: 0;
+  max-width: 100%;
+}
+.oc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.26rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 600;
+  line-height: 1.55;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+}
+.oc-chip svg {
+  width: 9px;
+  height: 9px;
+  flex: none;
+}
+.oc-chip-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.oc-chip--live {
+  color: var(--text-success);
+  background: color-mix(in srgb, var(--verified-emerald) 14%, transparent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.52rem;
+}
+.oc-chip--price {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--oc-accent) 12%, transparent);
+}
+.oc-chip--schedule {
+  color: var(--text-muted);
+  border: 1px solid var(--hairline);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+/* Pulsing live dot — the "this seat is selling right now" heartbeat. */
+.oc-live-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  animation: oc-pulse 2.2s ease-out infinite;
+}
+@keyframes oc-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--verified-emerald) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-live-dot,
+  .oc-swatch--live,
+  .oc-status-dot.is-pulsing,
+  .oc-swatch--status.is-pulsing {
+    animation: none;
+  }
+}
+
+/* ---- Seat lifecycle: status dot / role kicker / heartbeat ------------------ */
+/* Row wrapper so the status dot sits inline before the seat name. */
+.oc-emp-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+}
+/* Lifecycle status dot — background set inline from seatStatusMeta's token
+   var (emerald/cyan/amber/red/grey), so legend and seats share one source. */
+.oc-status-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 2px;
+}
+/* Running seat — cyan run-in-progress pulse, deliberately distinct from the
+   emerald oc-live-dot "selling right now" heartbeat above. */
+.oc-status-dot.is-pulsing {
+  animation: oc-pulse-run 2.2s ease-out infinite;
+}
+@keyframes oc-pulse-run {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--registry-cyan) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+/* Reporting-chain rank kicker above the seat name (CEO / Manager). */
+.oc-role-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.oc-role-kicker--manager {
+  color: var(--text-muted);
+}
+/* Last-heartbeat sub-line beneath the chips row. */
+.oc-heartbeat {
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.oc-wallet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-success);
+  background: color-mix(in srgb, var(--verified-emerald) 14%, transparent);
+  max-width: 100%;
+  min-width: 0;
+}
+.oc-wallet svg {
+  width: 10px;
+  height: 10px;
+  flex: none;
+}
+/* text-overflow can't ellipsize a flex container's own text node — it needs
+   this dedicated inline block child. */
+.oc-wallet-text {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Expanded flow peek: elevated popover -------------------------------- */
+/* Absolute so the node keeps its measured size (the precomputed layout never
+   has to shift); the canvas raises the expanded node's zIndex above every
+   sibling, and the caret + shadow-lg make it read as a floating peek, not a
+   colliding layer. Opens UPWARD: seats are always the chart's bottom rank
+   and both product contexts clip the canvas (fixed height + overflow
+   hidden), so a downward popover would fall outside the viewport. */
+.oc-flowpop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 252px;
+  padding: 10px 12px;
+  background: var(--ink-panel);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 30;
+  cursor: default;
+}
+.oc-flowpop::before {
+  content: "";
+  position: absolute;
+  bottom: -5.5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  transform: rotate(45deg);
+  background: var(--ink-panel);
+  border-right: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.oc-flowpop-note {
+  display: block;
+  font-size: var(--text-label);
+  color: var(--text-secondary);
+}
+.oc-flowpop-note--warning {
+  color: var(--text-warning);
+}
+.oc-flowpop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* A 12-step flow would out-grow the clipped canvas; scroll inside the
+     popover instead of spilling past the viewport. */
+  max-height: 236px;
+  overflow-y: auto;
+}
+.oc-flowpop-node {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 4px 8px;
+  background: var(--ink-control);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-label);
+}
+.oc-flowpop-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--oc-accent);
+  flex: none;
+}
+.oc-flowpop-node-text {
+  min-width: 0;
+}
+.oc-flowpop-node-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.oc-flowpop-node-type {
+  color: var(--text-muted);
+}
+.oc-flowpop-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: var(--text-label);
+}
+
+/* ---- Canvas chrome: controls + legend ------------------------------------ */
+/* Button sizing comes from site.css's global
+   `.react-flow .react-flow__controls-button` rule (44px targets); this only
+   themes the surfaces so the stack tracks light/dark tokens. */
+.oc-canvas .react-flow__controls {
+  overflow: hidden;
+}
+.oc-canvas .react-flow__controls-button {
+  background: var(--ink-panel);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--text-secondary);
+}
+.oc-canvas .react-flow__controls-button:last-child {
+  border-bottom: none;
+}
+.oc-canvas .react-flow__controls-button:hover {
+  background: var(--canvas-bg);
+  color: var(--text-primary);
+}
+.oc-canvas .react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+.oc-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.7rem;
+  margin: 10px;
+  padding: 0.4rem 0.65rem;
+  background: var(--ink-panel);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+.oc-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.oc-swatch {
+  flex: none;
+  display: inline-block;
+}
+.oc-swatch--company {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  border: 1.5px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+}
+.oc-swatch--dept {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--registry-cyan) 0 50%, var(--violet) 50% 100%);
+}
+/* Lifecycle status swatches — background set inline from seatStatusMeta's
+   token var, same source as the seat dots. */
+.oc-swatch--status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.oc-swatch--status.is-pulsing {
+  animation: oc-pulse-run 2.2s ease-out infinite;
+}
+.oc-swatch--live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  animation: oc-pulse 2.2s ease-out infinite;
+}
+/* Ring, matching the earning seat's ring treatment (vs the live dot). */
+.oc-swatch--earning {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--verified-emerald);
+  background: color-mix(in srgb, var(--verified-emerald) 15%, transparent);
+}
+
+/* ---- Empty + error states ------------------------------------------------- */
+.oc-empty-hint {
+  margin: 10px;
+  padding: 0.45rem 0.85rem;
+  background: var(--ink-panel);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.oc-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 120px;
+  padding: 24px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--text-warning);
+}

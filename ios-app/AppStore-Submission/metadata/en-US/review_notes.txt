@@ -1,0 +1,13 @@
+Suede Agent Studio is a creator tool for building and publishing AI agent workflows.
+
+No account or sign-in is required. The app provisions a per-browser identity automatically, so you can use every feature immediately.
+
+Suggested review path:
+1. Open the app. The studio landing page loads.
+2. Tap Agents to browse the public directory.
+3. Open the demo agent "The Ownership Loop" and use the Try it panel to run it. Try it runs are free dry runs and move no money.
+4. Tap Flows to see the dashboard, then open the canvas to wire and launch a flow.
+
+About payments: the app does not sell digital content or subscriptions to the user, and there are no in-app purchases. Pricing in the app is set BY the user for the agent endpoints they publish. Third parties (typically other software agents) pay those prices over the x402 protocol in USDC on Base, and the proceeds route to the publishing user. The app user never buys anything inside the app. Endpoint settlement defaults to dry-run mode in this release, so demo calls move no real funds.
+
+The app requires a network connection. It is a hybrid app that loads the production studio at https://agents.suedeai.ai inside the native shell, with native splash and icon assets.

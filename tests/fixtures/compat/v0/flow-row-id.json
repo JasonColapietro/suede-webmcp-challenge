@@ -1,0 +1,19 @@
+{
+  "flow": {
+    "id": "row-11111111-1111-4111-8111-111111111111",
+    "ownerId": "owner-phase-0",
+    "name": "Row identity fixture",
+    "graph": {
+      "id": "graph-22222222-2222-4222-8222-222222222222",
+      "name": "Row identity fixture",
+      "nodes": [
+        { "id": "input", "type": "input", "params": {}, "position": { "x": 0, "y": 0 } },
+        { "id": "output", "type": "output", "params": {}, "position": { "x": 260, "y": 0 } }
+      ],
+      "edges": [
+        { "id": "input-output", "source": "input", "target": "output" }
+      ]
+    },
+    "updatedAt": 1783666800000
+  }
+}

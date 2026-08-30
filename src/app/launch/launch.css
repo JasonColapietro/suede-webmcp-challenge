@@ -1,0 +1,107 @@
+/* /launch — page-local presentation. Composes with chrome.css + site.css and
+   uses tokens only, so :root[data-theme="dark"] restyles it with no extra
+   rules. The live-dot pulse is the only motion, and it is disabled under
+   prefers-reduced-motion. */
+
+/* ---- Hero live indicator -------------------------------------------------- */
+.launch-live {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.launch-live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--verified-emerald);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--verified-emerald) 22%, transparent);
+  animation: launch-live-pulse 2.4s ease-in-out infinite;
+}
+@keyframes launch-live-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--verified-emerald) 22%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--verified-emerald) 10%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .launch-live-dot {
+    animation: none;
+  }
+}
+.launch-live-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  /* One line, always: it fits 320px viewports (~190px), and without this
+     the hero-meta grid cell (sized for stat triplets) wrapped it to
+     "BE THE FIRST TO / LAUNCH" (QA round-2 finding 18). */
+  white-space: nowrap;
+}
+/* The live indicator is this hero's only meta content — span the stat grid
+   instead of squeezing into one third-width cell. */
+.lp-hero-meta > .launch-live {
+  grid-column: 1 / -1;
+}
+
+/* ---- Launch sequence step body ------------------------------------------- */
+.launch-step-body {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0.4rem 0 0.8rem;
+}
+
+/* ---- What-launches grid --------------------------------------------------- */
+.launch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+.launch-grid .mark {
+  margin-bottom: 0.75rem;
+  line-height: 1;
+  color: var(--primary);
+}
+
+/* ---- Protocol console ----------------------------------------------------- */
+/* Same terminal treatment as .lp-code (docs/home): the dedicated --code-*
+   tokens, which are dark in both themes, instead of the light gray panel
+   this console used to be. Comment/header inks are fixed on-dark values from
+   the code-token family, so they hold contrast on --code-bg in both themes. */
+.launch-console {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--code-text);
+  overflow-x: auto;
+}
+.launch-console .c {
+  color: var(--code-chip-text);
+}
+.launch-console .verb {
+  color: var(--code-accent);
+}
+.launch-console .hdr {
+  color: var(--code-chip-text-hover);
+}
+
+/* ---- Closing CTA band ----------------------------------------------------- */
+.launch-cta {
+  background: var(--canvas-bg);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: clamp(2rem, 5vw, 4rem);
+  text-align: center;
+}
+.launch-cta-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}

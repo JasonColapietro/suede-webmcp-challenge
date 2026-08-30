@@ -1,0 +1,19 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "OAuth", "version": "1.0.0" },
+  "servers": [{ "url": "https://oauth.example.com" }],
+  "components": {
+    "securitySchemes": {
+      "OAuth": { "type": "oauth2", "flows": {} }
+    }
+  },
+  "security": [{ "OAuth": [] }],
+  "paths": {
+    "/thing": {
+      "get": {
+        "operationId": "getThing",
+        "responses": { "204": { "description": "No content" } }
+      }
+    }
+  }
+}
