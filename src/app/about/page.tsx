@@ -9,6 +9,7 @@
  *   company templates    src/lib/company/templates.ts (COMPANY_TEMPLATES)
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -26,7 +27,7 @@ const PAGE_DESCRIPTION =
 const PAGE_URL = `${SITE_URL}/about`;
 const LAST_UPDATED = "2026-08-23";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/about" },
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 /** Canonical @ids — same nodes suedeai.ai publishes; see layout.tsx note. */
 const SUEDE_ORG_ID = "https://suedeai.ai/#organization";

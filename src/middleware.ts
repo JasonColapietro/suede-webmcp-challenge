@@ -22,6 +22,7 @@ import {
   GOOGLE_PLAY_HOME_PATH,
 } from "@/lib/google-play-access-only";
 import { canonicalAnonymousOwnerId } from "@/lib/anonymous-owner";
+import { isReleasedIosShell, REQUEST_TARGET_HEADER } from "@/lib/native-shell";
 
 const OWNER_COOKIE = "agx_owner";
 const ONE_YEAR_S = 60 * 60 * 24 * 365;
@@ -114,11 +115,25 @@ export function middleware(request: NextRequest): NextResponse {
     return NextResponse.next();
   }
 
+  if (
+    request.nextUrl.pathname === "/"
+    && isReleasedIosShell(request.headers.get("user-agent"))
+  ) {
+    const flows = request.nextUrl.clone();
+    flows.pathname = "/flows";
+    flows.search = "";
+    return NextResponse.redirect(flows, 307);
+  }
+
   const fromCookie = canonicalAnonymousOwnerId(request.cookies.get(OWNER_COOKIE)?.value);
   const fromHeader = canonicalAnonymousOwnerId(request.headers.get("x-owner-id"));
   const owner = fromCookie ?? fromHeader ?? crypto.randomUUID();
 
   const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(
+    REQUEST_TARGET_HEADER,
+    `${request.nextUrl.pathname}${request.nextUrl.search}`,
+  );
   requestHeaders.set("x-owner-id", owner);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });

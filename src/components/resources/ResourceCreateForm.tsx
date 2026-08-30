@@ -151,7 +151,7 @@ export default function ResourceCreateForm(): React.JSX.Element {
       <header className="ws-head resource-page-head">
         <p className="resource-kicker">Entry brief</p>
         <h1>Frame one resource-backed job</h1>
-        <p className="ws-head-sub">Choose a starting lens, narrow the job, then add a manual source next. No sign-in is required to create or test.</p>
+        <p className="ws-head-sub">Choose a starting lens, narrow the job, then add a manual source next.</p>
       </header>
 
       <form className="resource-create" onSubmit={(event) => void onSubmit(event)}>

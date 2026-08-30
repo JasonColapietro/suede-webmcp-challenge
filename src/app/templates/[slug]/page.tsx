@@ -16,6 +16,7 @@ import {
   getTemplateDetail,
   listTemplateDetailPageSlugs,
 } from "@/lib/template-summaries";
+import { buildTemplateMetadataDescription } from "@/lib/metadata-copy";
 import "../../chrome.css";
 import "../../site.css";
 import "../template-pages.css";
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: RouteParams): Promise<Metadat
   const detail = getTemplateDetail(slug);
   if (!detail) return {};
   const title = `${detail.name} Agent Template | Suede Agent Studio`;
-  const description = detail.pitchProse;
+  const description = buildTemplateMetadataDescription(detail);
   return {
     title: { absolute: title },
     description,

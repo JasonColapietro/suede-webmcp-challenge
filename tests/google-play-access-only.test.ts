@@ -77,6 +77,7 @@ describe("blocked commerce discovery", () => {
       "/.well-known/agent-card.json",
       "/.well-known/ai-plugin.json",
       "/api/catalog",
+      "/api/mobile/resource-packs",
       "/api/services",
       "/api/mcp",
       "/api/cli/agents",

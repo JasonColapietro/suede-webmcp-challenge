@@ -104,8 +104,9 @@ describe("public payment-state copy", () => {
     const agentOg = source("src/app/a/[slug]/opengraph-image.tsx");
     const combined = SOURCES.map(source).join("\n");
 
-    expect(home).toMatch(/entry\.acceptsPayment\s*&&\s*entry\.settledCalls\s*>\s*0/u);
-    expect(home).not.toMatch(/catalog\.slice\(0,\s*6\)/u);
+    expect(home).toMatch(/Build agents that can earn while you sleep\./u);
+    expect(home).toMatch(/paid calls are enabled/u);
+    expect(home).not.toMatch(/guarantee(?:d)? (?:income|revenue|earnings)|guaranteed-income/iu);
     expect(agentDetail).toMatch(/readiness\.previewAvailable/u);
     expect(agentOg).toMatch(/agent\?\.status\s*!==\s*"live"\)\s*notFound\(\)/u);
     expect(agentOg).toMatch(/if\s*\(!publishedGraph\)\s*notFound\(\)/u);

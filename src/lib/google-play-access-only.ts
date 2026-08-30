@@ -67,6 +67,7 @@ export const GOOGLE_PLAY_BLOCKED_COMMERCE_DISCOVERY_PATH_PREFIXES = [
   "/.well-known/x402",
   "/.well-known/x402.json",
   "/api/catalog",
+  "/api/mobile/resource-packs",
   "/api/services",
   "/api/cli/agents",
   "/api/mcp",

@@ -253,6 +253,15 @@ export function listTemplateDetailPageSlugs(): string[] {
     .filter((slug) => !staticSegments.has(slug));
 }
 
+/** Compact, alphabetized entries for the server-rendered guide index. */
+export function buildTemplateDetailIndex(): Array<Pick<TemplateDetail, "slug" | "name">> {
+  return listTemplateDetailPageSlugs()
+    .map((slug) => getTemplateDetail(slug))
+    .filter((detail): detail is TemplateDetail => detail !== null)
+    .map(({ slug, name }) => ({ slug, name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 /** A related-template card on a detail page: name, price-free pitch, link. */
 export interface RelatedTemplateCard {
   slug: string;

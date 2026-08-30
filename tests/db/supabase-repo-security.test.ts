@@ -361,6 +361,16 @@ describe("SupabaseRepo security and billing invariants", () => {
       .rejects.toThrow("transaction denied");
   });
 
+  it("fails closed when the owner flow list returns a Supabase error", async () => {
+    const query = readQuery({
+      data: null,
+      error: { message: "unavailable" },
+    });
+    const repo = new SupabaseRepo(client({ from: vi.fn(() => query) }));
+
+    await expect(repo.listFlows("owner")).rejects.toThrow(/^unavailable$/u);
+  });
+
   it("fails closed on unexpected company-membership and company lookup errors", async () => {
     const query: Record<string, unknown> = {};
     query.select = vi.fn(() => query);

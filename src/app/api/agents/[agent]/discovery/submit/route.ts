@@ -3,15 +3,13 @@
  *
  * Push an agent to one discovery venue and record the real result. What each
  * mechanism does:
- *  - push-free (x402scout): server-side POST to the free /register endpoint;
- *    record the listing on a 2xx.
  *  - push-github: open a real PR/issue via the GitHub REST API — but ONLY when
  *    GITHUB_DISTRIBUTION_TOKEN is configured. Absent → an honest 501, never a
  *    fake success.
  *  - auto / manual / paid: not push-able from here — 409 with a machine reason.
- *    Bazaar is settlement-driven, Satring costs money (human approval), pay.sh
- *    and Agentic.Market have no public API; the console shows the generated
- *    draft or the settlement toggle instead.
+ *    Bazaar and Agentic.Market are settlement-driven, Satring costs money
+ *    (human approval), and pay.sh has no public API; the console shows the
+ *    relevant draft or settlement guidance instead.
  *
  * Auth mirrors the settlement route: a same-origin session cookie (with the
  * fetch-metadata + JSON contract) or an anonymous workspace Bearer key. Only
@@ -30,8 +28,6 @@ import {
   buildAwesomeListLine,
   buildDiscoveryIssueBody,
   buildServiceDescriptor,
-  buildX402ScoutRegisterBody,
-  NoPayoutWalletError,
 } from "@/lib/distribution/payloads";
 
 export const runtime = "nodejs";
@@ -74,7 +70,7 @@ function nonPushReason(venue: DiscoveryVenue): { error: string; reason: string }
   if (venue.mechanism === "manual") {
     return { error: "venue_is_manual", reason: "venue_is_manual" };
   }
-  // auto (Bazaar, x402search)
+  // auto (Bazaar and Agentic.Market)
   return { error: "venue_is_automatic", reason: `${venue.id}_is_automatic` };
 }
 
@@ -268,7 +264,7 @@ export async function POST(req: Request, { params }: RouteContext): Promise<Next
     }
 
     // Non-push mechanisms: honest 409, the console shows the draft/toggle.
-    if (venue.mechanism !== "push-free" && venue.mechanism !== "push-github") {
+    if (venue.mechanism !== "push-github") {
       return NextResponse.json(nonPushReason(venue), { status: 409 });
     }
 
@@ -278,45 +274,6 @@ export async function POST(req: Request, { params }: RouteContext): Promise<Next
       return NextResponse.json(
         { error: "agent_not_public", reason: "agent_not_in_live_catalog" },
         { status: 409 },
-      );
-    }
-
-    // ── push-free: x402Scout / Bazaar discovery API ──────────────────────
-    if (venue.mechanism === "push-free") {
-      let body: ReturnType<typeof buildX402ScoutRegisterBody>;
-      try {
-        body = buildX402ScoutRegisterBody(entry);
-      } catch (error) {
-        if (error instanceof NoPayoutWalletError) {
-          return NextResponse.json({ error: "NO_PAYOUT_WALLET", reason: error.message }, { status: 400 });
-        }
-        throw error;
-      }
-      let status = 0;
-      try {
-        const res = await fetch(`${venue.url.replace(/\/+$/, "")}/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-          signal: AbortSignal.timeout(SUBMIT_TIMEOUT_MS),
-        });
-        status = res.status;
-      } catch {
-        status = 0;
-      }
-      if (status >= 200 && status < 300) {
-        const listing = await repo.upsertAgentListing({
-          agentId: agent.id,
-          venueId: venue.id,
-          status: "submitted",
-          externalUrl: venue.url,
-        });
-        return NextResponse.json({ venue: venue.id, status: listing.status, externalUrl: listing.externalUrl });
-      }
-      await repo.upsertAgentListing({ agentId: agent.id, venueId: venue.id, status: "failed", externalUrl: null });
-      return NextResponse.json(
-        { error: "venue_submission_failed", reason: status === 0 ? "network_error" : `http_${status}` },
-        { status: 502 },
       );
     }
 

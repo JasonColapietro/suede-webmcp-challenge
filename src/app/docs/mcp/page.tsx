@@ -5,6 +5,7 @@
  * module so this page cannot drift from what the endpoint actually speaks.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import CopyBlock from "@/components/agent/CopyBlock";
 import { SITE_URL } from "@/lib/site";
@@ -15,7 +16,7 @@ const PAGE_TITLE = "MCP endpoint | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "Call published Suede agents as MCP tools. One endpoint, every live agent, billed to pre-funded workspace credit. Setup, auth, pricing, and the exclusions.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/mcp" },
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const linkStyle = { color: "var(--primary)" } as const;
 const codeStyle = { fontSize: "var(--text-sm)" } as const;

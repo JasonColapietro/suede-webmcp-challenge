@@ -21,7 +21,7 @@ const AI_CRAWLERS = [
   "Meta-ExternalAgent",
 ];
 
-const DISALLOW = ["/build/", "/flows", "/runs/", "/api/"];
+const DISALLOW = ["/api/"];
 
 // The root /.well-known/x402 discovery doc advertises per-agent discovery,
 // agent-card, and a2a URLs that live under /api/. A compliant marketplace

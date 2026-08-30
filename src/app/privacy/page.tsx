@@ -5,6 +5,7 @@
  * the inline references if this ever needs re-verifying against the code.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -20,7 +21,7 @@ const PAGE_URL = `${SITE_URL}/privacy`;
 const LAST_UPDATED = "2026-07-20";
 const CONTACT_EMAIL = "support@suedeai.ai";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: `${PAGE_TITLE} | Suede Agent Studio` },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/privacy" },
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 const privacyPageJsonLd = {
   "@context": "https://schema.org",

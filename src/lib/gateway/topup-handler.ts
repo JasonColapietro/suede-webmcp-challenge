@@ -8,8 +8,11 @@
  * Server-only.
  */
 import { z } from "zod";
-import { verifyAndSettle } from "@/lib/rails/x402-verify";
-import { USDC_BASE_ASSET } from "@/lib/payout";
+import {
+  buildX402PaymentRequired,
+  verifyAndSettle,
+  type X402PaymentRequired,
+} from "@/lib/rails/x402-verify";
 import type { FlowRepo } from "@/lib/db/repo";
 
 // ---------------------------------------------------------------------------
@@ -28,20 +31,9 @@ export const TopupTierSchema = z
 // Result types
 // ---------------------------------------------------------------------------
 
-export type TopupChallengeResult = {
+export type TopupChallengeResult = X402PaymentRequired & {
   ok: false;
   status: 402;
-  x402Version: 1;
-  error: string;
-  accepts: Array<{
-    scheme: string;
-    network: string;
-    maxAmountRequired: string;
-    resource: string;
-    payTo: string;
-    asset: string;
-    description: string;
-  }>;
 };
 
 export type TopupSuccessResult = {
@@ -96,24 +88,20 @@ export async function handleGatewayTopup(
     return { ok: false, status: 503, error: "billing not provisioned" };
   }
 
-  const resource = `/api/gateway/topup?tier=${tier}`;
+  const resource = `${SITE_ORIGIN}/api/gateway/topup?tier=${tier}`;
+  const description = `Suede gateway credit - $${tier} USDC`;
 
   const challenge = (): TopupChallengeResult => ({
     ok: false,
     status: 402,
-    x402Version: 1,
-    error: "payment required",
-    accepts: [
-      {
-        scheme: "exact",
-        network: "base-mainnet",
-        maxAmountRequired: String(tier),
-        resource,
-        payTo: sellerWallet,
-        asset: USDC_BASE_ASSET,
-        description: `Suede gateway credit — $${tier} USDC`,
-      },
-    ],
+    ...buildX402PaymentRequired({
+      priceUsdc: tier,
+      payTo: sellerWallet,
+      resource,
+      description,
+      serviceName: "Suede Agent Studio",
+      tags: ["suede", "gateway", "topup", "x402"],
+    }),
   });
 
   if (!paymentHeader) {
@@ -127,6 +115,9 @@ export async function handleGatewayTopup(
       payTo: sellerWallet,
       amountUsdc: tier,
       resource,
+      description,
+      serviceName: "Suede Agent Studio",
+      tags: ["suede", "gateway", "topup", "x402"],
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "settlement error";

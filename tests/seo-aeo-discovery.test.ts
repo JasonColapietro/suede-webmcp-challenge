@@ -266,7 +266,7 @@ describe("public claim boundaries", () => {
 });
 
 describe("indexable page discovery", () => {
-  it("keeps every audited active route in the sitemap and crawl graph", async () => {
+  it("keeps every audited public route in the sitemap and crawl graph", async () => {
     const [sitemap, footer, templates, featuredPages] = await Promise.all([
       readFile(new URL("../src/app/sitemap.ts", import.meta.url), "utf8"),
       readFile(new URL("../src/components/site/SiteFooter.tsx", import.meta.url), "utf8"),
@@ -276,10 +276,8 @@ describe("indexable page discovery", () => {
 
     const activeRoutes = [
       "/compare/gumloop-alternative",
-      "/grade",
       "/pricing",
       "/rankings/best-ai-agent-builders",
-      "/start",
       "/templates",
       "/templates/grade-rebuilder",
       "/templates/competitor-tracker",

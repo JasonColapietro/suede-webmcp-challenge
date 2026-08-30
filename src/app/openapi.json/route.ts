@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { SITE_URL } from "@/lib/site";
-import { buildCatalog } from "@/lib/catalog";
+import { buildCatalog, type CatalogEntry } from "@/lib/catalog";
 import { RESOURCE_CONTRACT_EXTENSION_URI } from "@/lib/public-service-contract";
 import { projectAp2Discovery } from "@/lib/discovery/agent-card";
 import { publicAp2RuntimeStatus } from "@/lib/rails/ap2/config";
@@ -70,6 +70,86 @@ const ERROR_RESPONSE = {
   },
 } as const;
 
+const AGENT_DISCOVERY_GUIDANCE =
+  "Use the concrete paid service routes under /api/agents/<slug>/run when an operation includes x-payment-info. Send the documented JSON input, follow the x402 HTTP 402 challenge, and retry with PAYMENT-SIGNATURE. Use dryRun only for explicitly non-settling previews.";
+
+function buildAgentCashPaidPaths(entries: readonly CatalogEntry[]) {
+  return Object.fromEntries(entries.flatMap((entry) => {
+    if (entry.paymentState !== "payment-enabled" || !entry.acceptsPayment) return [];
+    const path = `/api/agents/${encodeURIComponent(entry.slug)}/run`;
+    const operationId = `runPublishedAgent_${entry.slug.replaceAll("-", "_")}`;
+    const outputSchema = entry.outputSchema ?? {
+      type: "object",
+      additionalProperties: true,
+    };
+    return [[path, {
+      post: {
+        operationId,
+        summary: `Run ${entry.name}`,
+        description:
+          `${entry.description ?? entry.summary} This concrete Live route charges ${entry.priceUsdc.toFixed(6)} USDC per successful x402-authorized call.`,
+        parameters: [{
+          name: "PAYMENT-SIGNATURE",
+          in: "header",
+          required: false,
+          description: "Base64-encoded x402 v2 payment payload returned after satisfying the HTTP 402 challenge.",
+          schema: { type: "string" },
+        }],
+        "x-payment-info": {
+          protocols: [{ x402: {} }],
+          price: {
+            mode: "fixed",
+            currency: "USD",
+            amount: entry.priceUsdc.toFixed(6),
+          },
+        },
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: { input: entry.inputSchema },
+                required: ["input"],
+                additionalProperties: false,
+              },
+              ...(entry.exampleInput ? { example: { input: entry.exampleInput } } : {}),
+            },
+          },
+        },
+        responses: {
+          "200": {
+            description: "Run completed after verified x402 settlement.",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/RunResult" },
+                ...(entry.exampleOutput ? {
+                  example: {
+                    runId: "run_123",
+                    status: "done",
+                    totalCostUsdc: entry.priceUsdc,
+                    outputs: {},
+                    result: entry.exampleOutput,
+                    settled: true,
+                  },
+                } : {}),
+              },
+            },
+          },
+          "400": ERROR_RESPONSE,
+          "402": { description: "Payment required; response carries current x402 v2 terms." },
+          "404": ERROR_RESPONSE,
+          "409": ERROR_RESPONSE,
+          "429": ERROR_RESPONSE,
+          "500": ERROR_RESPONSE,
+          "503": ERROR_RESPONSE,
+        },
+        "x-suede-output-schema": outputSchema,
+      },
+    }]];
+  }));
+}
+
 const OPENAPI_DOCUMENT = {
   openapi: "3.1.0",
   info: {
@@ -77,6 +157,7 @@ const OPENAPI_DOCUMENT = {
     version: "0.3.0",
     description:
       "Public catalog, A2A 1.0 HTTP+JSON execution, discovery documents, portable templates, and machine-run endpoints for agents published from Suede Agent Studio. Priced live runs use x402; explicit dry-runs and free agents can run without payment.",
+    "x-guidance": AGENT_DISCOVERY_GUIDANCE,
     contact: {
       name: "Suede Agent Studio support",
       email: "support@suedeai.ai",
@@ -124,7 +205,7 @@ const OPENAPI_DOCUMENT = {
         operationId: "topUpWorkspaceCredit",
         summary: "Fund workspace credit over x402 (USDC on Base)",
         description:
-          "Machine-payable credit topup. Authenticate with Authorization: Bearer workspace-key. Without an X-PAYMENT header the route answers HTTP 402 with x402 payment instructions; pay and retry with the X-PAYMENT header to credit the workspace.",
+          "Machine-payable credit topup. Authenticate with Authorization: Bearer workspace-key. Without a payment proof the route answers HTTP 402 with x402 v2 payment instructions in the body and PAYMENT-REQUIRED header; pay and retry with PAYMENT-SIGNATURE to credit the workspace. Legacy X-PAYMENT remains accepted during migration.",
         parameters: [
           {
             name: "tier",
@@ -134,10 +215,18 @@ const OPENAPI_DOCUMENT = {
             schema: { type: "integer", enum: [1, 5, 20] },
           },
           {
+            name: "PAYMENT-SIGNATURE",
+            in: "header",
+            required: false,
+            description: "Preferred x402 v2 payment payload settling the selected tier.",
+            schema: { type: "string" },
+          },
+          {
             name: "X-PAYMENT",
             in: "header",
             required: false,
-            description: "x402 payment payload settling the selected tier.",
+            deprecated: true,
+            description: "Legacy x402 v1 payment payload retained during migration.",
             schema: { type: "string" },
           },
         ],
@@ -145,7 +234,15 @@ const OPENAPI_DOCUMENT = {
           "200": { description: "Credit added: { creditsAdded, transaction, payer }." },
           "400": ERROR_RESPONSE,
           "401": ERROR_RESPONSE,
-          "402": { description: "Payment required; body carries x402 accepts." },
+          "402": {
+            description: "Payment required; body and PAYMENT-REQUIRED header carry x402 v2 requirements.",
+            headers: {
+              "PAYMENT-REQUIRED": {
+                description: "Base64-encoded x402 v2 PaymentRequired document.",
+                schema: { type: "string" },
+              },
+            },
+          },
           "500": ERROR_RESPONSE,
           "503": ERROR_RESPONSE,
         },
@@ -807,6 +904,10 @@ export async function GET(): Promise<NextResponse> {
   });
   const document = {
     ...OPENAPI_DOCUMENT,
+    paths: {
+      ...OPENAPI_DOCUMENT.paths,
+      ...buildAgentCashPaidPaths(entries),
+    },
     "x-suede-resource-contracts": {
       extensionUri: RESOURCE_CONTRACT_EXTENSION_URI,
       contracts: resourceContracts,

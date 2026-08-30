@@ -604,9 +604,13 @@ describe("handleGatewayTopup", () => {
       if (!result.ok) {
         expect(result.status).toBe(402);
         if (result.status === 402) {
-          expect(result.x402Version).toBe(1);
+          expect(result.x402Version).toBe(2);
           expect(result.accepts).toHaveLength(1);
-          expect(result.accepts[0]?.maxAmountRequired).toBe("1");
+          expect(result.resource.url).toBe(
+            "https://agents.suedeai.ai/api/gateway/topup?tier=1",
+          );
+          expect(result.accepts[0]?.network).toBe("eip155:8453");
+          expect(result.accepts[0]?.amount).toBe("1000000");
         }
       }
     } finally {

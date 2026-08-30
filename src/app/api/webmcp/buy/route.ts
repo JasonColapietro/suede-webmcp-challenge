@@ -23,7 +23,6 @@
  * src/lib/google-play-access-only.ts, so it stays unreachable from the Play
  * host by that module's deny-by-default rule.
  */
-import { z } from "zod";
 import { privateJson, readBoundedJson, validateMutationHeaders } from "@/lib/runtime/api-contract";
 import { resolveOwnerId } from "@/lib/auth";
 import { buildCatalog } from "@/lib/catalog";
@@ -31,14 +30,9 @@ import { createMcpDeps } from "@/lib/mcp/service";
 import { toolNameForSlug } from "@/lib/mcp/tools";
 import { ipFromRequest } from "@/lib/rate-limit";
 import { checkBuyRateLimits, guardBuyRequest } from "@/lib/webmcp/buy-guard";
+import { isWebMcpBuyable, webMcpBuyBodySchema } from "@/lib/webmcp/buy-contract";
 
 export const runtime = "nodejs";
-
-const buyBodySchema = z.object({
-  slug: z.string().min(1).max(200),
-  input: z.record(z.string(), z.unknown()).default({}),
-  confirmedPriceUsdc: z.number().finite().min(0),
-}).strict();
 
 /** Reads `structuredContent` for the fields the buyer needs to keep. */
 function receiptFrom(structured: unknown): { runId?: string; chargedUsdc?: number } {
@@ -73,7 +67,7 @@ export async function POST(req: Request): Promise<Response> {
     return privateJson({ error: "request body was invalid or too large" }, 413);
   }
 
-  const parsed = buyBodySchema.safeParse(raw);
+  const parsed = webMcpBuyBodySchema.safeParse(raw);
   if (!parsed.success) {
     // Name the offending field: `.strict()` rejects an extra key and a
     // stringified number identically, and "invalid request" alone gave the
@@ -108,6 +102,8 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   try {
+    // Freshly read server-side price and buyability. The client's cached copy
+    // is never trusted for either.
     const entry = (await buildCatalog()).find((row) => row.slug === parsed.data.slug);
     if (!entry) {
       return privateJson({ error: "not found" }, 404);
@@ -117,7 +113,7 @@ export async function POST(req: Request): Promise<Response> {
       request: req,
       listedPriceUsdc: entry.priceUsdc,
       confirmedPriceUsdc: parsed.data.confirmedPriceUsdc,
-      buyable: entry.acceptsPayment && entry.publishedLive,
+      buyable: isWebMcpBuyable(entry),
     });
     if (!verdict.ok) {
       return privateJson({ error: verdict.error }, verdict.status);

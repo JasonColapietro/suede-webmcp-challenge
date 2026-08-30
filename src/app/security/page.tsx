@@ -14,6 +14,7 @@
  * The certification statement matches the existing guardrail in src/app/fit/page.tsx.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -29,7 +30,7 @@ const PAGE_URL = `${SITE_URL}/security`;
 const LAST_UPDATED = "2026-08-03";
 const SECURITY_EMAIL = "security@suedeai.ai";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: `${PAGE_TITLE} | Suede Agent Studio` },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/security" },
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 const securityPageJsonLd = {
   "@context": "https://schema.org",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -6,7 +7,7 @@ import TemplateFacts from "../TemplateFacts";
 import "../../chrome.css";
 import "../../site.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "AI Lead Qualifier Agent: Score and Deliver Every Lead | Suede Agent Studio" },
   description:
     "Score inbound leads 1–10 against your ICP, explain the next action, and deliver the qualification through a reviewed CRM webhook Connection.",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const WHAT_YOU_GET = [
   {

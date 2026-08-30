@@ -11,7 +11,6 @@ export const OG_IMAGE = `${SITE_URL}/opengraph-image`;
 /**
  * One freshness date for the whole site. Bump it whenever homepage copy or
  * structure meaningfully changes. Read by the footer's visible "Site last
- * updated" line, the homepage WebPage JSON-LD `dateModified`, and the
- * sitemap's `/` entry, so those three can never drift apart again.
+ * updated" line and the sitemap's `/` entry.
  */
-export const SITE_LAST_UPDATED = "2026-08-08";
+export const SITE_LAST_UPDATED = "2026-08-26";

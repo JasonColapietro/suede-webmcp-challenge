@@ -4,13 +4,14 @@
  * route, run route, webhook auth, and engine guards.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 
 const PAGE_TITLE = "Troubleshooting | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "Symptom, cause, fix: launch validation errors, repeated 402s, webhook 401s, cost-ceiling aborts, loop and nesting limits, rate limiting, and payout misconfiguration.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/troubleshooting" },
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 interface TroubleEntry {
   symptom: string;

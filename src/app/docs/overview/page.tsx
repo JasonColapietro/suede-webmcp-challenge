@@ -3,6 +3,7 @@
  * around the flow contract, what launching produces, and honest scope notes.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import { buildTemplateSummaries } from "@/lib/template-summaries";
 import { PUBLIC_DISCOVERABLE_SUEDE_ENDPOINTS } from "@/lib/rails/suede-endpoints";
@@ -12,7 +13,7 @@ const PAGE_TITLE = "What is Suede Agent Studio? | Docs";
 const PAGE_DESCRIPTION =
   "A visual node-graph builder where published flows report preview, payment-enabled, or unavailable state. What launching produces and how calls work.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/overview" },
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const PARTS: { name: string; body: string; color: string }[] = [
   {

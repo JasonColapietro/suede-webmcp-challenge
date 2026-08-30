@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -6,7 +7,7 @@ import TemplateFacts from "../TemplateFacts";
 import "../../chrome.css";
 import "../../site.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "AI Competitor Tracking Agent | Suede Agent Studio" },
   description:
     "An AI agent that runs weekly and returns a structured competitor brief: pricing changes, feature launches, messaging shifts. $0.15 per brief.",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const TRACKS = [
   {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -6,7 +7,7 @@ import TemplateFacts from "../TemplateFacts";
 import "../../chrome.css";
 import "../../site.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "Grade Rebuilder Template | Suede Agent Studio" },
   description:
     "Turn an agent grade into a build-ready Agent Studio workflow spec that targets the weakest pillar and prices the rebuilt agent for pay-per-call use.",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const OUTPUTS = [
   {

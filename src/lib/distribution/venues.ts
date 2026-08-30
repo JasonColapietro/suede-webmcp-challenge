@@ -16,12 +16,11 @@
 /**
  * How a venue actually accepts a listing:
  * - `auto`        — the venue indexes you on its own; there is nothing to submit.
- * - `push-free`   — a free, unauthenticated REST endpoint we can POST to today.
  * - `push-github` — a GitHub PR or issue we can open programmatically (needs a token).
  * - `paid`        — submission costs money; blocked behind human payment approval.
  * - `manual`      — no public API; a human sends the generated draft to a maintainer.
  */
-export type VenueMechanism = "auto" | "push-free" | "push-github" | "paid" | "manual";
+export type VenueMechanism = "auto" | "push-github" | "paid" | "manual";
 
 export interface DiscoveryVenueGithub {
   /** owner/repo the PR or issue targets. */
@@ -48,13 +47,6 @@ export interface DiscoveryVenue {
 }
 
 export const DISCOVERY_VENUES: readonly DiscoveryVenue[] = [
-  {
-    id: "x402scout",
-    name: "x402Scout / Bazaar discovery API",
-    url: "https://x402-discovery-api.onrender.com",
-    mechanism: "push-free",
-    status: "Free machine registration. One click submits your live listing.",
-  },
   {
     id: "awesome-x402-xpaysh",
     name: "awesome-x402 (xpaysh)",
@@ -95,18 +87,10 @@ export const DISCOVERY_VENUES: readonly DiscoveryVenue[] = [
   {
     id: "bazaar",
     name: "Coinbase Bazaar",
-    url: "https://www.coinbase.com/developer-platform/products/bazaar",
+    url: "https://docs.cdp.coinbase.com/x402/seller/get-discovered",
     mechanism: "auto",
     status:
-      "Coinbase Bazaar lists you automatically on your first settled call. Enable settlement, take one paid call.",
-  },
-  {
-    id: "x402search",
-    name: "x402search.xyz",
-    url: "https://x402search.xyz",
-    mechanism: "auto",
-    status:
-      "Crawls your /.well-known/x402 once you appear on any indexed list. No submission needed.",
+      "Declare Bazaar metadata and complete one paid call through the CDP Facilitator. No registration form.",
   },
   {
     id: "satring",
@@ -122,14 +106,15 @@ export const DISCOVERY_VENUES: readonly DiscoveryVenue[] = [
     name: "pay.sh",
     url: "https://pay.sh",
     mechanism: "manual",
-    status: "Provider YAML — send the generated spec to the maintainers.",
+    status: "Provider YAML: send the generated spec to the maintainers.",
   },
   {
     id: "agentic-market",
     name: "Agentic.Market",
     url: "https://agentic.market",
-    mechanism: "manual",
-    status: "No public API. Send the generated outreach to their Discord/GitHub.",
+    mechanism: "auto",
+    status:
+      "Indexes services automatically when the CDP Facilitator processes a payment with Bazaar discovery enabled. No manual registration.",
   },
 ] as const;
 

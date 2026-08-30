@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { noIndexFollowMetadata } from "@/lib/seo-metadata";
 import { GooglePlayAccessOnlyProvider } from "@/contexts/google-play-access-only-context";
 import { isGooglePlayAccessOnlyHost } from "@/lib/google-play-access-only";
+import { requireStudioAccount } from "@/lib/studio-auth";
 
 export const metadata: Metadata = {
   ...noIndexFollowMetadata("/flows"),
@@ -19,6 +20,7 @@ export default async function FlowsLayout({
 }: {
   readonly children: React.ReactNode;
 }): Promise<React.JSX.Element> {
+  await requireStudioAccount("/flows");
   const host = (await headers()).get("host");
   return (
     <GooglePlayAccessOnlyProvider enabled={isGooglePlayAccessOnlyHost(host)}>

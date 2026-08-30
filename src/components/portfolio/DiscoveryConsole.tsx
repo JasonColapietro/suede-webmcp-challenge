@@ -40,7 +40,6 @@ interface AgentListing {
 
 interface DiscoveryPayloads {
   serviceDescriptor: Record<string, unknown>;
-  x402scoutRegister: Record<string, unknown> | null;
   satring: { url: string; requiresPaymentV2: boolean; costUsdc: number; body: Record<string, unknown> | null };
   awesomeListLine: string;
   discoveryIssue: string;
@@ -60,7 +59,6 @@ interface DiscoveryData {
 const SETTLEMENT_DOC = "/docs/payments#free";
 
 const MECHANISM_GROUPS: { mechanism: VenueMechanism; label: string }[] = [
-  { mechanism: "push-free", label: "One click" },
   { mechanism: "push-github", label: "Opens a GitHub PR / issue" },
   { mechanism: "auto", label: "Automatic, nothing to submit" },
   { mechanism: "paid", label: "Paid, needs your approval" },
@@ -300,7 +298,7 @@ export function DiscoveryConsole({ slug }: { agentId: string; slug: string }) {
                 </p>
                 {venues.map((venue) => {
                   const listing = listingByVenue.get(venue.id);
-                  const draft = draftFor(venue, data.payloads);
+                  const draft = venue.mechanism === "auto" ? null : draftFor(venue, data.payloads);
                   const isOpen = openDraft === venue.id;
                   return (
                     <div
@@ -325,7 +323,7 @@ export function DiscoveryConsole({ slug }: { agentId: string; slug: string }) {
                         </div>
                         <div className="flex shrink-0 items-center gap-2">
                           {listing ? <ListingBadge status={listing.status} /> : null}
-                          {(venue.mechanism === "push-free" || venue.mechanism === "push-github") ? (
+                          {venue.mechanism === "push-github" ? (
                             <button
                               type="button"
                               onClick={() => void submit(venue.id)}
@@ -410,7 +408,7 @@ export function DiscoveryConsole({ slug }: { agentId: string; slug: string }) {
         <p className="eyebrow mb-3">Recorded submissions</p>
         {data.listings.length === 0 ? (
           <p style={{ color: "var(--text-muted)", fontSize: "var(--text-sm)" }}>
-            No submissions recorded yet. Use the one-click venues above to record your first.
+            No submissions recorded yet. Use an available submission option above to record your first.
           </p>
         ) : (
           <div className="overflow-x-auto">

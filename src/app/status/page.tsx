@@ -7,6 +7,7 @@
  * migration is applied to production (dark-deploy safe — see src/lib/health.ts).
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -32,7 +33,7 @@ const PAGE_DESCRIPTION =
   "Live status for Suede Agent Studio: real checks of the Studio API, the model gateway, and x402 settlement, plus availability measured from recorded data, never a marketing number.";
 const PAGE_URL = `${SITE_URL}/status`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: `${PAGE_TITLE} | Suede Agent Studio` },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/status" },
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 const GREEN = "var(--text-success)";
 const AMBER = "var(--warning-amber)";

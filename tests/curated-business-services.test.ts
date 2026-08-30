@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   curatedBusinessService,
   extractCuratedServiceResult,
@@ -15,23 +15,30 @@ vi.mock("@/lib/catalog", () => ({
   buildCatalog: vi.fn(async () => catalogState.entries),
 }));
 
+afterEach(() => {
+  catalogState.entries = [];
+});
+
 describe("curated business service registry", () => {
   const contracts = listCuratedBusinessServiceContracts();
 
-  it("contains the five exact platform-operated business services", () => {
+  it("contains the six exact platform-operated business services", () => {
     expect(contracts.map(({ slug }) => slug)).toEqual([
       "po-match-gate-mkgu0",
+      "resume-vs-jd-screener-wp72w",
       "contract-red-flag-scan-chm9v",
       "vendor-risk-read-q0jjq",
       "expense-policy-check-l8o5i",
       "bank-rec-discrepancy-finder-bw0tt",
     ]);
-    expect(new Set(contracts.map(({ templateId }) => templateId))).toHaveLength(5);
+    expect(new Set(contracts.map(({ templateId }) => templateId))).toHaveLength(6);
   });
 
   it("fails closed for customer copies and graph identity drift", () => {
+    for (const contract of contracts) {
+      expect(curatedBusinessService(contract.slug, { id: contract.templateId })).toBe(contract);
+    }
     const first = contracts[0]!;
-    expect(curatedBusinessService(first.slug, { id: first.templateId })).toBe(first);
     expect(curatedBusinessService("customer-copy", { id: first.templateId })).toBeNull();
     expect(curatedBusinessService(first.slug, { id: "other-graph" })).toBeNull();
   });
@@ -49,6 +56,11 @@ describe("curated business service registry", () => {
     expect(triggerInputContractViolations(po.inputSchema, {})).toEqual([
       'missing required field "purchaseOrder"',
       'missing required field "invoice"',
+    ]);
+    const resume = contracts.find(({ key }) => key === "resume-jd-screen")!;
+    expect(triggerInputContractViolations(resume.inputSchema, {})).toEqual([
+      'missing required field "jobDescription"',
+      'missing required field "resume"',
     ]);
     const contract = contracts.find(({ key }) => key === "contract-red-flag")!;
     expect(triggerInputContractViolations(contract.inputSchema, {
@@ -214,5 +226,53 @@ describe("curated business service registry", () => {
       /historical evidence only/iu,
     );
     expect(readinessSchema.properties).not.toHaveProperty("settlementVerified");
+  });
+
+  it("projects payment-enabled services as concrete AgentCash-discoverable OpenAPI routes", async () => {
+    const contract = contracts[0]!;
+    catalogState.entries = [{
+      id: "agentcash-paid-agent",
+      slug: contract.slug,
+      name: contract.name,
+      summary: contract.description,
+      description: contract.description,
+      priceUsdc: 0.1,
+      paymentState: "payment-enabled",
+      acceptsPayment: true,
+      inputSchema: contract.inputSchema,
+      outputSchema: contract.outputSchema,
+      exampleInput: contract.exampleInput,
+      exampleOutput: contract.exampleOutput,
+      urls: {
+        public: `/a/${contract.slug}`,
+        run: `/api/agents/${contract.slug}/run`,
+        x402: `/api/agents/${contract.slug}/.well-known/x402`,
+        agentCard: `/api/agents/${contract.slug}/.well-known/agent-card.json`,
+        a2a: `/api/agents/${contract.slug}/a2a`,
+      },
+    }];
+
+    const { GET } = await import("@/app/openapi.json/route");
+    const body = await (await GET()).json();
+    const paidPath = body.paths[`/api/agents/${contract.slug}/run`]?.post;
+
+    expect(body.info["x-guidance"]).toMatch(/concrete paid service routes/iu);
+    expect(paidPath).toMatchObject({
+      operationId: `runPublishedAgent_${contract.slug.replaceAll("-", "_")}`,
+      "x-payment-info": {
+        protocols: [{ x402: {} }],
+        price: { mode: "fixed", currency: "USD", amount: "0.100000" },
+      },
+      responses: {
+        "200": expect.any(Object),
+        "402": expect.any(Object),
+      },
+    });
+    expect(
+      paidPath.requestBody.content["application/json"].schema.properties.input,
+    ).toEqual(contract.inputSchema);
+    expect(body.paths["/api/agents/{agent}/run"].post).not.toHaveProperty(
+      "x-payment-info",
+    );
   });
 });

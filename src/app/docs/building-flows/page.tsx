@@ -4,6 +4,7 @@
  * behaviors mirror the executors in src/lib/flow/nodes.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import { NODE_META, NODE_GROUP_ORDER } from "@/lib/flow/node-meta";
 
@@ -11,7 +12,7 @@ const PAGE_TITLE = "Building a flow | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "Nodes, edges, and testing: how a flow goes from a blank canvas to a working agent. Node groups, data flow between ports, the run dock, and exactly what a dry run executes.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/building-flows" },
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 export default function BuildingFlowsPage(): React.JSX.Element {
   const groups = NODE_GROUP_ORDER.map((group) => ({

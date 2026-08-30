@@ -114,8 +114,7 @@ export default function GradeClient(): React.JSX.Element {
           </button>
         </div>
         <p id={`${fieldId}-hint`} className="guided-hint">
-          Free, no login, no payment. You get a score per pillar, a momentum read, and any
-          flags the grader raises.
+          You get a score per pillar, a momentum read, and any flags the grader raises.
         </p>
       </form>
 

@@ -17,6 +17,7 @@ import {
 } from "./protocol";
 import type { JsonObjectSchema } from "@/lib/flow/input-contract";
 import { isBuyable, isPreviewable, type ShelfEntry } from "./shelf-contract";
+import { WEBMCP_BUY_TOOL_NAME } from "./buy-contract";
 
 /**
  * Price sentence for a shelf entry.
@@ -41,7 +42,7 @@ export const WEBMCP_TOOL_NAMES = {
   find: "find_services",
   get: "get_service",
   preview: "preview_service",
-  buy: "buy_service",
+  buy: WEBMCP_BUY_TOOL_NAME,
 } as const;
 
 /**

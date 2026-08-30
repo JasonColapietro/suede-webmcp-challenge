@@ -80,6 +80,96 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
       "Inputs and outputs are stored in Agent Studio run history. See /privacy and /account-deletion.",
   },
   {
+    key: "resume-jd-screen",
+    slug: "resume-vs-jd-screener-wp72w",
+    templateId: "tpl-resume-jd-screen",
+    name: "Resume vs JD Screener",
+    collection: CURATED_BUSINESS_COLLECTION,
+    operator: "Suede Labs AI",
+    description:
+      "Compare one candidate resume with one job description. Returns an evidence-based fit score, supported and missing requirements, three interview questions, and a screening recommendation.",
+    buyerIntent:
+      "Use for a consistent first screen before a human recruiter reviews the candidate.",
+    tags: ["recruiting", "resume", "job-description", "candidate-screening", "hr"],
+    inputSchema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["jobDescription", "resume"],
+      properties: {
+        jobDescription: nonEmptyString(
+          "The complete job description, including responsibilities and required qualifications.",
+        ),
+        resume: nonEmptyString(
+          "The candidate resume text to compare with the supplied job description.",
+        ),
+      },
+    },
+    outputSchema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["fitScore", "met", "missing", "questions", "verdict"],
+      properties: {
+        fitScore: { type: "number", minimum: 0, maximum: 100 },
+        met: {
+          type: "array",
+          items: {
+            type: "object",
+            additionalProperties: false,
+            required: ["requirement", "evidence"],
+            properties: {
+              requirement: nonEmptyString("A qualification stated in the job description."),
+              evidence: nonEmptyString("Resume evidence supporting the qualification."),
+            },
+          },
+        },
+        missing: {
+          type: "array",
+          items: {
+            type: "object",
+            additionalProperties: false,
+            required: ["requirement", "note"],
+            properties: {
+              requirement: nonEmptyString("A missing or only partially supported qualification."),
+              note: nonEmptyString("Why the supplied resume does not fully support the qualification."),
+            },
+          },
+        },
+        questions: {
+          ...stringArray("Exactly three interview questions targeting gaps or unverified claims."),
+          minItems: 3,
+          maxItems: 3,
+        },
+        verdict: { type: "string", enum: ["advance", "phone screen", "reject"] },
+      },
+    },
+    exampleInput: {
+      jobDescription:
+        "Senior Backend Engineer: 5+ years, Go, Postgres, and production Kubernetes experience required.",
+      resume:
+        "Six years in backend engineering using Go and Python. Built a billing service on Postgres and operated services on ECS. No Kubernetes experience listed.",
+    },
+    exampleOutput: {
+      fitScore: 74,
+      met: [
+        { requirement: "5+ years of backend experience", evidence: "Six years in backend engineering." },
+        { requirement: "Go and Postgres", evidence: "Used Go and built a billing service on Postgres." },
+      ],
+      missing: [
+        { requirement: "Production Kubernetes", note: "The resume lists ECS but does not mention Kubernetes." },
+      ],
+      questions: [
+        "What production orchestration systems have you owned end to end?",
+        "How did you design and operate the Postgres-backed billing service?",
+        "What would you need to learn before operating this role's Kubernetes workloads?",
+      ],
+      verdict: "phone screen",
+    },
+    reviewPolicy:
+      "A human recruiter remains responsible for screening, interviewing, and hiring decisions.",
+    dataHandling:
+      "Resume, job-description, and output content are stored in Agent Studio run history. See /privacy and /account-deletion.",
+  },
+  {
     key: "contract-red-flag",
     slug: "contract-red-flag-scan-chm9v",
     templateId: "tpl-contract-redflag-scan",

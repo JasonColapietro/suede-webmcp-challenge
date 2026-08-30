@@ -5,6 +5,7 @@
  * in src/components/canvas/SuedeNode.tsx.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import {
   NODE_DEFINITIONS,
@@ -23,7 +24,7 @@ const PAGE_TITLE = "Node reference | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "Every node in the Agent Studio catalog, by group: what it does, how it behaves in a dry run, its declared effects, and what it costs per call. Derived from the shipped catalog.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/nodes" },
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 /** Mirrors GROUP_COLOR / GROUP_TEXT_COLOR in src/components/canvas/SuedeNode.tsx. */
 const GROUP_COLOR: Record<NodeGroup, string> = {

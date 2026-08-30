@@ -5,6 +5,7 @@
  * tests/no-code-agent-platform-page.test.tsx; keep it.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -13,7 +14,7 @@ import "../chrome.css";
 import "../site.css";
 import "./x402.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "Build x402 Earning Agents | Suede Agent Studio" },
   description:
     "Build AI agents that can accept exact USDC per paid Live call through x402 v2 on Base when settlement is enabled. Dry-run stays free.",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const PAGE_CAPS: { kicker: string; caps: readonly string[] } = {
   kicker: "Protocol guide + builder",

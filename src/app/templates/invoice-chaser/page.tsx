@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -6,7 +7,7 @@ import TemplateFacts from "../TemplateFacts";
 import "../../chrome.css";
 import "../../site.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "Invoice Chaser Agent Template: Automate Late Payment Reminders | Suede Agent Studio" },
   description:
     "AI invoice follow-up agent that sends polite, progressively firmer payment reminders for every overdue invoice. Runs every Monday morning. $0.05 per run.",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const WHAT_IT_DOES = [
   {

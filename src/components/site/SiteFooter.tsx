@@ -16,12 +16,12 @@ export default function SiteFooter(): React.JSX.Element {
             <p>
               The orchestration layer for agents that earn, not just run the
               business. Build agents that get work done and get paid. You draw
-              the flow as a graph of nodes &mdash; each node one step, wired to
-              the next &mdash; then launch it as a live URL that charges callers
+              the flow as a graph of nodes, each node one step, wired to
+              the next, then launch it as a live URL that charges callers
               per call. A{" "}
               <a href="https://suedeai.ai">Suede Labs AI</a> product,
               built by <Link href="/founder">Jason Colapietro</Link>, an
-              open-source contributor with 33 pull requests merged across 30
+              open-source contributor with 35 pull requests merged across 32
               open-source projects (as of August 2026), including Jest,
               Backstage, and Adobe&rsquo;s React Spectrum.
             </p>
@@ -68,6 +68,7 @@ export default function SiteFooter(): React.JSX.Element {
             <div className="lp-footer-group-links">
               <Link href="/agents">Directory</Link>
               <Link href="/launch">Launch Pad</Link>
+              <Link href="/integrations">Integrations</Link>
               <Link href="/pricing">Pricing</Link>
               <Link href="/grade">Grader</Link>
               <Link href="/firm">Visibility firm</Link>

@@ -27,6 +27,10 @@ function request(
 
 const OWNER_A = "1c1f7a1e-0000-4000-8000-000000000001";
 const OWNER_B = "1c1f7a1e-0000-4000-8000-000000000002";
+const IOS_SAFARI =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
+const IOS_WKWEBVIEW =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148";
 
 function forwardedOwner(response: Response): string | null {
   return response.headers.get("x-middleware-request-x-owner-id");
@@ -213,4 +217,32 @@ describe("owner identity middleware still works on both hosts", () => {
       expect(forwardedOwner(response)).toBe(owner);
     },
   );
+});
+
+describe("released iOS shell behavior", () => {
+  it("redirects the released WKWebView from the public root to /flows", () => {
+    const response = middleware(request(CANONICAL_HOST, "/", "GET", {
+      "user-agent": IOS_WKWEBVIEW,
+    }));
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(`https://${CANONICAL_HOST}/flows`);
+  });
+
+  it("forwards an iOS WKWebView /flows request for the later layout gate", () => {
+    const response = middleware(request(CANONICAL_HOST, "/flows", "GET", {
+      "user-agent": IOS_WKWEBVIEW,
+    }));
+
+    expect(response.status).toBe(200);
+    expect(response.cookies.get("agx_owner")?.value).toBeTruthy();
+  });
+
+  it("leaves ordinary iOS Safari on the public root", () => {
+    const response = middleware(request(CANONICAL_HOST, "/", "GET", {
+      "user-agent": IOS_SAFARI,
+    }));
+
+    expect(response.status).toBe(200);
+  });
 });

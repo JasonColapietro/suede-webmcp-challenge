@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import { Fragment } from "react";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
@@ -8,7 +9,7 @@ import "../chrome.css";
 import "../site.css";
 import "./launch.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "Agent Launch Pad | Suede Agent Studio" },
   description:
     "Publish an agent with explicit preview, payment-enabled, or unavailable state. Payment is enabled separately after readiness checks.",
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 export const revalidate = 120;
 

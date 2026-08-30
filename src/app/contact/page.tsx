@@ -3,6 +3,7 @@
  * ContactPage JSON-LD carrying a ContactPoint for the org.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -19,7 +20,7 @@ const CONTACT_EMAIL = "support@suedeai.ai";
 const SECURITY_EMAIL = "security@suedeai.ai";
 const LAST_UPDATED = "2026-08-03";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: `${PAGE_TITLE} | Suede Agent Studio` },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/contact" },
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 /** Canonical @id — same node suedeai.ai publishes; see layout.tsx note. */
 const SUEDE_ORG_ID = "https://suedeai.ai/#organization";

@@ -5,6 +5,7 @@
  * itself lives in the data module and is not rewritten here.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteNav from "@/components/site/SiteNav";
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: RouteParams): Promise<Metadat
   const title = `${article.title} | Suede Agent Studio`;
   // Visible blurb and search snippet are different jobs; see Article.metaDescription.
   const snippet = article.metaDescription ?? article.description;
-  return {
+  return withDefaultSocialImages({
     title: { absolute: title },
     description: snippet,
     alternates: { canonical: `/articles/${article.slug}` },
@@ -51,7 +52,7 @@ export async function generateMetadata({ params }: RouteParams): Promise<Metadat
       site: "@AISUEDE",
       creator: "@johnnysuede",
     },
-  };
+  });
 }
 
 function Block({ block }: { block: ArticleBlock }): React.JSX.Element {

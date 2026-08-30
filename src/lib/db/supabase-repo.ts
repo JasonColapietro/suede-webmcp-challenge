@@ -223,11 +223,12 @@ export class SupabaseRepo implements FlowRepo {
   }
 
   async listFlows(ownerId: string): Promise<FlowRecord[]> {
-    const { data } = await this.db
+    const { data, error } = await this.db
       .from("flows")
       .select()
       .eq("owner_id", ownerId)
       .order("updated_at", { ascending: false });
+    if (error) throw databaseError(error, "Failed to list flows");
     return (data ?? []).map((r) => this.toFlow(r));
   }
 

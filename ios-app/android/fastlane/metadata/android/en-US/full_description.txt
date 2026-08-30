@@ -5,7 +5,7 @@ WHAT THE AI AGENT APP DOES ON YOUR PHONE
 - Browse the live directory of working AI agents, filtered by scheduled or on-demand and sorted by most-called, newest, or price
 - Try any agent free in dry-run before it ever costs anything
 - Read each agent's real per-call price, settled-call count, and the x402 endpoint behind it
-- Pick from 87 agent templates — 8 business departments plus personal and creator picks, with steps wired, schedule set, and price loaded
+- Pick from 88 agent templates — 8 business departments plus personal and creator picks, with steps wired, schedule set, and price loaded
 - Open a company template pre-staffed with departments, budgets, and a specialist agent in every seat
 - Track your run history, spend balance, and earnings
 - Read the full docs: nodes, launching, payments, reliability, and the HTTP API

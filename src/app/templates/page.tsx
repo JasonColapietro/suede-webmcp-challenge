@@ -12,6 +12,7 @@ import TemplateGallery from "@/components/landing/TemplateGallery";
 import {
   buildFeaturedTemplateCards,
   buildTemplateCatalogStats,
+  buildTemplateDetailIndex,
   buildTemplateSummaries,
 } from "@/lib/template-summaries";
 import "../chrome.css";
@@ -52,6 +53,7 @@ function deptHash(department: string): string {
 export default function TemplatesPage(): React.JSX.Element {
   const allTemplates = buildTemplateSummaries();
   const featured = buildFeaturedTemplateCards();
+  const detailIndex = buildTemplateDetailIndex();
   const stats = buildTemplateCatalogStats();
   return (
     <div className="lp">
@@ -196,6 +198,37 @@ export default function TemplatesPage(): React.JSX.Element {
             templates by department. Each card is a blueprint with its steps,
             schedule, and suggested price ready to customize.
           </p>
+          <nav
+            className="card"
+            aria-labelledby="template-guide-index-title"
+            style={{ marginTop: "1.5rem", padding: "1.5rem" }}
+          >
+            <h3 id="template-guide-index-title" style={{ margin: 0 }}>
+              Browse every template guide
+            </h3>
+            <p style={{ color: "var(--text-muted)", lineHeight: 1.6, marginTop: "0.5rem" }}>
+              Open a detailed, server-rendered guide for any of these {detailIndex.length} templates,
+              or use the interactive gallery below to filter and launch one directly.
+            </p>
+            <ul
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "0.65rem 1.25rem",
+                listStyle: "none",
+                margin: "1.25rem 0 0",
+                padding: 0,
+              }}
+            >
+              {detailIndex.map((template) => (
+                <li key={template.slug}>
+                  <Link href={`/templates/${template.slug}`} style={{ color: "var(--primary)" }}>
+                    {template.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           <TemplateGallery templates={allTemplates} />
           {/* Catalog metrics are supporting context, not the task — they sit
               after the inventory so search and browsing come first. */}

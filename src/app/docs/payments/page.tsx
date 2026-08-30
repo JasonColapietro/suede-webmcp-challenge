@@ -4,6 +4,7 @@
  * platform actually charges.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import {
   COMMIT_GATEWAY_MARGIN,
@@ -16,7 +17,7 @@ const PAGE_TITLE = "Pricing & payments | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "The full money model: what building costs, what callers pay, how payouts reach your wallet, gateway token pricing, spend ceilings, and the honest caveats. No revenue promises.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/payments" },
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 export default function PaymentsDocsPage(): React.JSX.Element {
   const pricePer1M = gatewayPricePer1M(GATEWAY_MARGIN);

@@ -26,6 +26,7 @@ import { resolvePublicServiceContract, type PublicServiceContract } from "@/lib/
 import { projectAp2Discovery } from "@/lib/discovery/agent-card";
 import { publicAp2RuntimeStatus } from "@/lib/rails/ap2/config";
 import { isAp2ServiceEligible } from "@/lib/rails/ap2-eligibility";
+import { buildPublicAgentMetadataCopy } from "@/lib/metadata-copy";
 import {
   isPublishedAgentRecord,
   resolvePublicPaymentReadiness,
@@ -119,10 +120,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : readiness.state === "preview"
         ? `${name}: a callable dry-run preview that does not currently accept payment.`
         : `${name}: a published service that is currently unavailable for public calls.`);
+  const copy = buildPublicAgentMetadataCopy({ name, slug, description: desc });
   const ogImage = `${SITE_URL}/opengraph-image`;
   return {
-    title: { absolute: `${name} | Suede Agent Studio` },
-    description: desc,
+    title: { absolute: copy.title },
+    description: copy.description,
     alternates: { canonical: `/a/${slug}` },
     ...(service.resource?.access.discovery === "unlisted"
       ? { robots: { index: false, follow: false } }
@@ -132,14 +134,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       locale: "en_US",
       url: `${SITE_URL}/a/${slug}`,
       siteName: "Suede Agent Studio",
-      title: `${name} | Suede Agent Studio`,
-      description: desc,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} | Suede Agent Studio` }],
+      title: copy.title,
+      description: copy.description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: copy.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${name} | Suede Agent Studio`,
-      description: desc,
+      title: copy.title,
+      description: copy.description,
       site: "@AISUEDE",
       creator: "@johnnysuede",
       images: [ogImage],

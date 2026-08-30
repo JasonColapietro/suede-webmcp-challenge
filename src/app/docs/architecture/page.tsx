@@ -6,13 +6,14 @@
  * src/lib/projects/deployment-service.ts. State facts, cite sparingly.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 
 const PAGE_TITLE = "Architecture | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "How Agent Studio actually runs a flow: the FlowGraph contract, topological execution, the per-node cost ledger, error-branch halting, the subflow depth guard, SSE streaming, versioned promotion to Live, and dry-run settlement.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/architecture" },
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const RUN_EVENTS = [
   `run:start    { runId, at }`,

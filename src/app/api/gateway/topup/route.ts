@@ -5,8 +5,8 @@
  * Auth: Authorization: Bearer <workspaceKey>
  * Query: ?tier=1|5|20 (USDC amount; default 1)
  *
- * Without x-payment header → 402 challenge with tiers.
- * With valid x-payment → verifies + settles → credits owner's balance.
+ * Without PAYMENT-SIGNATURE (or legacy X-PAYMENT) → x402 v2 402 challenge.
+ * With a valid payment proof → verifies + settles → credits owner's balance.
  *
  * payTo is always the Suede seller wallet (X402_SELLER_WALLET_ADDRESS env).
  * Returns 503 { error: "billing not provisioned" } when credits table absent.
@@ -15,6 +15,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getRepo } from "@/lib/db/repo";
 import { handleGatewayTopup, TopupTierSchema } from "@/lib/gateway/topup-handler";
+import { encodeX402Header } from "@/lib/rails/x402-verify";
 
 export const runtime = "nodejs";
 
@@ -46,23 +47,28 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
     const tier = tierParse.data;
 
-    const paymentHeader = req.headers.get("x-payment");
+    const paymentHeader =
+      req.headers.get("payment-signature") ?? req.headers.get("x-payment");
     const repo = await getRepo();
 
     const result = await handleGatewayTopup(ownerId, tier, paymentHeader, repo);
 
     if (!result.ok) {
       if (result.status === 402) {
-        // Machine-readable 402 with topup instructions.
+        const paymentRequired = {
+          x402Version: result.x402Version,
+          error: result.error,
+          resource: result.resource,
+          accepts: result.accepts,
+          extensions: result.extensions,
+        };
         return NextResponse.json(
-          {
-            x402Version: result.x402Version,
-            error: result.error,
-            accepts: result.accepts,
-          },
+          paymentRequired,
           {
             status: 402,
             headers: {
+              "PAYMENT-REQUIRED": encodeX402Header(paymentRequired),
+              "Access-Control-Expose-Headers": "PAYMENT-REQUIRED,PAYMENT-RESPONSE,Link",
               Link: `<${(process.env.NEXT_PUBLIC_SITE_URL ?? "https://agents.suedeai.ai").replace(/\/+$/, "")}/.well-known/x402>; rel="x402-discovery"; type="application/json"`,
             },
           },

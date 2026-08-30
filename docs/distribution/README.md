@@ -36,9 +36,9 @@ fixes. The live source of truth is code, not markdown:
 |---|---|---|
 | **One click (push-free)** | x402Scout / Bazaar discovery API | Server POSTs your live listing to the free `/register` endpoint; the result is recorded. |
 | **Opens a GitHub PR / issue (push-github)** | awesome-x402 (xpaysh), awesome-x402 (x402-index), x402-index Discovery Index | Opens a real PR/issue **when `GITHUB_DISTRIBUTION_TOKEN` is set**. Absent → an honest 501; use the generated draft manually. |
-| **Automatic** | Coinbase Bazaar, x402search.xyz | Nothing to submit. Bazaar can index a payment-enabled service after a settled call; x402search crawls indexed listings. Publication alone is not settlement readiness. |
+| **Automatic** | Coinbase Bazaar, Agentic.Market | Nothing to submit. With Bazaar discovery enabled, a CDP Facilitator payment supplies the metadata both services index. Publication alone is not settlement readiness. |
 | **Paid** | Satring | 0.50 USDC listing fee. Spending is never automated — the console shows the generated payload and an honest "requires payment approval" status. |
-| **Manual** | pay.sh, Agentic.Market | No public API. The console generates the provider YAML / outreach; a human sends it. |
+| **Manual** | pay.sh | No public API. The console generates the provider YAML; a human sends it. |
 
 ## Open item
 

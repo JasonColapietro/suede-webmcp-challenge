@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -6,7 +7,7 @@ import TemplateFacts from "../TemplateFacts";
 import "../../chrome.css";
 import "../../site.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "AI Review Response Agent: Reply to Every Review | Suede Agent Studio" },
   description:
     "Draft a specific review reply only after approval, then send it to your team through a reviewed Slack webhook Connection.",
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const WHY_IT_WORKS = [
   {

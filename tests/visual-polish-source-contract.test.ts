@@ -84,7 +84,7 @@ describe("visual polish source contract", () => {
     const css = source("src/app/site.css");
 
     expect(nav).toContain('href="#main-content"');
-    expect(homepage).toContain('<main id="main-content">');
+    expect(homepage).toContain('<main id="main-content" className="mystery-main">');
     expect(footer).toContain('<nav className="lp-footer-nav" aria-label="Footer">');
     expect(footer).toContain('<Link href="/pricing">Pricing</Link>');
     expect(templates).toContain('aria-labelledby="featured-templates-title"');

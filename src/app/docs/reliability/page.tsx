@@ -7,6 +7,7 @@
  * Every claim is grounded in shipped code; no metric is invented.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/site";
 
@@ -16,7 +17,7 @@ const PAGE_DESCRIPTION =
 const PAGE_URL = `${SITE_URL}/docs/reliability`;
 const LAST_UPDATED = "2026-07-22";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/reliability" },
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const reliabilityPageJsonLd = {
   "@context": "https://schema.org",

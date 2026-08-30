@@ -4,6 +4,7 @@ import SiteNav from "@/components/site/SiteNav";
 import WorkspaceTabs from "@/components/workspace/WorkspaceTabs";
 import { RESOURCE_FOUNDRY_ENABLED } from "@/lib/resources/flags";
 import { noIndexFollowMetadata } from "@/lib/seo-metadata";
+import { requireStudioAccount } from "@/lib/studio-auth";
 import "../chrome.css";
 import "../site.css";
 import "../workspace.css";
@@ -15,11 +16,12 @@ export const metadata: Metadata = {
   description: "Build, test, and publish an immutable resource-backed service.",
 };
 
-export default function ResourcesLayout({
+export default async function ResourcesLayout({
   children,
 }: {
   readonly children: React.ReactNode;
-}): React.JSX.Element {
+}): Promise<React.JSX.Element> {
+  await requireStudioAccount("/resources");
   return (
     <div className="lp">
       <SiteNav active="/resources" />

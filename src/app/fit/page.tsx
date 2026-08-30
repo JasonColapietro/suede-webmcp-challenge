@@ -13,6 +13,7 @@
  * add a footer link under Learn in src/components/site/SiteFooter.tsx.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -29,7 +30,7 @@ const PAGE_DESCRIPTION =
 const PAGE_URL = `${SITE_URL}/fit`;
 const LAST_UPDATED = "2026-08-14";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "Fit Guide | Suede Agent Studio" },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/fit" },
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 const fitPageJsonLd = {
   "@context": "https://schema.org",

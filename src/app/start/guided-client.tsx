@@ -103,7 +103,7 @@ interface GuidedClientProps {
   initialFlow?: GuidedInitialFlow;
 }
 
-const NEW_AGENT_WELCOME = "Describe the job. I'll build the agent.";
+const NEW_AGENT_WELCOME = "What is the first job you want this company to handle?";
 const EXISTING_AGENT_WELCOME =
   "Here's your existing agent in Guided. Review it or tell me exactly what to change.";
 
@@ -706,4 +706,3 @@ export default function GuidedClient({ initialFlow }: GuidedClientProps): React.
     </div>
   );
 }
-

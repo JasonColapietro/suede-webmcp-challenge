@@ -1,11 +1,13 @@
-# Submission Draft — Agentic.Market
+# Historical Submission Draft — Agentic.Market
 
 **Site:** https://agentic.market  
-**Mechanic:** Confirm the current listing process, then contact the maintainers
-if human review is still required.
+**Current mechanic:** automatic. Agentic.Market indexes services when the CDP
+Facilitator processes a payment on an endpoint with Bazaar discovery enabled;
+no manual registration is required.
 
-This is a draft only. Recheck the destination, catalog, and payment readiness
-before sending it.
+The outreach below is retained only as historical reference. Do not send it as
+a listing request. Recheck the destination, catalog, and payment readiness
+before relying on any example.
 
 ---
 

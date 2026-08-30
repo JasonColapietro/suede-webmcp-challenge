@@ -3,6 +3,7 @@
  * x402 payment enablement. Request/response shapes mirror the launch route.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import CopyBlock from "@/components/agent/CopyBlock";
 import { SITE_URL } from "@/lib/site";
@@ -11,7 +12,7 @@ const PAGE_TITLE = "Launching an endpoint | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "How a flow publishes preview, payment-enabled, or unavailable state; what launch creates; and how payment is enabled separately.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/launching" },
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const LAUNCH_REQUEST = [
   `POST /api/flows/<flowId>/launch`,

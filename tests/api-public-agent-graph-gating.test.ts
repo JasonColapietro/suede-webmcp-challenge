@@ -110,7 +110,10 @@ describe("direct public slug exact-version gating", () => {
     expect(body.flow).toEqual(state.publicGraph);
     expect(JSON.stringify(body)).not.toContain("api.operation");
     const metadata = await page.generateMetadata({ params: Promise.resolve({ slug: agent.slug }) });
-    expect(metadata.title).toEqual({ absolute: "Direct | Suede Agent Studio" });
+    expect(metadata.title).toEqual({
+      absolute: "Direct · direct-slug | Suede Agent Studio",
+    });
+    expect(metadata.description).toContain("/a/direct-slug");
     expect(metadata.robots).not.toEqual(expect.objectContaining({ index: false }));
   });
 

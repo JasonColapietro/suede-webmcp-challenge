@@ -293,7 +293,7 @@ export default function CompanySignedOutStory({
 
       {/* ---- Ungated template deep dive ---------------------------------- */}
       <section id="inside-a-template" className="lp-block">
-        <span className="lp-eyebrow">Template preview · no account needed</span>
+        <span className="lp-eyebrow">Template preview</span>
         <h2 className="lp-section-title">Inside {deepDive.name}, seat by seat.</h2>
         <p className="lp-section-sub">
           {deepDive.mission} Everything below is read from the shipped

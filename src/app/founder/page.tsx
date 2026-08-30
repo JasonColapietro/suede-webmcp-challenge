@@ -4,6 +4,7 @@
  * layout.tsx so search engines resolve one founder entity across every page.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Image from "next/image";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
@@ -17,7 +18,7 @@ const PAGE_TITLE = "Jason Colapietro, Founder of Suede Labs AI";
 const PAGE_DESCRIPTION =
   "Jason Colapietro, who creates under the declared alias Johnny Suede, is the founder and CEO of Suede Labs AI and the published author of the ownership trilogy.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: `${PAGE_TITLE} | Suede Agent Studio` },
   description: PAGE_DESCRIPTION,
   keywords: [
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
-};
+});
 
 const THESIS: { no: string; title: string; body: string; color: string }[] = [
   {

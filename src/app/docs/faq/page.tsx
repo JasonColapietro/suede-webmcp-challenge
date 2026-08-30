@@ -4,6 +4,7 @@
  * and the launch route; keep in sync when those change.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import { PLATFORM_TAKE_RATE } from "@/lib/billing";
 import { SITE_URL } from "@/lib/site";
@@ -12,7 +13,7 @@ const PAGE_TITLE = "FAQ | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "Direct answers: what it costs, whether you need a wallet or crypto knowledge, how dry-run works, how payouts reach your wallet, where flows are stored, and what happens when things fail.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/faq" },
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 interface FaqEntry {
   q: string;

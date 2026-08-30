@@ -60,24 +60,38 @@ function makeEntry(overrides: Partial<CatalogEntry> = {}): CatalogEntry {
 }
 
 describe("discovery venue registry", () => {
-  it("lists the nine venues with honest mechanisms", () => {
-    expect(DISCOVERY_VENUES).toHaveLength(9);
+  it("lists only currently available venues with honest mechanisms", () => {
+    expect(DISCOVERY_VENUES).toHaveLength(7);
     const byId = new Map(DISCOVERY_VENUES.map((v) => [v.id, v]));
-    expect(byId.get("x402scout")?.mechanism).toBe("push-free");
+    expect(byId.has("x402scout")).toBe(false);
+    expect(byId.has("x402search")).toBe(false);
+    expect(DISCOVERY_VENUES.some((venue) => venue.url.includes("x402-discovery-api.onrender.com")))
+      .toBe(false);
+    expect(DISCOVERY_VENUES.some((venue) => venue.url.includes("x402search.xyz"))).toBe(false);
     expect(byId.get("awesome-x402-xpaysh")?.mechanism).toBe("push-github");
     expect(byId.get("awesome-x402-index")?.mechanism).toBe("push-github");
     expect(byId.get("x402-index-discovery")?.github).toMatchObject({ kind: "issue" });
     expect(byId.get("bazaar")?.mechanism).toBe("auto");
-    expect(byId.get("x402search")?.mechanism).toBe("auto");
+    expect(byId.get("bazaar")).toMatchObject({
+      url: "https://docs.cdp.coinbase.com/x402/seller/get-discovered",
+      status:
+        "Declare Bazaar metadata and complete one paid call through the CDP Facilitator. No registration form.",
+    });
     expect(byId.get("satring")?.mechanism).toBe("paid");
     expect(byId.get("satring")?.requiresPaymentV2).toBe(true);
     expect(byId.get("satring")?.costUsdc).toBe(0.5);
     expect(byId.get("paysh")?.mechanism).toBe("manual");
-    expect(byId.get("agentic-market")?.mechanism).toBe("manual");
+    expect(byId.get("agentic-market")).toMatchObject({
+      url: "https://agentic.market",
+      mechanism: "auto",
+      status:
+        "Indexes services automatically when the CDP Facilitator processes a payment with Bazaar discovery enabled. No manual registration.",
+    });
   });
 
   it("resolves a venue by id and returns null for unknown ids", () => {
-    expect(getVenue("x402scout")?.name).toBeTruthy();
+    expect(getVenue("x402scout")).toBeNull();
+    expect(getVenue("x402search")).toBeNull();
     expect(getVenue("nope")).toBeNull();
   });
 });
@@ -120,16 +134,16 @@ describe("agent_listings repo methods", () => {
     const repo = new SqliteRepo(":memory:");
     const first = await repo.upsertAgentListing({
       agentId: "a1",
-      venueId: "x402scout",
+      venueId: "awesome-x402-xpaysh",
       status: "submitted",
-      externalUrl: "https://x402-discovery-api.onrender.com",
+      externalUrl: "https://github.com/xpaysh/awesome-x402/pull/1",
     });
     await new Promise((r) => setTimeout(r, 5));
     const second = await repo.upsertAgentListing({
       agentId: "a1",
-      venueId: "x402scout",
+      venueId: "awesome-x402-xpaysh",
       status: "listed",
-      externalUrl: "https://x402-discovery-api.onrender.com",
+      externalUrl: "https://github.com/xpaysh/awesome-x402/pull/1",
     });
     expect(second.submittedAt).toBe(first.submittedAt); // original submission time kept
     expect(second.status).toBe("listed");
@@ -141,11 +155,11 @@ describe("agent_listings repo methods", () => {
 
   it("keeps separate rows for different venues", async () => {
     const repo = new SqliteRepo(":memory:");
-    await repo.upsertAgentListing({ agentId: "a2", venueId: "x402scout", status: "submitted" });
+    await repo.upsertAgentListing({ agentId: "a2", venueId: "awesome-x402-xpaysh", status: "submitted" });
     await repo.upsertAgentListing({ agentId: "a2", venueId: "paysh", status: "pending" });
     const listings = await repo.listAgentListings("a2");
     expect(listings).toHaveLength(2);
-    expect(new Set(listings.map((l) => l.venueId))).toEqual(new Set(["x402scout", "paysh"]));
+    expect(new Set(listings.map((l) => l.venueId))).toEqual(new Set(["awesome-x402-xpaysh", "paysh"]));
   });
 });
 

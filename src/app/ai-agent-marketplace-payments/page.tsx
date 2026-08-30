@@ -4,6 +4,7 @@
  * The node count renders from NODE_META so it can never go stale.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -12,7 +13,7 @@ import "../chrome.css";
 import "../site.css";
 import "./marketplace.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "AI Agent Marketplace with Built-in Payments | Suede Agent Studio" },
   description:
     "Publish an AI agent, set a USDC price, and enable x402 v2 settlement on Base after the Live payment and payout readiness gates pass.",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const PAGE_CAPS: { kicker: string; caps: readonly string[] } = {
   kicker: "Marketplace guide",

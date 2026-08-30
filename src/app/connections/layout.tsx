@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { noIndexFollowMetadata } from "@/lib/seo-metadata";
+import { requireStudioAccount } from "@/lib/studio-auth";
 
 export const metadata: Metadata = {
   ...noIndexFollowMetadata("/connections"),
@@ -8,6 +9,11 @@ export const metadata: Metadata = {
     "Wire your agents to the outside world: manage the accounts and APIs your flows call.",
 };
 
-export default function ConnectionsLayout({ children }: { readonly children: React.ReactNode }): React.JSX.Element {
+export default async function ConnectionsLayout({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}): Promise<React.JSX.Element> {
+  await requireStudioAccount("/connections");
   return <>{children}</>;
 }

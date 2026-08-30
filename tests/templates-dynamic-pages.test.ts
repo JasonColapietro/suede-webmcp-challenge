@@ -14,6 +14,7 @@ import { SEED_TEMPLATES } from "@/lib/templates";
 import { FEATURED_TEMPLATE_PAGES } from "@/lib/featured-templates";
 import { isPublicTemplateMarketingAllowed } from "@/lib/marketing-holds";
 import { getTemplateDetail, listTemplateDetailPageSlugs } from "@/lib/template-summaries";
+import { buildTemplateMetadataDescription } from "@/lib/metadata-copy";
 import { SITE_URL } from "@/lib/site";
 import sitemap from "@/app/sitemap";
 import TemplateDetailPage, {
@@ -61,7 +62,7 @@ describe("derived template detail pages", () => {
     expect(metadata.title).toEqual({
       absolute: `${detail?.name} Agent Template | Suede Agent Studio`,
     });
-    expect(metadata.description).toBe(detail?.pitchProse);
+    expect(metadata.description).toBe(buildTemplateMetadataDescription(detail!));
   });
 
   // Hold lifted 2026-08-04: the Registry is live, so this slug has a real

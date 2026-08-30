@@ -4,6 +4,7 @@
  * mirror src/app/api/agents/[agent]/run/route.ts and src/app/api/catalog.
  */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import CopyBlock from "@/components/agent/CopyBlock";
 import { SITE_URL } from "@/lib/site";
@@ -12,7 +13,7 @@ const PAGE_TITLE = "API for callers | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
   "Call a published agent from any HTTP client: discovery endpoints, the run request body, the x402 v2 payment flow with PAYMENT-SIGNATURE, response shapes, rate limits, and every status code.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/docs/api" },
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 const DISCOVERY = [
   `# published agents, including intended price and current call state`,

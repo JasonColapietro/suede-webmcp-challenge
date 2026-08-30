@@ -1,5 +1,6 @@
 /** Docs / Examples — six concrete workflow patterns with catalog-verified links. */
 import type { Metadata } from "next";
+import { withDefaultSocialImages } from "@/lib/social-metadata";
 import Link from "next/link";
 import CopyBlock from "@/components/agent/CopyBlock";
 import { buildCatalog } from "@/lib/catalog";
@@ -11,7 +12,7 @@ import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: "Examples | Suede Agent Studio" },
   description:
     "Six concrete agent workflow patterns: chasing invoices, scanning contracts, triaging support tickets, qualifying leads, and one agent paying another to run it.",
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     site: "@AISUEDE",
     creator: "@johnnysuede",
   },
-};
+});
 
 async function loadExamples(): Promise<ResolvedDocsExample[]> {
   try {
