@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteNav from "@/components/site/SiteNav";
+import StorefrontTools from "@/components/webmcp/StorefrontTools";
 import SiteFooter from "@/components/site/SiteFooter";
 import TryIt from "@/components/agent/TryIt";
 import CopyBlock from "@/components/agent/CopyBlock";
@@ -346,6 +347,7 @@ export default async function AgentPage({ params }: PageProps): Promise<React.Re
 
   return (
     <div className="lp ag-page">
+      <StorefrontTools />
       {serviceJsonLd && (
         <script
           type="application/ld+json"

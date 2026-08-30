@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteNav from "@/components/site/SiteNav";
+import StorefrontTools from "@/components/webmcp/StorefrontTools";
 import SiteFooter from "@/components/site/SiteFooter";
 import DirectoryExplorer, { type DirectoryAgent } from "./DirectoryExplorer";
 import {
@@ -155,6 +156,7 @@ export default async function AgentsDirectoryPage(): Promise<React.JSX.Element> 
 
   return (
     <div className="lp">
+      <StorefrontTools />
       <SiteNav active="/agents" />
       <main id="main-content" className="lp-shell lp-page">
         <header className="lp-page-head">

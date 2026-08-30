@@ -22,3 +22,6 @@ ios-app/android/*.keystore
 ios-app/android/local.properties
 .env*
 !.env.example
+
+# Suede Graph Flo XR run artifacts (handoffs are keyed by ephemeral run id).
+.suede-graph-flo-xr/

@@ -35,6 +35,7 @@ import {
 } from "@/lib/curated-business-services";
 import { resolvePayout } from "@/lib/payout";
 import { checkRateLimit, ipFromRequest } from "@/lib/rate-limit";
+import { checkPreviewBudget } from "@/lib/webmcp/preview-budget";
 import {
   decodePaymentHeader,
   verifyAndSettle,
@@ -821,6 +822,30 @@ export async function POST(req: Request, { params }: RouteContext): Promise<Next
         },
         { status: 403 },
       );
+    }
+
+    // A dry-run resolves no session, and no free-tier entitlement check reaches
+    // it — deliberately, so the free human preview never hits the paywall. It
+    // still writes a durable runs row, though, and a dry-run's costUsdc is 0, so
+    // the per-agent daily cost cap cannot bound it. The `run:<ip>` bucket above
+    // bounds one SOURCE; this bounds one TARGET, so a distributed set of callers
+    // cannot amplify free previews of a single agent into unbounded writes.
+    // Checked before any run row exists, and deliberately generous: it stops a
+    // machine loop without rationing humans clicking "Try it".
+    if (dryRun) {
+      const previewBudget = checkPreviewBudget(agent.slug);
+      if (!previewBudget.allowed) {
+        return NextResponse.json(
+          {
+            error: "rate_limited",
+            message: `Too many previews of this agent. Retry after ${previewBudget.retryAfterSec}s.`,
+          },
+          {
+            status: 429,
+            headers: { "Retry-After": String(previewBudget.retryAfterSec) },
+          },
+        );
+      }
     }
 
     if (requestedAp2Checkout && (!ap2ServiceEligible || dryRun)) {
