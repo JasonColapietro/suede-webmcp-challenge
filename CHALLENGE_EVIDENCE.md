@@ -1,6 +1,6 @@
 # WebMCP Challenge evidence
 
-Evidence freeze: August 30, 2026, America/New_York.
+Evidence freeze: September 1, 2026, America/New_York.
 
 ## Project
 
@@ -72,7 +72,7 @@ The challenge demo stops after the free synthetic preview. It does not execute
 
 ## Live evidence
 
-On August 30, 2026, the public `/agents` page loaded successfully in ChatGPT's
+On September 1, 2026, the public `/agents` page loaded successfully in ChatGPT's
 in-app browser and exposed:
 
 - `find_services`
@@ -80,11 +80,13 @@ in-app browser and exposed:
 - `preview_service`
 - `buy_service`
 
-A live read-only query for vendor-contract review returned three matching
-services. `get_service` then returned the selected service's exact price, input
-schema, review-policy boundary, data-handling statement, example input, and
-example output. The public shelf reported six services, all with a free preview
-available.
+A live read-only query for purchase-order and invoice comparison returned three
+matching services. `get_service` then returned the selected service's exact
+price, input schema, review-policy boundary, data-handling statement, example
+input, and example output. A synthetic `preview_service` call completed with
+`totalCostUsdc: 0`, `settled: false`, and `mode: dry-run`; its output explicitly
+reported that the model call was skipped. The public WebMCP shelf reported six
+services.
 
 ## Safety boundaries demonstrated
 

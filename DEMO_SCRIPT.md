@@ -1,6 +1,6 @@
 # WebMCP Challenge demo script
 
-Target duration: 2 minutes 45 seconds. Hard stop before 3 minutes.
+Target duration: 2 minutes 50 seconds. Hard stop before 3 minutes.
 
 Use only synthetic data. Do not show private browser tabs, account details,
 wallets, environment variables, production logs, or developer consoles. Do not
@@ -64,7 +64,7 @@ Narration:
 > text is labeled untrusted, long outputs are bounded, and the server remains
 > the authority for price and availability.
 
-## 1:45-2:20 — free synthetic preview
+## 1:45-2:25 — free synthetic preview
 
 Prompt:
 
@@ -75,10 +75,13 @@ purchaseOrder: PO-9920: 100 widget-A units at $2.50, total $250.00.
 invoice: INV-7781 for PO-9920: 100 widget-A units at $2.65, total $265.00.
 ```
 
-Show the dry-run response identifying the $15 discrepancy. State clearly that
-the preview records a run but performs no model inference and charges nothing.
+First point to the contract's worked example, which identifies the $15 price
+discrepancy. Then show the live preview receipt: `status: done`,
+`totalCostUsdc: 0`, `settled: false`, and `mode: dry-run`. State clearly that
+the preview records a run but performs no model inference, charges nothing,
+and does not present its dry-run output as model-generated discrepancy analysis.
 
-## 2:20-2:45 — why WebMCP matters
+## 2:25-2:50 — why WebMCP matters
 
 Show `src/components/webmcp/StorefrontTools.tsx` beside the browser result, then
 briefly show `src/app/api/webmcp/buy/route.ts`.
