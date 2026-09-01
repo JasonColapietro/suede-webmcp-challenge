@@ -21,8 +21,8 @@ export default function SiteFooter(): React.JSX.Element {
               per call. A{" "}
               <a href="https://suedeai.ai">Suede Labs AI</a> product,
               built by <Link href="/founder">Jason Colapietro</Link>, an
-              open-source contributor with 35 pull requests merged across 32
-              open-source projects (as of August 2026), including Jest,
+              open-source contributor with 37 pull requests merged across 34
+              open-source projects (as of September 2026), including Jest,
               Backstage, and Adobe&rsquo;s React Spectrum.
             </p>
           </div>
