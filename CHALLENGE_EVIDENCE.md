@@ -1,6 +1,6 @@
 # WebMCP Challenge evidence
 
-Last verified: September 3, 2026 17:38 UTC (13:38 America/New_York).
+Last verified: September 3, 2026 18:17 UTC (14:17 America/New_York).
 Release status: frozen judge deployment public and verified on `webmcp.suedeai.ai`.
 
 ## Project
@@ -100,7 +100,7 @@ WebMCP exposes **six curated services from the 31-listing directory**. The
 curated `/api/services` shelf and the full directory are different scopes.
 
 The latest synthetic `preview_service` call returned run
-`ab8cc02c-868d-46b1-b7b7-d8af9a82462d`, `status: done`, `totalCostUsdc: 0`,
+`37066d11-71c3-47e8-943c-87fb39dd21ba`, `status: done`, `totalCostUsdc: 0`,
 `settled: false`, and `mode: dry-run`. Its output states that the LLM call was
 skipped and no provider request was made. No browser console errors were
 captured in that tab. `buy_service` was not called.
@@ -148,8 +148,10 @@ through judging; preview receipts and usage counters remain dynamic.
 
 The custom domain and four-tool flow are verified. Both Devpost live-URL fields
 and the URL in testing instructions now point to the frozen judge URL. The final
-video remains to be updated before the deadline. The deadline is September 3 at
-20:00 UTC / 1:00 PM PDT / 4:00 PM EDT. Keep the submitted repository, video,
+video is public and embedded in the submitted Devpost project. The extended
+deadline is September 4 at 08:00 UTC / 1:00 AM PDT / 4:00 AM EDT. Judging runs
+from September 4 at 10:00 AM PDT / 1:00 PM EDT through September 21 at 5:00 PM
+PDT / 8:00 PM EDT. Keep the submitted repository, video,
 deployment, and relevant service configuration unchanged through September 21
 at 5:00 PM PDT (September 22 at 00:00 UTC), per the
 [challenge updates](https://webmcp.devpost.com/updates).
@@ -161,15 +163,21 @@ was verified as **SUBMITTED, 5/5 steps done**. The description now states the
 six-versus-31 scope, 71 focused tests, and synchronous registration fix.
 Judge instructions include exact synthetic input and stop after the free
 preview. Public and judge-only live-URL fields, plus testing-instruction step 1,
-were read back as `https://webmcp.suedeai.ai/agents`. The existing video remains
-https://youtu.be/ZR1At7lX6-E until the replacement is verified and uploaded.
-A replacement recut has been rendered locally as a 120-second, 1920×1080
-H.264/AAC video (SHA-256
-`c7724b1e3381b31af3a157f1c0e69d12dda32a141ec6f6374d692f560b9eb9d9`). It
+were read back as `https://webmcp.suedeai.ai/agents`. The video field was read
+back as https://youtu.be/g4BslTromP0, and the public project page embeds that
+same video while the submission remains **SUBMITTED, 5/5 steps done**.
+
+The published replacement is a 120-second, 1920×1080 H.264/AAC video (delivery
+master SHA-256
+`844cf64bdb8ef22f81392ae13478094ed42e06a604e94b07a061fcbbc2da9b7d`). Its
+AAC-LC stereo track is 48 kHz and measures -14.09 LUFS integrated with a -1.41
+dBTP true peak. YouTube's anonymous metadata reports public availability,
+1080p playback, a 2:00 duration, and embedding enabled. Copyright checks found
+no issues. It
 opens on discovery, presents captured results as edited panels, and preserves
 the explanation that the preview performs no inference. The rendered end card
 was visually verified with `webmcp.suedeai.ai/agents` and the public repository
-URL. The recut is not yet uploaded.
+URL.
 
 ## Safety boundaries demonstrated
 

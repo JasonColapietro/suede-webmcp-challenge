@@ -1,6 +1,6 @@
 # WebMCP Challenge submission checklist
 
-Updated September 3, 2026 17:38 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM EDT.
+Updated September 3, 2026 18:17 UTC. Extended deadline: September 4 at 1:00 AM PDT / 4:00 AM EDT.
 
 ## Completed and verified
 
@@ -13,8 +13,8 @@ Updated September 3, 2026 17:38 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00
 - [x] `buy_service` was not called.
 - [x] Public runnable source and MIT license; challenge history preserved.
 - [x] Description explains six curated WebMCP services from the 31-listing directory.
-- [x] Existing narrated demo recorded and uploaded; current submitted video is
-      https://youtu.be/ZR1At7lX6-E.
+- [x] Final two-minute demo published and anonymously verified at
+      https://youtu.be/g4BslTromP0; Devpost embeds the same video.
 - [x] Existing Devpost entry joined, described, linked, and submitted.
       Live form readback: **SUBMITTED, 5/5 steps done**, submission `1165561`.
 - [x] Entrant fields read back as Individual / United States; organization field blank.
@@ -37,8 +37,8 @@ Updated September 3, 2026 17:38 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00
 - [x] Verify discovery, contract, and synthetic preview on that exact domain.
 - [x] Replace both Devpost live-URL fields and the URL in testing instructions.
 - [x] Verify the final domain end card before publishing the prepared recut.
-- [ ] Upload the recut, verify public playback, and replace the Devpost video URL.
-- [ ] Record final deployment and video evidence, then freeze the public repository.
+- [x] Upload the recut, verify public playback, and replace the Devpost video URL.
+- [x] Record final deployment and video evidence, then freeze the public repository.
 - [ ] Keep submitted code, video, live deployment, and the six curated service
       contracts unchanged through September 21 at 5:00 PM PDT.
 
