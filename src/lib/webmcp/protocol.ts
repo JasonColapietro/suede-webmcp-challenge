@@ -61,7 +61,31 @@ export interface WebMcpModelContext {
   registerTool(
     descriptor: WebMcpToolDescriptor,
     options?: WebMcpRegisterOptions,
-  ): Promise<void>;
+  ): void | PromiseLike<void>;
+}
+
+/**
+ * Register every descriptor without assuming how the host reports completion.
+ *
+ * Chrome's native API returns a promise, while some agent-browser bridges
+ * complete registration synchronously and return void. Normalizing both
+ * shapes also keeps a synchronous throw or rejected registration from
+ * preventing later tools from being offered.
+ */
+export function registerWebMcpTools(
+  modelContext: WebMcpModelContext,
+  descriptors: readonly WebMcpToolDescriptor[],
+  options?: WebMcpRegisterOptions,
+): void {
+  for (const descriptor of descriptors) {
+    try {
+      void Promise.resolve(modelContext.registerTool(descriptor, options)).catch(() => {
+        /* One rejected descriptor must not block the remaining tools. */
+      });
+    } catch {
+      /* One synchronous host failure must not block the remaining tools. */
+    }
+  }
 }
 
 /**
