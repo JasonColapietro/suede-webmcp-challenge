@@ -1,6 +1,6 @@
 # WebMCP Challenge evidence
 
-Evidence freeze: September 1, 2026, America/New_York.
+Last verified: September 3, 2026, America/New_York.
 
 ## Project
 
@@ -19,12 +19,16 @@ This repository preserves that distinction as reviewable commits:
 - `f4943a1` — pre-WebMCP application baseline.
 - `e2c3b11` — adds the page-scoped WebMCP storefront: 17 files, including the
   four tool descriptors, browser registration, server purchase route, safety
-  guards, with 70 focused tests passing in the current snapshot.
+  guards, with 70 focused tests in the original challenge snapshot.
 - `a3497fe` — hardens rate limiting and price binding, preserves purchase
   receipts, improves discovery against live shelf behavior, and adds focused
   regression coverage.
 - `c4db4b1` — synchronizes the runnable challenge snapshot with the current
   application source.
+- `c6193bb` — accepts both Promise-returning native registration and
+  synchronous browser bridges, prevents one registration failure from blocking
+  later tools, and adds regression coverage. The focused suite now has 71
+  passing tests.
 
 Review the feature directly:
 
@@ -87,6 +91,15 @@ input, and example output. A synthetic `preview_service` call completed with
 `totalCostUsdc: 0`, `settled: false`, and `mode: dry-run`; its output explicitly
 reported that the model call was skipped. The public WebMCP shelf reported six
 services.
+
+On September 3, the complete registration and read-only flow was re-verified
+after production commit `1911aef` and public mirror commit `c6193bb` deployed.
+The in-app browser enumerated all four tools. A live `find_services` call for
+purchase-order and invoice comparison returned three matches from the
+six-service shelf, and `get_service` returned PO Match Gate's exact 0.05 USDC
+price, typed input contract, human-review policy, data-handling statement, and
+synthetic examples. The deployment recorded 16 successful HTTP responses and
+no runtime errors during verification. No paid tool was called.
 
 ## Safety boundaries demonstrated
 
