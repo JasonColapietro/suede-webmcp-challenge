@@ -18,7 +18,12 @@
  * node:crypto reaches the browser bundle.
  */
 import { useEffect } from "react";
-import { clampText, resolveModelContext, WEBMCP_BUDGETS } from "@/lib/webmcp/protocol";
+import {
+  clampText,
+  registerWebMcpTools,
+  resolveModelContext,
+  WEBMCP_BUDGETS,
+} from "@/lib/webmcp/protocol";
 import type { WebMcpToolDescriptor, WebMcpExecuteContext } from "@/lib/webmcp/protocol";
 import { parseShelf, type ShelfEntry } from "@/lib/webmcp/shelf-contract";
 import {
@@ -169,14 +174,8 @@ export default function StorefrontTools(): null {
     if (!modelContext) return;
 
     const controller = new AbortController();
-    for (const descriptor of buildDescriptors()) {
-      // No exposedTo: the tools stay same-origin under the default policy.
-      void modelContext
-        .registerTool(descriptor, { signal: controller.signal })
-        .catch(() => {
-          /* A browser that rejects one descriptor still gets the others. */
-        });
-    }
+    // No exposedTo: the tools stay same-origin under the default policy.
+    registerWebMcpTools(modelContext, buildDescriptors(), { signal: controller.signal });
     return () => controller.abort();
   }, []);
 
