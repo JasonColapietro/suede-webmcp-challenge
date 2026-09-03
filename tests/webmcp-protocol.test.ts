@@ -8,10 +8,12 @@
 import { describe, it, expect } from "vitest";
 import {
   clampText,
+  registerWebMcpTools,
   resolveModelContext,
   WEBMCP_BUDGETS,
   withinBudgets,
 } from "@/lib/webmcp/protocol";
+import type { WebMcpToolDescriptor } from "@/lib/webmcp/protocol";
 import type { JsonObjectSchema } from "@/lib/flow/input-contract";
 
 const context = { registerTool: async (): Promise<void> => {} };
@@ -39,6 +41,39 @@ describe("resolveModelContext", () => {
     expect(resolveModelContext({ document: { modelContext: {} } })).toBeNull();
     expect(resolveModelContext({ document: { modelContext: { registerTool: 1 } } })).toBeNull();
     expect(resolveModelContext({ document: { modelContext: null } })).toBeNull();
+  });
+});
+
+describe("registerWebMcpTools", () => {
+  it("registers every descriptor when the browser returns void synchronously", () => {
+    const descriptors: readonly WebMcpToolDescriptor[] = [
+      "find_services",
+      "get_service",
+      "preview_service",
+      "buy_service",
+    ].map((name) => ({
+      name,
+      description: name,
+      inputSchema: { type: "object" },
+      execute: async () => null,
+    }));
+    const registered: string[] = [];
+
+    registerWebMcpTools(
+      {
+        registerTool: (descriptor) => {
+          registered.push(descriptor.name);
+        },
+      },
+      descriptors,
+    );
+
+    expect(registered).toEqual([
+      "find_services",
+      "get_service",
+      "preview_service",
+      "buy_service",
+    ]);
   });
 });
 
