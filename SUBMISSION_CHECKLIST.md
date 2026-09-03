@@ -1,6 +1,6 @@
 # WebMCP Challenge submission checklist
 
-Updated September 3, 2026 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM EDT.
+Updated September 3, 2026 07:30 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM EDT.
 
 ## Completed and verified
 
@@ -25,14 +25,16 @@ Updated September 3, 2026 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM ED
       force pushes or deletion.
 - [x] Two-minute recut rendered at 1920×1080 with H.264 video and AAC audio;
       composition runtime, layout, and contrast checks passed.
-- [x] Challenge domain is assigned to the release branch, so normal production
-      branch deploys do not own its automatic assignment.
+- [x] Challenge domain is assigned to the release branch and aliased to the
+      frozen deployment; two later `main` deploys did not move it.
+- [x] Judge URL https://webmcp.suedeai.ai/agents serves `dpl_HZ1BAH9J4N969dFe8hGQCaKfEdZP`
+      publicly with no SSO redirect.
 
 ## Remaining before final freeze
 
-- [ ] Add the GoDaddy CNAME for `webmcp.suedeai.ai`; finish certificate and alias setup.
-- [ ] Verify logged-out public access and all four tools on the challenge domain.
-- [ ] Verify discovery, contract, and synthetic preview on that exact domain.
+- [x] Add the GoDaddy CNAME for `webmcp.suedeai.ai`; finish certificate and alias setup.
+- [x] Verify logged-out public access and all four tools on the challenge domain.
+- [x] Verify discovery, contract, and synthetic preview on that exact domain.
 - [ ] Replace both Devpost live-URL fields and the URL in testing instructions.
 - [ ] Verify the final domain end card before publishing the prepared recut.
 - [ ] Upload the recut, verify public playback, and replace the Devpost video URL.

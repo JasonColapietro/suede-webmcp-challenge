@@ -1,14 +1,13 @@
 # WebMCP Challenge evidence
 
-Last verified: September 3, 2026 UTC (September 2 in America/New_York).
-Release status: registration fixed; final public deployment freeze still pending DNS.
+Last verified: September 3, 2026 07:30 UTC (03:30 America/New_York).
+Release status: frozen judge deployment public and verified on `webmcp.suedeai.ai`.
 
 ## Project
 
 - Name: Suede Agent Studio WebMCP Storefront
-- Live URL: https://agents.suedeai.ai/agents
-- Intended frozen judge URL: https://webmcp.suedeai.ai/agents (not yet public;
-  DNS and certificate verification remain open)
+- Frozen judge URL: https://webmcp.suedeai.ai/agents (public, verified)
+- Rolling production URL: https://agents.suedeai.ai/agents (tracks `main`)
 - Public source: https://github.com/JasonColapietro/suede-webmcp-challenge
 - License: MIT
 - Runtime: Next.js 15, React 19, TypeScript
@@ -120,17 +119,35 @@ captured in that tab. `buy_service` was not called.
 - Both build-time and runtime `NEXT_PUBLIC_SITE_URL` point to the challenge
   origin. Deployment used `--prod --skip-domain`; the normal production domain
   remained on `dpl_G3WtPNFFEM85qZEAV41SooN26ymi`.
-- DNS remains pending at GoDaddy: CNAME `webmcp` to
-  `3c68ec76e202bded.vercel-dns-016.com`. Certificate issuance and alias
-  completion cannot be called successful until this resolves publicly.
+- DNS: GoDaddy CNAME `webmcp` -> `cname.vercel-dns.com`, live on the
+  authoritative nameservers and public resolvers. Certificate issued.
+- Domain assignment: `webmcp.suedeai.ai` is bound to the release branch on the
+  project and explicitly aliased to `dpl_HZ1BAH9J4N969dFe8hGQCaKfEdZP`. Two
+  later `main` production deploys (#387, #388) did not move it.
+- Public access: Vercel Authentication was disabled on the project so the
+  branch-bound domain is served without SSO. Standard protection exempted only
+  production custom domains; per-domain exceptions require a paid add-on.
+- Verification at 07:30 UTC, logged out, from a fresh automation browser:
+  `/`, `/agents`, `/a/po-match-gate-mkgu0`, and `/api/services` return 200;
+  served asset URLs carry `dpl_HZ1BAH9J4N969dFe8hGQCaKfEdZP`; canonical and
+  `og:url` resolve to `https://webmcp.suedeai.ai`. All four tools registered
+  on `/agents` (`navigator.modelContext`, synchronous `registerTool`) and on
+  the listing page (`document.modelContext`, Promise-returning `registerTool`).
+  `find_services` returned 3 of 6, `get_service` returned the PO Match Gate
+  contract, and the synthetic `preview_service` call returned run
+  `2a1e8aa8-5a72-4041-82c6-8d00152a7287`, `status: done`, `totalCostUsdc: 0`,
+  `settled: false`, `mode: dry-run`. No console errors. `buy_service` was not
+  called. Adversarial inputs (unknown and path-like slugs, missing field,
+  oversized body, wrong body type, injection text in `need`) were rejected or
+  treated as plain text by the server.
 
 This is a separate fixed deployment in the existing project, using the
 existing hosted database. It does not clone or freeze that database. The six
 curated service contracts and published flows must also remain unchanged
 through judging; preview receipts and usage counters remain dynamic.
 
-Do not call the submission frozen until the custom domain, four-tool flow,
-Devpost URL, and final video are verified. The deadline is September 3 at
+The custom domain and four-tool flow are verified. The Devpost URL fields and
+final video remain to be updated before the deadline. The deadline is September 3 at
 20:00 UTC / 1:00 PM PDT / 4:00 PM EDT. Keep the submitted repository, video,
 deployment, and relevant service configuration unchanged through September 21
 at 5:00 PM PDT (September 22 at 00:00 UTC), per the
