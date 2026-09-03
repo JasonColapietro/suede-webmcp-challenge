@@ -1,6 +1,6 @@
 # WebMCP Challenge submission checklist
 
-Updated September 3, 2026 07:30 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM EDT.
+Updated September 3, 2026 17:38 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM EDT.
 
 ## Completed and verified
 
@@ -35,8 +35,8 @@ Updated September 3, 2026 07:30 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00
 - [x] Add the GoDaddy CNAME for `webmcp.suedeai.ai`; finish certificate and alias setup.
 - [x] Verify logged-out public access and all four tools on the challenge domain.
 - [x] Verify discovery, contract, and synthetic preview on that exact domain.
-- [ ] Replace both Devpost live-URL fields and the URL in testing instructions.
-- [ ] Verify the final domain end card before publishing the prepared recut.
+- [x] Replace both Devpost live-URL fields and the URL in testing instructions.
+- [x] Verify the final domain end card before publishing the prepared recut.
 - [ ] Upload the recut, verify public playback, and replace the Devpost video URL.
 - [ ] Record final deployment and video evidence, then freeze the public repository.
 - [ ] Keep submitted code, video, live deployment, and the six curated service

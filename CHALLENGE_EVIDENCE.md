@@ -1,6 +1,6 @@
 # WebMCP Challenge evidence
 
-Last verified: September 3, 2026 07:30 UTC (03:30 America/New_York).
+Last verified: September 3, 2026 17:38 UTC (13:38 America/New_York).
 Release status: frozen judge deployment public and verified on `webmcp.suedeai.ai`.
 
 ## Project
@@ -99,8 +99,8 @@ omitted by the output budget; the response did not claim to inline it.
 WebMCP exposes **six curated services from the 31-listing directory**. The
 curated `/api/services` shelf and the full directory are different scopes.
 
-The synthetic `preview_service` call returned run
-`cd572c1b-c28f-4a09-a331-8e2f6ac52bff`, `status: done`, `totalCostUsdc: 0`,
+The latest synthetic `preview_service` call returned run
+`ab8cc02c-868d-46b1-b7b7-d8af9a82462d`, `status: done`, `totalCostUsdc: 0`,
 `settled: false`, and `mode: dry-run`. Its output states that the LLM call was
 skipped and no provider request was made. No browser console errors were
 captured in that tab. `buy_service` was not called.
@@ -146,8 +146,9 @@ existing hosted database. It does not clone or freeze that database. The six
 curated service contracts and published flows must also remain unchanged
 through judging; preview receipts and usage counters remain dynamic.
 
-The custom domain and four-tool flow are verified. The Devpost URL fields and
-final video remain to be updated before the deadline. The deadline is September 3 at
+The custom domain and four-tool flow are verified. Both Devpost live-URL fields
+and the URL in testing instructions now point to the frozen judge URL. The final
+video remains to be updated before the deadline. The deadline is September 3 at
 20:00 UTC / 1:00 PM PDT / 4:00 PM EDT. Keep the submitted repository, video,
 deployment, and relevant service configuration unchanged through September 21
 at 5:00 PM PDT (September 22 at 00:00 UTC), per the
@@ -159,14 +160,16 @@ The existing [Devpost project](https://devpost.com/software/suede-agent-studio-w
 was verified as **SUBMITTED, 5/5 steps done**. The description now states the
 six-versus-31 scope, 71 focused tests, and synchronous registration fix.
 Judge instructions include exact synthetic input and stop after the free
-preview. The current submitted URL remains normal production until the
-challenge domain is public. The existing video remains
+preview. Public and judge-only live-URL fields, plus testing-instruction step 1,
+were read back as `https://webmcp.suedeai.ai/agents`. The existing video remains
 https://youtu.be/ZR1At7lX6-E until the replacement is verified and uploaded.
 A replacement recut has been rendered locally as a 120-second, 1920×1080
-H.264/AAC video. It opens on discovery, presents captured results as edited
-panels, and preserves the explanation that the preview performs no inference.
-It is not yet uploaded, and its challenge-domain end card must not be published
-before that domain is verified.
+H.264/AAC video (SHA-256
+`c7724b1e3381b31af3a157f1c0e69d12dda32a141ec6f6374d692f560b9eb9d9`). It
+opens on discovery, presents captured results as edited panels, and preserves
+the explanation that the preview performs no inference. The rendered end card
+was visually verified with `webmcp.suedeai.ai/agents` and the public repository
+URL. The recut is not yet uploaded.
 
 ## Safety boundaries demonstrated
 
