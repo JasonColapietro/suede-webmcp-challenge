@@ -1,40 +1,48 @@
 # WebMCP Challenge submission checklist
 
-Deadline: September 3, 2026 at 1:00 PM Pacific Time.
+Updated September 3, 2026 UTC. Deadline: September 3 at 1:00 PM PDT / 4:00 PM EDT.
 
-## Evidence ready
+## Completed and verified
 
 - [x] Existing application meaningfully extended with WebMCP after August 25.
-- [x] Public, judge-accessible live URL: https://agents.suedeai.ai/agents
-- [x] Four WebMCP tools detected on the live page.
-- [x] Live `find_services` and `get_service` calls verified with public data.
-- [x] Free-preview capability present for every service on the public shelf.
-- [x] Public source repository contains the runnable application source,
-      assets, setup instructions, focused tests, and implementation history.
-- [x] Root MIT license file.
-- [x] Challenge-period changes separated from the pre-WebMCP baseline in Git.
-- [x] Three-minute demo script uses only synthetic data and no purchase.
-- [x] Secret scan triaged: no non-test secret material; findings are deliberate
-  security-test fixtures, environment-variable names, or public chain addresses.
+- [x] Registration accepts synchronous and Promise-returning browser APIs.
+- [x] Regression test registers all four tools when `registerTool` returns undefined.
+- [x] All 71 focused WebMCP tests pass; current runtime source has passing CI.
+- [x] Fresh in-app browser tabs expose four tools on `/agents` and the PO Match Gate listing.
+- [x] `find_services`, `get_service`, and a zero-cost synthetic `preview_service` work.
+- [x] `buy_service` was not called.
+- [x] Public runnable source and MIT license; challenge history preserved.
+- [x] Description explains six curated WebMCP services from the 31-listing directory.
+- [x] Existing narrated demo recorded and uploaded; current submitted video is
+      https://youtu.be/ZR1At7lX6-E.
+- [x] Existing Devpost entry joined, described, linked, and submitted.
+      Live form readback: **SUBMITTED, 5/5 steps done**, submission `1165561`.
+- [x] Entrant fields read back as Individual / United States; organization field blank.
+- [x] Testing instructions contain exact synthetic inputs, receipt expectations,
+      and an explicit stop before purchase.
+- [x] Dedicated challenge deployment built from `7234b99`; release branch exists.
+- [x] Both release branches locked, with administrator enforcement and no
+      force pushes or deletion.
+- [x] Two-minute recut rendered at 1920×1080 with H.264 video and AAC audio;
+      composition runtime, layout, and contrast checks passed.
+- [x] Challenge domain is assigned to the release branch, so normal production
+      branch deploys do not own its automatic assignment.
 
-## Still requires explicit owner action or authorization
+## Remaining before final freeze
 
-- [ ] Record the demo with audio and keep it under three minutes.
-- [ ] Review the recording for private tabs, account details, copyrighted music,
-      third-party marks, credentials, personal data, and payment information.
-- [ ] Upload the final recording as a public YouTube video.
-- [ ] Confirm the repository's MIT license is detected in GitHub's About panel.
-- [ ] Confirm the live URL remains accessible in ChatGPT's in-app browser.
-- [ ] Join the Devpost challenge with the intended entrant identity.
-- [ ] Complete the English project description:
-  - why the use case fits WebMCP;
-  - how it improves the user experience;
-  - what people and agents can now do together;
-  - how WebMCP was implemented.
-- [ ] Add the live URL, public repository URL, YouTube URL, and testing
-      instructions to the Devpost form.
-- [ ] If entering for an organization, confirm the authorized representative.
-- [ ] Read back every field and submit before the deadline.
+- [ ] Add the GoDaddy CNAME for `webmcp.suedeai.ai`; finish certificate and alias setup.
+- [ ] Verify logged-out public access and all four tools on the challenge domain.
+- [ ] Verify discovery, contract, and synthetic preview on that exact domain.
+- [ ] Replace both Devpost live-URL fields and the URL in testing instructions.
+- [ ] Verify the final domain end card before publishing the prepared recut.
+- [ ] Upload the recut, verify public playback, and replace the Devpost video URL.
+- [ ] Record final deployment and video evidence, then freeze the public repository.
+- [ ] Keep submitted code, video, live deployment, and the six curated service
+      contracts unchanged through September 21 at 5:00 PM PDT.
 
-No Devpost submission, video upload, purchase, merge, or deployment is performed
-by this checklist.
+The deployed release shares the existing hosted database. A fixed source
+branch alone does not freeze catalog edits or published flow changes. See
+`CHALLENGE_EVIDENCE.md` for the precise deployment state and remaining gate.
+
+Do not resubmit or create a duplicate Devpost project. The entry is already
+submitted; only its authorized pre-deadline corrections remain.

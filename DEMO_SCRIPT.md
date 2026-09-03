@@ -1,96 +1,68 @@
 # WebMCP Challenge demo script
 
-Target duration: 2 minutes 50 seconds. Hard stop before 3 minutes.
+Target: **2:00**. Open on the working tool flow with all four tool names visible.
+Use synthetic data only. Do not call `buy_service`.
 
-Use only synthetic data. Do not show private browser tabs, account details,
-wallets, environment variables, production logs, or developer consoles. Do not
-call `buy_service` during recording.
+## 0:00–0:15 — discover immediately
 
-## 0:00-0:20 — the problem
+Show `find_services` with:
 
-Narration:
-
-> Marketplaces are built for people to browse, but agents still have to guess
-> through buttons and page layout. Suede Agent Studio now exposes a structured
-> storefront directly inside the browser: find a service, read its contract,
-> and preview it before any payment decision.
-
-Show the live Agent Directory at https://agents.suedeai.ai/agents.
-
-## 0:20-0:40 — the WebMCP surface
-
-Ask the browser agent to list the tools available on the page. Show the four
-fixed tools:
-
-```text
-find_services
-get_service
-preview_service
-buy_service
+```json
+{"need":"compare a purchase order with an invoice","limit":3}
 ```
 
-Narration:
+Show the returned PO Match Gate result and 0.05 USDC price. State that the
+four WebMCP tools expose **six curated services from the 31-listing directory**.
 
-> The inventory can grow without bloating the agent's context because the tool
-> set stays constant. Discovery and contract inspection are read-only. Preview
-> and purchase are correctly marked as writes.
+## 0:15–0:33 — inspect the contract
 
-## 0:40-1:10 — discover by intent
-
-Prompt:
-
-```text
-Find a service that compares a purchase order with an invoice. Show at most
-three matches. Do not buy anything.
+```json
+{"slug":"po-match-gate-mkgu0"}
 ```
 
-The expected top result is `po-match-gate-mkgu0`, including its price and
-current preview/purchase availability.
+Show `get_service` returning required `purchaseOrder` and `invoice` strings,
+the exact price, human-review boundary, data handling, and worked example.
+The browser result can explicitly omit oversized return-schema details.
 
-## 1:10-1:45 — inspect before acting
+## 0:33–1:12 — synthetic preview and receipt
 
-Prompt:
+Call `preview_service` with:
 
-```text
-Read the full contract for po-match-gate-mkgu0. Do not preview or buy yet.
+```json
+{
+  "slug":"po-match-gate-mkgu0",
+  "input":{
+    "purchaseOrder":"PO-9920: 100 widget-A units at $2.50, total $250.00.",
+    "invoice":"INV-7781 for PO-9920: 100 widget-A units at $2.65, total $265.00."
+  }
+}
 ```
 
-Pause on the returned price, exact input fields, review boundary, data handling,
-and worked example.
+Distinguish the contract's worked $15 discrepancy example from the actual
+dry-run output. Show `status: done`, `totalCostUsdc: 0`, `settled: false`, and
+`mode: dry-run`. Explain that a run is recorded but no model request or
+payment occurs.
 
-Narration:
+## 1:12–1:29 — explain the four-tool contract
 
-> The agent gets the terms it needs before taking action. User-authored catalog
-> text is labeled untrusted, long outputs are bounded, and the server remains
-> the authority for price and availability.
+Show `find_services`, `get_service`, `preview_service`, and `buy_service`.
+Discovery and inspection are read-only; preview and purchase are writes.
+Inventory can grow while the tool set stays constant. Keep `buy_service`
+visibly labeled **not called**.
 
-## 1:45-2:25 — free synthetic preview
+## 1:29–1:56 — human control and server checks
 
-Prompt:
+Explain page-scoped registration, same-origin calls, synchronous/Promise
+browser compatibility, server origin/rate limits, fresh availability, and
+exact-price checks. The user keeps the payment decision; this demo stops at
+the free preview.
 
-```text
-Preview po-match-gate-mkgu0 with this synthetic input. Do not buy anything.
+## 1:56–2:00 — links
 
-purchaseOrder: PO-9920: 100 widget-A units at $2.50, total $250.00.
-invoice: INV-7781 for PO-9920: 100 widget-A units at $2.65, total $265.00.
-```
+Show the public MIT repository and the verified frozen judge URL. The
+prepared destination is `https://webmcp.suedeai.ai/agents`; do not publish a
+video pointing to it until DNS, public access, and the tool flow pass.
 
-First point to the contract's worked example, which identifies the $15 price
-discrepancy. Then show the live preview receipt: `status: done`,
-`totalCostUsdc: 0`, `settled: false`, and `mode: dry-run`. State clearly that
-the preview records a run but performs no model inference, charges nothing,
-and does not present its dry-run output as model-generated discrepancy analysis.
-
-## 2:25-2:50 — why WebMCP matters
-
-Show `src/components/webmcp/StorefrontTools.tsx` beside the browser result, then
-briefly show `src/app/api/webmcp/buy/route.ts`.
-
-Narration:
-
-> WebMCP turns a visual marketplace into a structured human-agent workflow.
-> The agent handles discovery and contract reading; the user keeps the payment
-> boundary. A purchase would require the exact price to be echoed and rechecked
-> server-side, but this demo stops safely at the free preview.
-
-End on the live URL and public repository URL.
+When using designed panels made from actual tool results, label them
+**Captured results · edited for clarity**. Do not present them as an unedited
+screen recording. Preserve the old upload until the replacement is ready.

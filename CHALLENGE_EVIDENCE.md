@@ -1,11 +1,14 @@
 # WebMCP Challenge evidence
 
-Last verified: September 3, 2026, America/New_York.
+Last verified: September 3, 2026 UTC (September 2 in America/New_York).
+Release status: registration fixed; final public deployment freeze still pending DNS.
 
 ## Project
 
 - Name: Suede Agent Studio WebMCP Storefront
 - Live URL: https://agents.suedeai.ai/agents
+- Intended frozen judge URL: https://webmcp.suedeai.ai/agents (not yet public;
+  DNS and certificate verification remain open)
 - Public source: https://github.com/JasonColapietro/suede-webmcp-challenge
 - License: MIT
 - Runtime: Next.js 15, React 19, TypeScript
@@ -74,32 +77,79 @@ echoed and rechecked server-side.
 The challenge demo stops after the free synthetic preview. It does not execute
 `buy_service`, spend credit, move USDC, or require private data.
 
-## Live evidence
+## Current browser evidence
 
-On September 1, 2026, the public `/agents` page loaded successfully in ChatGPT's
-in-app browser and exposed:
+The earlier September 1 four-tool claim is superseded by the subsequently
+reported synchronous-registration failure and the fresh verification below.
+It is not evidence that registration remained healthy across browser versions.
+
+After compatibility fix `c6193bb`, fresh Codex in-app browser tabs on
+`/agents` and `/a/po-match-gate-mkgu0` exposed all four page-defined tools:
 
 - `find_services`
 - `get_service`
 - `preview_service`
 - `buy_service`
 
-A live read-only query for purchase-order and invoice comparison returned three
-matching services. `get_service` then returned the selected service's exact
-price, input schema, review-policy boundary, data-handling statement, example
-input, and example output. A synthetic `preview_service` call completed with
-`totalCostUsdc: 0`, `settled: false`, and `mode: dry-run`; its output explicitly
-reported that the model call was skipped. The public WebMCP shelf reported six
-services.
+A live `find_services` call for purchase-order and invoice comparison returned
+three matches. `get_service` returned PO Match Gate's exact 0.05 USDC price,
+required `purchaseOrder` and `invoice` fields, human-review boundary, data
+handling, and synthetic examples. The return-shape schema was explicitly
+omitted by the output budget; the response did not claim to inline it.
 
-On September 3, the complete registration and read-only flow was re-verified
-after production commit `1911aef` and public mirror commit `c6193bb` deployed.
-The in-app browser enumerated all four tools. A live `find_services` call for
-purchase-order and invoice comparison returned three matches from the
-six-service shelf, and `get_service` returned PO Match Gate's exact 0.05 USDC
-price, typed input contract, human-review policy, data-handling statement, and
-synthetic examples. The deployment recorded 16 successful HTTP responses and
-no runtime errors during verification. No paid tool was called.
+WebMCP exposes **six curated services from the 31-listing directory**. The
+curated `/api/services` shelf and the full directory are different scopes.
+
+The synthetic `preview_service` call returned run
+`cd572c1b-c28f-4a09-a331-8e2f6ac52bff`, `status: done`, `totalCostUsdc: 0`,
+`settled: false`, and `mode: dry-run`. Its output states that the LLM call was
+skipped and no provider request was made. No browser console errors were
+captured in that tab. `buy_service` was not called.
+
+## Frozen deployment preparation
+
+- Runtime source: `7234b99595bbdc886e1e124592c1e539034962a6`.
+- Release branch: `release/webmcp-2026-final` in this public repository and
+  the connected application repository. Both branches are locked, including
+  administrators; force pushes and deletion are disabled.
+- Dedicated Vercel deployment: `dpl_HZ1BAH9J4N969dFe8hGQCaKfEdZP`, READY.
+- Deployment hostname: `agentix-7mxa34eyz-suede-ai-64d39175.vercel.app`.
+  This hostname is protected and is not the judge URL.
+- Challenge domain: `webmcp.suedeai.ai`, explicitly assigned to the release
+  branch rather than the project's normal production branch.
+- Both build-time and runtime `NEXT_PUBLIC_SITE_URL` point to the challenge
+  origin. Deployment used `--prod --skip-domain`; the normal production domain
+  remained on `dpl_G3WtPNFFEM85qZEAV41SooN26ymi`.
+- DNS remains pending at GoDaddy: CNAME `webmcp` to
+  `3c68ec76e202bded.vercel-dns-016.com`. Certificate issuance and alias
+  completion cannot be called successful until this resolves publicly.
+
+This is a separate fixed deployment in the existing project, using the
+existing hosted database. It does not clone or freeze that database. The six
+curated service contracts and published flows must also remain unchanged
+through judging; preview receipts and usage counters remain dynamic.
+
+Do not call the submission frozen until the custom domain, four-tool flow,
+Devpost URL, and final video are verified. The deadline is September 3 at
+20:00 UTC / 1:00 PM PDT / 4:00 PM EDT. Keep the submitted repository, video,
+deployment, and relevant service configuration unchanged through September 21
+at 5:00 PM PDT (September 22 at 00:00 UTC), per the
+[challenge updates](https://webmcp.devpost.com/updates).
+
+## Submission readback
+
+The existing [Devpost project](https://devpost.com/software/suede-agent-studio-webmcp-storefront)
+was verified as **SUBMITTED, 5/5 steps done**. The description now states the
+six-versus-31 scope, 71 focused tests, and synchronous registration fix.
+Judge instructions include exact synthetic input and stop after the free
+preview. The current submitted URL remains normal production until the
+challenge domain is public. The existing video remains
+https://youtu.be/ZR1At7lX6-E until the replacement is verified and uploaded.
+A replacement recut has been rendered locally as a 120-second, 1920×1080
+H.264/AAC video. It opens on discovery, presents captured results as edited
+panels, and preserves the explanation that the preview performs no inference.
+It is not yet uploaded, and its challenge-domain end card must not be published
+before that domain is verified.
 
 ## Safety boundaries demonstrated
 
