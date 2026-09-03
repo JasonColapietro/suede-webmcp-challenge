@@ -34,8 +34,13 @@ Try the live WebMCP surface at
 [agents.suedeai.ai/agents](https://agents.suedeai.ai/agents) using ChatGPT's
 in-app browser or a compatible Chrome WebMCP build.
 
+The four tools expose **six curated services from the 31-listing directory**.
+Registration supports both synchronous browser bridges and Promise-returning
+native APIs. See the evidence record for current verification and the pending
+challenge-domain freeze; normal production is not the frozen judge deployment.
+
 - [Challenge evidence and implementation map](CHALLENGE_EVIDENCE.md)
-- [Under-three-minute demo script](DEMO_SCRIPT.md)
+- [Two-minute demo script](DEMO_SCRIPT.md)
 - [Submission checklist](SUBMISSION_CHECKLIST.md)
 
 The `"private": true` field in `package.json` prevents accidental publication
