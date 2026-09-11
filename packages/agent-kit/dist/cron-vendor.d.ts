@@ -1,6 +1,6 @@
 /**
  * Vendored cron parser — copied from src/lib/cron.ts (agentix repo) on 2026-06-11.
- * Provenance: /Users/jasoncolapietro/code/agentix/src/lib/cron.ts
+ * Provenance: JasonColapietro/agentix — src/lib/cron.ts
  *
  * Do NOT import from that file across the workspace boundary.
  * Keep this in sync with the source if the parse logic ever changes.
