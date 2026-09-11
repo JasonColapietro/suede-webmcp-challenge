@@ -27,8 +27,11 @@ const BLOCKSCOUT_BASE = 'https://base.blockscout.com';
 const GH_REPO = 'Suede-AI/Suede-AI-App';
 const GH_WORKFLOW = 'backend-tests.yml';
 
+// Where run reports are written. Set X402_ASSURANCE_VAULT_ROOT to an absolute path
+// (the operator's memory vault, a synced drive, anywhere); otherwise reports land in
+// ./x402-assurance-vault relative to the working directory.
 const VAULT_ROOT =
-  '/Users/jasoncolapietro/Library/CloudStorage/GoogleDrive-jasoncola1@gmail.com/My Drive/Codex Claude Memory Vault';
+  process.env.X402_ASSURANCE_VAULT_ROOT || path.resolve('x402-assurance-vault');
 const HANDOFF_DIR = path.join(VAULT_ROOT, '05_handoffs');
 const AGENT_TAG = 'x402-assurance-cron';
 
