@@ -217,7 +217,6 @@ const jsonLd = {
         "https://t.me/SUEDEAI",
         "https://discord.gg/YECSFQX2g",
         "https://linktr.ee/suedelabsai",
-        "https://www.crunchbase.com/organization/suede-labs-ai",
         "https://www.linkedin.com/company/suede-labs-ai",
       ],
     },
