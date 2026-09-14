@@ -19,6 +19,14 @@ export interface PressMention {
 export const PRESS_MENTIONS: PressMention[] = [
   {
     outlet: "TechBullion",
+    href: "https://techbullion.com/suede-opens-its-widely-anticipated-seo-and-ai-cohort/",
+    headline: "Suede Opens Its Widely Anticipated SEO and AI Cohort",
+    shortLabel: "TechBullion: SEO and AI Cohort",
+    published: "2026-09-13",
+    publishedLabel: "Sep 2026",
+  },
+  {
+    outlet: "TechBullion",
     href: "https://techbullion.com/jason-colapietros-suede-labs-ai-launches-ios-apps/",
     headline: "Suede Labs AI Releases iOS Apps, Codex Skills & Musicians Terminal",
     shortLabel: "TechBullion: iOS Apps",
