@@ -116,7 +116,8 @@ judge URL did not change; only its Vercel alias target changed.
 - Deployment hostname:
   `agentix-oxkl2vazb-suede-ai-64d39175.vercel.app`.
 - Source: cleanup commit `253ef33`, merged to public `main` as `5578eee`
-  through PR #9. Current public `main` is `7d26cdc`.
+  through PR #9. The corrected deployment evidence merged later in PR #10;
+  requery the current `main` head rather than pinning a moving SHA here.
 - Live verification: `https://webmcp.suedeai.ai/agents` returns 200 and the
   response body and headers contain none of the retired name, domain, slug, or
   contaminated organization-profile signal.
