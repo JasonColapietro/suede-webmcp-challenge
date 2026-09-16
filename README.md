@@ -36,8 +36,9 @@ in-app browser or a compatible Chrome WebMCP build.
 
 The four tools expose **six curated services from the 31-listing directory**.
 Registration supports both synchronous browser bridges and Promise-returning
-native APIs. See the evidence record for current verification and the frozen
-challenge deployment; normal production is not the judge deployment.
+native APIs. See the evidence record for current verification and the pinned
+clean challenge deployment. The original freeze target was superseded on
+2026-09-13; normal production remains separate from the judge deployment.
 
 - [Challenge evidence and implementation map](CHALLENGE_EVIDENCE.md)
 - [Two-minute demo script](DEMO_SCRIPT.md)

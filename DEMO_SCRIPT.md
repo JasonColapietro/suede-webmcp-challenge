@@ -59,7 +59,7 @@ the free preview.
 
 ## 1:56–2:00 — links
 
-Show the public MIT repository and the verified frozen judge URL. The
+Show the public MIT repository and the verified pinned judge URL. The
 prepared destination is `https://webmcp.suedeai.ai/agents`; do not publish a
 video pointing to it until DNS, public access, and the tool flow pass.
 
