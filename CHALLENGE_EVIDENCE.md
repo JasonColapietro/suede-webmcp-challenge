@@ -1,12 +1,12 @@
 # WebMCP Challenge evidence
 
-Last verified: September 3, 2026 18:17 UTC (14:17 America/New_York).
-Release status: frozen judge deployment public and verified on `webmcp.suedeai.ai`.
+Last verified: September 15, 2026 (authenticated Vercel and live HTTP readback).
+Release status: clean pinned judge deployment public and verified on `webmcp.suedeai.ai`.
 
 ## Project
 
 - Name: Suede Agent Studio WebMCP Storefront
-- Frozen judge URL: https://webmcp.suedeai.ai/agents (public, verified)
+- Judge URL: https://webmcp.suedeai.ai/agents (public, verified)
 - Rolling production URL: https://agents.suedeai.ai/agents (tracks `main`)
 - Public source: https://github.com/JasonColapietro/suede-webmcp-challenge
 - License: MIT
@@ -105,7 +105,32 @@ The latest synthetic `preview_service` call returned run
 skipped and no provider request was made. No browser console errors were
 captured in that tab. `buy_service` was not called.
 
-## Frozen deployment preparation
+## Current judge deployment after the 2026-09-13 cleanup
+
+The original challenge deployment was superseded after Jason explicitly
+required zero first-party reinforcement of a retired external entity. That
+older build contained a contaminated organization-profile link. The public
+judge URL did not change; only its Vercel alias target changed.
+
+- Current deployment: `dpl_E8L62gRLNakXNWuEJoxC5yJSTUks`, READY.
+- Deployment hostname:
+  `agentix-oxkl2vazb-suede-ai-64d39175.vercel.app`.
+- Source: cleanup commit `253ef33`, merged to public `main` as `5578eee`
+  through PR #9. Current public `main` is `7d26cdc`.
+- Live verification: `https://webmcp.suedeai.ai/agents` returns 200 and the
+  response body and headers contain none of the retired name, domain, slug, or
+  contaminated organization-profile signal.
+- Separation check: `https://agents.suedeai.ai/` remains on an independent
+  READY production deployment and returns 200.
+- Safety rule: never restore or re-alias the old deployment recorded below.
+  Future replacements must be built as isolated previews, verified, and then
+  assigned only to `webmcp.suedeai.ai`; do not use a public-mirror `--prod`
+  deploy that could move Agent Studio's production aliases.
+
+## Original frozen deployment preparation (historical)
+
+> The following records the September 3 submission state. Its deployment and
+> alias instructions are no longer current; the section above is authoritative.
 
 - Runtime source: `7234b99595bbdc886e1e124592c1e539034962a6`.
 - Release branch: `release/webmcp-2026-final` in this public repository and
@@ -147,12 +172,12 @@ curated service contracts and published flows must also remain unchanged
 through judging; preview receipts and usage counters remain dynamic.
 
 The custom domain and four-tool flow are verified. Both Devpost live-URL fields
-and the URL in testing instructions now point to the frozen judge URL. The final
+and the URL in testing instructions point to the pinned judge URL. The final
 video is public and embedded in the submitted Devpost project. The extended
 deadline is September 4 at 08:00 UTC / 1:00 AM PDT / 4:00 AM EDT. Judging runs
 from September 4 at 10:00 AM PDT / 1:00 PM EDT through September 21 at 5:00 PM
 PDT / 8:00 PM EDT. Keep the submitted repository, video,
-deployment, and relevant service configuration unchanged through September 21
+current clean deployment, and relevant service configuration unchanged through September 21
 at 5:00 PM PDT (September 22 at 00:00 UTC), per the
 [challenge updates](https://webmcp.devpost.com/updates).
 

@@ -1,6 +1,7 @@
 # WebMCP Challenge submission checklist
 
-Updated September 3, 2026 18:17 UTC. Extended deadline: September 4 at 1:00 AM PDT / 4:00 AM EDT.
+Updated September 15, 2026 after the clean judge-deployment replacement.
+Extended deadline: September 4 at 1:00 AM PDT / 4:00 AM EDT.
 
 ## Completed and verified
 
@@ -25,10 +26,13 @@ Updated September 3, 2026 18:17 UTC. Extended deadline: September 4 at 1:00 AM P
       force pushes or deletion.
 - [x] Two-minute recut rendered at 1920×1080 with H.264 video and AAC audio;
       composition runtime, layout, and contrast checks passed.
-- [x] Challenge domain is assigned to the release branch and aliased to the
-      frozen deployment; two later `main` deploys did not move it.
-- [x] Judge URL https://webmcp.suedeai.ai/agents serves `dpl_HZ1BAH9J4N969dFe8hGQCaKfEdZP`
-      publicly with no SSO redirect.
+- [x] Challenge domain remains pinned independently from normal Agent Studio
+      production deploys.
+- [x] Judge URL https://webmcp.suedeai.ai/agents serves clean READY deployment
+      `dpl_E8L62gRLNakXNWuEJoxC5yJSTUks` publicly and returns 200.
+- [x] Live body and header checks found no retired-entity or contaminated
+      organization-profile signal; `agents.suedeai.ai` remained separate and
+      healthy.
 
 ## Remaining before final freeze
 
@@ -39,7 +43,7 @@ Updated September 3, 2026 18:17 UTC. Extended deadline: September 4 at 1:00 AM P
 - [x] Verify the final domain end card before publishing the prepared recut.
 - [x] Upload the recut, verify public playback, and replace the Devpost video URL.
 - [x] Record final deployment and video evidence, then freeze the public repository.
-- [ ] Keep submitted code, video, live deployment, and the six curated service
+- [ ] Keep submitted code, video, clean live deployment, and the six curated service
       contracts unchanged through September 21 at 5:00 PM PDT.
 
 The deployed release shares the existing hosted database. A fixed source
@@ -47,4 +51,4 @@ branch alone does not freeze catalog edits or published flow changes. See
 `CHALLENGE_EVIDENCE.md` for the precise deployment state and remaining gate.
 
 Do not resubmit or create a duplicate Devpost project. The entry is already
-submitted; only its authorized pre-deadline corrections remain.
+submitted; no submission action remains.
