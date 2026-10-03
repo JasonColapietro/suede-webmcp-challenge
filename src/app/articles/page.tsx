@@ -15,7 +15,7 @@ import "./articles.css";
 
 const PAGE_TITLE = "Articles | Suede Agent Studio";
 const PAGE_DESCRIPTION =
-  "Long-form writing on agentic workflows, the x402 pay-per-call protocol, designing flows that survive production, and the honest economics of selling an agent endpoint.";
+  "Long-form writing on agentic workflows, the x402 pay-per-call protocol, designing flows that survive production, and the business economics of selling an agent endpoint.";
 
 export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },

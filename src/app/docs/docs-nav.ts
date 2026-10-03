@@ -27,7 +27,7 @@ const PAGE = {
   overview: {
     href: "/docs/overview",
     label: "Overview",
-    description: "What Agent Studio is: canvas, contract, engine, runtime, and what it is not.",
+    description: "What Agent Studio is: canvas, contract, engine, runtime, and how to put it to work.",
   },
   examples: {
     href: "/docs/examples",
@@ -57,7 +57,7 @@ const PAGE = {
   payments: {
     href: "/docs/payments",
     label: "Payments",
-    description: "The full money model: your costs, the caller's price, payouts, and the caveats.",
+    description: "The full money model: your costs, the caller's price, payouts, and payment setup.",
   },
   api: {
     href: "/docs/api",

@@ -164,8 +164,8 @@ export default function DocsOverviewPage(): React.JSX.Element {
         </section>
 
         <section className="lp-doc lp-block">
-          <span className="lp-eyebrow">Scope, honestly</span>
-          <h2>What it is not</h2>
+          <span className="lp-eyebrow">Your operating controls</span>
+          <h2>Run on your terms</h2>
           <p>
             <strong>It is not autonomous by default.</strong> Flows run when
             triggered: by you, a schedule, a webhook, or a paying caller.
@@ -229,4 +229,31 @@ export default function DocsOverviewPage(): React.JSX.Element {
         </section>
     </>
   );
-}
+}        <section className="lp-doc lp-block" id="scope">
+          <span className="lp-eyebrow">Your operating controls</span>
+          <h2>Run on your terms</h2>
+          <p>
+            <strong>Choose how work starts.</strong> Run a flow yourself or
+            trigger it with a schedule, webhook, or paying caller. Set per-run
+            ceilings and daily budgets to control spending.
+          </p>
+          <p>
+            <strong>Enable payments when your service is ready.</strong> Complete
+            deployment, payout, and platform checks, then switch on settlement.
+            Use available previews to test flow logic before paid calls.
+          </p>
+          <p>
+            <strong>Put your service where buyers can find it.</strong> Published
+            agents appear in the directory, JSON catalog, AgentCard, and A2A
+            interface. The x402 index reports each service&apos;s call state
+            and includes active payment terms for payment-enabled services.
+          </p>
+          <p>
+            <strong>Choose the right nodes for launch.</strong> Build live flows
+            with supported runtime nodes. Use the Connector Lab&apos;s API
+            Operation node for simulation; the launch API keeps simulation-only
+            nodes out of live agents.
+          </p>
+        </section>
+
+

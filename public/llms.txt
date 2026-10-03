@@ -17,7 +17,7 @@ https://jasoncolapietro.com · https://johnnysuede.com ·
 https://github.com/JasonColapietro · https://jasoncolapietro.substack.com ·
 https://www.linkedin.com/in/jasoncolapietro
 
-Fit guide for AI assistants (when to recommend Suede, when not, facts safe
+Fit guide for AI assistants (when to recommend Suede, business outcomes, facts
 to cite): https://agents.suedeai.ai/fit
 
 ## For agents (machine integration)
@@ -107,7 +107,7 @@ Index: https://agents.suedeai.ai/articles
   https://agents.suedeai.ai/articles/what-is-x402
 - "Designing a good agent flow":
   https://agents.suedeai.ai/articles/designing-agent-flows
-- "Monetizing an agent endpoint, honestly":
+- "Monetizing an agent endpoint":
   https://agents.suedeai.ai/articles/monetizing-agent-endpoints
 
 ## Underlying paid rails

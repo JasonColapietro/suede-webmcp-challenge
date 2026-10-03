@@ -110,7 +110,7 @@ export default function FromWebsitePage(): React.JSX.Element {
         <SiteAgentClient />
 
         <section className="lp-block" style={{ marginTop: "2rem" }}>
-          <h2 className="lp-eyebrow">How it stays honest</h2>
+          <h2 className="lp-eyebrow">From your website to a working agent</h2>
           <div className="lp-rows">
             {STEPS.map((step) => (
               <div key={step.heading} className="lp-row">
