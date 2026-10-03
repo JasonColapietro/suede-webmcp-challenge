@@ -89,10 +89,10 @@ export const ARTICLES: readonly Article[] = [
         kind: "p",
         text: "First, halt on error by default. If a step fails, downstream steps should not run against garbage. Second, when fanning out over a list, collect per-item errors instead of failing the whole batch; one malformed row should not sink the other forty-nine, but the errors must surface in the output rather than vanish. Third, put a hard ceiling on spend per run. An unattended workflow with a loop and a paid step is a machine for turning a bug into a bill; a per-run cost cap converts the worst case from \"unbounded\" to \"a known number.\"",
       },
-      { kind: "h2", text: "When not to build one" },
+      { kind: "h2", text: "Choose a high-value workflow" },
       {
         kind: "p",
-        text: "Honesty matters here, because the failure mode of the current moment is agentifying things that did not need it. If every step of the process is deterministic, write a script; it will be faster, cheaper, and easier to reason about. If the process needs judgment but runs twice a year, do it by hand. If a wrong answer is expensive and hard to detect, keep a human in the loop and let the workflow draft rather than decide. Agentic workflows earn their keep in the specific zone where the process runs often, the judgment step is real but bounded, and a wrong answer is cheap to catch or cheap to tolerate.",
+        text: "Start with a recurring task that combines clear rules with a focused judgment call. Use deterministic steps for data handling and control flow, and reserve model calls for classification, scoring, or drafting. Add human review where the decision needs approval. Define the output and the review process before connecting the workflow to live work.",
       },
       { kind: "h2", text: "How this maps onto Agent Studio" },
       {

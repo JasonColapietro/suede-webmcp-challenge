@@ -50,7 +50,7 @@ export default function ArticlesIndexPage(): React.JSX.Element {
             No hype pieces. Each article explains one thing carefully: how
             agentic workflows are put together, how x402 settles a single API
             call, how to design a flow that survives unattended runs, and what
-            the economics of a paid endpoint honestly look like.
+            to price and sell a paid endpoint.
           </p>
         </header>
 
