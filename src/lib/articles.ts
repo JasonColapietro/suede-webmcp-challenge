@@ -306,3 +306,26 @@ export const ARTICLES: readonly Article[] = [
       }
 ],
 
+    related: [
+      { href: "/docs/launching", label: "Docs: launching an endpoint" },
+      { href: "/docs/payments", label: "Docs: pricing and payments" },
+      { href: "/articles/what-is-x402", label: "What x402 is and why pay-per-call agents matter" },
+    ],
+  },
+];
+
+const ARTICLES_BY_SLUG = new Map<string, Article>(ARTICLES.map((a) => [a.slug, a]));
+
+export function getArticle(slug: string): Article | undefined {
+  return ARTICLES_BY_SLUG.get(slug);
+}
+
+/** Rough reading-time label from block word counts. */
+export function readingTimeLabel(article: Article): string {
+  const words = article.blocks.reduce((sum, block) => {
+    if (block.kind === "code") return sum;
+    const text = block.kind === "ul" ? block.items.join(" ") : block.text;
+    return sum + text.split(/\s+/).filter(Boolean).length;
+  }, 0);
+  return `${Math.max(1, Math.round(words / 220))} min read`;
+}
