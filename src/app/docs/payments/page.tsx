@@ -15,7 +15,7 @@ import {
 
 const PAGE_TITLE = "Pricing & payments | Docs | Suede Agent Studio";
 const PAGE_DESCRIPTION =
-  "The full money model: what building costs, what callers pay, how payouts reach your wallet, gateway token pricing, spend ceilings, and the honest caveats. No revenue promises.";
+  "The full money model: what building costs, what callers pay, how payouts reach your wallet, gateway token pricing, spend ceilings, and payment setup.";
 
 export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
@@ -52,7 +52,7 @@ export default function PaymentsDocsPage(): React.JSX.Element {
             There are exactly three places money exists in this product: what
             it costs you to run a flow, what a caller pays to run your agent,
             and what routes to your payout address in between. This page states all
-            three plainly, including the caveats.
+            three plainly, with the steps to set up payments.
           </p>
         </header>
 
@@ -221,17 +221,14 @@ export default function PaymentsDocsPage(): React.JSX.Element {
         </section>
 
         <section className="lp-doc lp-block" id="caveats">
-          <span className="lp-eyebrow">The caveats, in plain language</span>
-          <h2>What we will not promise</h2>
+          <span className="lp-eyebrow">Put payments to work</span>
+          <h2>Build your revenue workflow</h2>
           <p>
-            <strong>No revenue promises.</strong> Publishing a service makes
-            it discoverable and reports its current call state; it does not
-            make it called.
-            Most agents earn nothing until their creator finds them callers.{" "}
-            <Link href="/articles/monetizing-agent-endpoints" style={{ color: "var(--primary)" }}>
-              Monetizing an agent endpoint
-            </Link>{" "}
-            covers the economics honestly.
+            <strong>Connect your service to paying customers.</strong> Publish
+            a service for a recurring task, set your price above its run cost,
+            and share the endpoint with teams that need the result.{" "}
+            <Link href="/articles/monetizing-agent-endpoints">Monetizing an agent endpoint</Link>{" "}
+            walks through pricing and repeat usage.
           </p>
           <p>
             <strong>Settlement is final.</strong> x402 has no chargeback

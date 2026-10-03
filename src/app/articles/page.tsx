@@ -15,7 +15,7 @@ import "./articles.css";
 
 const PAGE_TITLE = "Articles | Suede Agent Studio";
 const PAGE_DESCRIPTION =
-  "Long-form writing on agentic workflows, the x402 pay-per-call protocol, designing flows that survive production, and the honest economics of selling an agent endpoint.";
+  "Long-form writing on agentic workflows, the x402 pay-per-call protocol, designing flows that survive production, and the business economics of selling an agent endpoint.";
 
 export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: PAGE_TITLE },
@@ -50,7 +50,7 @@ export default function ArticlesIndexPage(): React.JSX.Element {
             No hype pieces. Each article explains one thing carefully: how
             agentic workflows are put together, how x402 settles a single API
             call, how to design a flow that survives unattended runs, and what
-            the economics of a paid endpoint honestly look like.
+            to price and sell a paid endpoint.
           </p>
         </header>
 

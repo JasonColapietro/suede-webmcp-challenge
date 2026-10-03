@@ -89,10 +89,10 @@ export const ARTICLES: readonly Article[] = [
         kind: "p",
         text: "First, halt on error by default. If a step fails, downstream steps should not run against garbage. Second, when fanning out over a list, collect per-item errors instead of failing the whole batch; one malformed row should not sink the other forty-nine, but the errors must surface in the output rather than vanish. Third, put a hard ceiling on spend per run. An unattended workflow with a loop and a paid step is a machine for turning a bug into a bill; a per-run cost cap converts the worst case from \"unbounded\" to \"a known number.\"",
       },
-      { kind: "h2", text: "When not to build one" },
+      { kind: "h2", text: "Choose a high-value workflow" },
       {
         kind: "p",
-        text: "Honesty matters here, because the failure mode of the current moment is agentifying things that did not need it. If every step of the process is deterministic, write a script; it will be faster, cheaper, and easier to reason about. If the process needs judgment but runs twice a year, do it by hand. If a wrong answer is expensive and hard to detect, keep a human in the loop and let the workflow draft rather than decide. Agentic workflows earn their keep in the specific zone where the process runs often, the judgment step is real but bounded, and a wrong answer is cheap to catch or cheap to tolerate.",
+        text: "Start with a recurring task that combines clear rules with a focused judgment call. Use deterministic steps for data handling and control flow, and reserve model calls for classification, scoring, or drafting. Add human review where the decision needs approval. Define the output and the review process before connecting the workflow to live work.",
       },
       { kind: "h2", text: "How this maps onto Agent Studio" },
       {
@@ -115,9 +115,9 @@ export const ARTICLES: readonly Article[] = [
     eyebrow: "Protocol",
     title: "What x402 is, and why pay-per-call agents matter",
     description:
-      "HTTP status 402 sat reserved for thirty years. x402 finally uses it: a protocol for paying for a single API call with stablecoins, no account required. Here is how it works and what it is honestly good for.",
+      "HTTP status 402 sat reserved for thirty years. x402 finally uses it: a protocol for paying for a single API call with stablecoins, no account required. Here is how it works and how to use it for paid services.",
     metaDescription:
-      "How x402 turns HTTP 402 into pay-per-call: the mechanics in one exchange, why it suits agents, what it honestly is not, and how Agent Studio implements it.",
+      "How x402 turns HTTP 402 into pay-per-call: the mechanics in one exchange, why it suits agents, how Agent Studio implements it.",
     datePublished: "2026-07-18",
     dateModified: "2026-07-24",
     blocks: [
@@ -155,19 +155,19 @@ export const ARTICLES: readonly Article[] = [
         kind: "p",
         text: "Discovery completes the loop. x402 services conventionally publish their catalog at a well-known URL (/.well-known/x402), listing each endpoint with its payment terms. That gives crawlers, agent frameworks, and other agents a standard place to find what is for sale and what it costs, without a human curating an integration.",
       },
-      { kind: "h2", text: "What x402 is honestly not" },
+      { kind: "h2", text: "How payment fits into your service" },
       {
         kind: "p",
-        text: "A fair account has to include the limits. x402 is young: the specification, the tooling, and the facilitator infrastructure are all in active development, and conventions that look standard today may shift. Settlement is final: there are no chargebacks, which sellers like and buyers should price into their trust decisions; if an endpoint returns garbage, the protocol does not refund you. Both sides need stablecoin plumbing: the caller needs a funded wallet, the seller needs an address they control, and both inherit the operational realities of holding a digital dollar. And discovery being possible is not the same as demand existing: publishing an endpoint at a well-known URL makes it findable, not popular.",
+        text: "x402 brings payment into the API request itself. Configure the caller's funded wallet, the seller's payout address, and current payment terms. Settlement is final with no protocol chargeback mechanism, so pair the endpoint with clear service terms and a support process. Publish your service contract and share it with customers who need the result.",
       },
       {
         kind: "p",
-        text: "It is also not the right tool for everything. High-value, high-trust transactions want contracts and recourse. Free APIs are already free. x402's sweet spot is the middle: machine-to-machine calls priced in cents, where the cost of onboarding would otherwise exceed the value of the transaction.",
+        text: "Pay-per-call works well for recurring machine-to-machine tasks: score a lead, process a document, or retrieve a structured result. A compatible client reads the terms and pays within the request cycle, making small transactions straightforward to integrate.",
       },
       { kind: "h2", text: "How Agent Studio implements it" },
       {
         kind: "p",
-        text: "Suede Agent Studio wraps this protocol so a flow builder never handles the raw mechanics. Publishing a flow creates a crawlable service entry that reports preview, payment-enabled, or unavailable state. A payment-enabled request gets the 402 challenge with exact terms; a valid retry settles USDC on Base before the flow executes. Preview-ready services instead accept an explicit dry-run without payment. Every published service is indexed in the crawlable catalog, while x402 terms appear only when payment is actually enabled. Every settled call routes the full amount to the configured payout address. The honest version of \"your agent earns\" is \"your agent earns when a real call settles.\"",
+        text: "Suede Agent Studio wraps this protocol so a flow builder never handles the raw mechanics. Publishing a flow creates a crawlable service entry that reports preview, payment-enabled, or unavailable state. A payment-enabled request gets the 402 challenge with exact terms; a valid retry settles USDC on Base before the flow executes. Preview-ready services instead accept an explicit dry-run without payment. Every published service is indexed in the crawlable catalog, while x402 terms appear only when payment is actually enabled. Every settled call routes the full amount to the configured payout address. Track settled earnings alongside your service calls.",
       },
     ],
     related: [
@@ -181,7 +181,7 @@ export const ARTICLES: readonly Article[] = [
     eyebrow: "Practice",
     title: "Designing a good agent flow",
     description:
-      "The difference between a flow that demos well and one that survives unattended runs: narrow LLM steps, deterministic control flow, honest testing, and knowing your worst-case cost.",
+      "The difference between a flow that demos well and one that survives unattended runs: narrow LLM steps, deterministic control flow, focused testing, and knowing your worst-case cost.",
     datePublished: "2026-07-18",
     dateModified: "2026-07-20",
     blocks: [
@@ -240,56 +240,72 @@ export const ARTICLES: readonly Article[] = [
   {
     slug: "monetizing-agent-endpoints",
     eyebrow: "Economics",
-    title: "Monetizing an agent endpoint, honestly",
+    title: "Monetizing an agent endpoint",
     description:
       "What it actually takes to earn money from a published agent: the cost floor, why distribution is the hard part, and the numbers to run before you set a price.",
     datePublished: "2026-07-18",
     dateModified: "2026-07-24",
     blocks: [
       {
-        kind: "p",
-        text: "The pitch for pay-per-call agents is easy to state: build a flow once, publish it as an endpoint, and earn money every time someone (or something) calls it. The pitch is true as far as it goes. This article is about the parts the pitch leaves out: what a call actually costs you, and why publishing an endpoint is the easy 10% of building something that earns.",
-      },
-      { kind: "h2", text: "The model in one paragraph" },
-      {
-        kind: "p",
-        text: "On Suede Agent Studio, you set a per-call price in USDC when you launch a flow. Callers hit the endpoint, get an HTTP 402 challenge with your payment terms, pay with a signed USDC authorization on Base, and the flow runs. Every settled call routes the full amount to the payout address you set. There is no listing fee, no subscription, and no payment until a real call settles. Launching is free, and endpoints default to dry-run mode (free to call) until you explicitly enable live settlement.",
-      },
-      { kind: "h2", text: "Know your cost floor before you set a price" },
-      {
-        kind: "p",
-        text: "Every run of your flow costs something to execute, and you pay that cost whether or not your price covers it. The LLM node meters tokens through the platform gateway: each workspace gets its first 100k tokens per month free, and beyond that tokens are billed at the published per-million rate. Specialized Suede endpoint nodes (audio analysis, IP registration, and the rest of the rails) each carry a fixed per-call price listed on the node card. HTTP and Transform nodes are free on the platform side, though whatever API your HTTP node calls may bill you separately.",
+            "kind": "p",
+            "text": "Turn work you already know how to deliver into a service customers can buy per call. Suede AI Agent Studio brings the workflow, published endpoint, payment terms, and earnings record together. Start with one recurring customer task and a result they can use immediately."
       },
       {
-        kind: "p",
-        text: "So the arithmetic before pricing is: worst-case tokens through the LLM nodes, plus the sum of fixed-price nodes on the most expensive path, times the loop multiplier if there is one. Your price needs to clear that number, with margin for retries and the occasional pathological input. A flow that costs $0.03 in a bad case and charges $0.05 nets you $0.02 on a settled call. That is a fine number if the flow gets called ten thousand times a month and a hobby if it gets called nine.",
-      },
-      { kind: "h2", text: "Distribution is the hard part, and no protocol fixes that" },
-      {
-        kind: "p",
-        text: "This is the section most monetization posts skip. Publishing a service makes it discoverable, not demanded. Agent Studio lists published services in a public directory and crawlable JSON catalog, with machine-readable x402 terms only for payment-enabled entries. Agent frameworks and crawlers can inspect preview, payment-enabled, or unavailable state without guessing. Discovery infrastructure lowers the cost of being found; it does not generate demand. The agent-to-agent economy that would send autonomous buyers to your endpoint is real but early, and today most calls to a paid endpoint come from a person who decided to integrate it: a developer wiring it into a script, a CI pipeline, or a team automating a workflow.",
+            "kind": "h2",
+            "text": "Choose the customer and the result"
       },
       {
-        kind: "p",
-        text: "Which means the boring truths of selling software apply. Endpoints that solve a specific, recurring, verifiable problem (score this lead, scan this contract, digest this diff) outperform general-purpose ones. A clear output contract beats a clever prompt. When a service advertises preview, its dry-run requires no wallet and gives prospective callers an integration path before paying. Company services and unavailable entries may be paid-only or expose no public call, so callers should follow the published state rather than assume a free tier.",
+            "kind": "p",
+            "text": "Package a specific job: qualify a lead against a sales team's criteria, flag clauses for contract review, or turn a code diff into a release summary. Define the input, the output, and how the customer will use the result. Build the flow around that contract so the service is straightforward to test and integrate."
       },
-      { kind: "h2", text: "Operational details that decide whether you actually get paid" },
       {
-        kind: "ul",
-        items: [
-          "Set a payout address you control. A priced agent with no payout destination configured refuses live calls rather than settling into nowhere; the platform treats a live rail with no destination as a misconfiguration, not a sale.",
-          "Relaunching is safe. Relaunching a flow updates the price but keeps the slug, so integration URLs and payment terms stay stable for existing callers.",
-          "Settlement is final. x402 has no chargebacks. That protects you from payment fraud, but it also means your reputation is the refund policy: an endpoint that returns garbage for money will simply stop being called.",
-          "Budgets protect you as the seller too. Per-run cost ceilings and daily agent budgets cap what a buggy flow or a hostile input can spend of your gateway credit while earning you a fixed price per call.",
-          "Self-hosting is an option, not a requirement. The relay setting lets callers pay through the platform's 402 gate while execution happens on your own server, with the platform verifying payment and forwarding the call with an HMAC signature.",
-        ],
+            "kind": "h2",
+            "text": "Price for a healthy margin"
       },
-      { kind: "h2", text: "A reasonable way to think about the opportunity" },
       {
-        kind: "p",
-        text: "The honest frame is that pay-per-call agents sit today where SaaS sat around 2004: the billing and delivery mechanics have gotten dramatically easier, the market of buyers is small but growing, and the people making money are the ones solving narrow problems for callers they went out and found. The mechanics (publish in a click, settle in seconds, get paid straight to your wallet) remove the excuses that used to make selling an API a months-long project. They do not remove the need to build something a caller measurably wants. Run the cost math, price above your floor, make dry-run integration effortless, and treat the first ten real callers as the product milestone that matters, because they are.",
+            "kind": "p",
+            "text": "Measure model usage and priced nodes across representative inputs. Include external API charges, retries, and support in your cost estimate. Set your per-call price above that total. Agent Studio records run costs and provides per-run ceilings and daily budgets to help control execution spend. The Payments guide explains the current fees and funding options."
       },
-    ],
+      {
+            "kind": "h2",
+            "text": "Publish and enable payments"
+      },
+      {
+            "kind": "p",
+            "text": "Publish your flow, configure your payout address, complete readiness checks, and enable settlement. A payment-enabled x402 request returns the price and payment terms; the caller signs a USDC authorization on Base and retries. Every settled call routes the full amount to the configured payout address. Agent Studio keeps publication and payment enablement as separate controls."
+      },
+      {
+            "kind": "h2",
+            "text": "Connect your service to customers"
+      },
+      {
+            "kind": "p",
+            "text": "Share the endpoint with teams that already perform the task. Give them a sample input, a clear output schema, and an integration example for their existing workflow. Published services appear in the directory and machine-readable catalog; payment-enabled entries expose active x402 terms. Use available dry-run previews to test graph logic, then validate output quality with live inputs."
+      },
+      {
+            "kind": "h2",
+            "text": "Grow repeat usage"
+      },
+      {
+            "kind": "p",
+            "text": "Review completed calls, settled earnings, costs, and customer feedback. Improve the steps that affect output quality and repeat use. Keep the service focused on the recurring job, then add adjacent services when customers ask for them. Use your execution and earnings records to decide where to invest next."
+      },
+      {
+            "kind": "h2",
+            "text": "Set up your payment operations"
+      },
+      {
+            "kind": "ul",
+            "items": [
+                  "Configure a payout address you control before enabling settlement. Receive x402 payments in USDC on Base; use an external exchange or off-ramp to convert them to a bank balance.",
+                  "Read current payment terms on each call. Relaunching keeps the service slug while allowing price updates.",
+                  "x402 settlement is final and has no protocol chargeback mechanism. Set clear service terms and a customer-support process.",
+                  "Set run ceilings and daily budgets to manage the cost of executing your service.",
+                  "Use the relay option when you want execution on your own server with payment verification handled by the platform."
+            ]
+      }
+],
+
     related: [
       { href: "/docs/launching", label: "Docs: launching an endpoint" },
       { href: "/docs/payments", label: "Docs: pricing and payments" },
