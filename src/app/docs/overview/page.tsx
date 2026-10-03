@@ -163,36 +163,30 @@ export default function DocsOverviewPage(): React.JSX.Element {
           </p>
         </section>
 
-        <section className="lp-doc lp-block">
+        <section className="lp-doc lp-block" id="scope">
           <span className="lp-eyebrow">Your operating controls</span>
           <h2>Run on your terms</h2>
           <p>
-            <strong>It is not autonomous by default.</strong> Flows run when
-            triggered: by you, a schedule, a webhook, or a paying caller.
-            Nothing self-modifies, and every cost-bearing step is bounded by
-            a per-run ceiling and daily budgets.
+            <strong>Choose how work starts.</strong> Run a flow yourself or
+            trigger it with a schedule, webhook, or paying caller. Set per-run
+            ceilings and daily budgets to control spending.
           </p>
           <p>
-            <strong>It does not move real money until you say so.</strong>{" "}
-            Settlement starts off by default. For an ordinary service that can
-            yield a preview; a company or payment-only service may instead be
-            unavailable. No USDC moves until the service passes deployment,
-            payout, and platform checks and payment is explicitly enabled.
-            Missing payment readiness never creates a paid service.
+            <strong>Enable payments when your service is ready.</strong> Complete
+            deployment, payout, and platform checks, then switch on settlement.
+            Use available previews to test flow logic before paid calls.
           </p>
           <p>
-            <strong>Publishing is not demand.</strong> Launching makes an
-            agent discoverable in the directory, JSON catalog, AgentCard, and
-            A2A interface. The x402 index keeps every published service
-            crawlable and marks preview, payment-enabled, or unavailable;
-            only payment-enabled entries include active acceptance terms.
-            Discoverability is not a promise of callers or revenue.
+            <strong>Put your service where buyers can find it.</strong> Published
+            agents appear in the directory, JSON catalog, AgentCard, and A2A
+            interface. The x402 index reports each service&apos;s call state
+            and includes active payment terms for payment-enabled services.
           </p>
           <p>
-            <strong>Some surfaces are prototypes and say so.</strong> The
-            Connector Lab&apos;s API Operation node is simulation-only and
-            cannot be launched into a live agent; the launch API rejects
-            graphs that contain it.
+            <strong>Choose the right nodes for launch.</strong> Build live flows
+            with supported runtime nodes. Use the Connector Lab&apos;s API
+            Operation node for simulation; the launch API keeps simulation-only
+            nodes out of live agents.
           </p>
         </section>
 
@@ -229,31 +223,4 @@ export default function DocsOverviewPage(): React.JSX.Element {
         </section>
     </>
   );
-}        <section className="lp-doc lp-block" id="scope">
-          <span className="lp-eyebrow">Your operating controls</span>
-          <h2>Run on your terms</h2>
-          <p>
-            <strong>Choose how work starts.</strong> Run a flow yourself or
-            trigger it with a schedule, webhook, or paying caller. Set per-run
-            ceilings and daily budgets to control spending.
-          </p>
-          <p>
-            <strong>Enable payments when your service is ready.</strong> Complete
-            deployment, payout, and platform checks, then switch on settlement.
-            Use available previews to test flow logic before paid calls.
-          </p>
-          <p>
-            <strong>Put your service where buyers can find it.</strong> Published
-            agents appear in the directory, JSON catalog, AgentCard, and A2A
-            interface. The x402 index reports each service&apos;s call state
-            and includes active payment terms for payment-enabled services.
-          </p>
-          <p>
-            <strong>Choose the right nodes for launch.</strong> Build live flows
-            with supported runtime nodes. Use the Connector Lab&apos;s API
-            Operation node for simulation; the launch API keeps simulation-only
-            nodes out of live agents.
-          </p>
-        </section>
-
-
+}
