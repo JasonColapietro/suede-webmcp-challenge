@@ -112,9 +112,13 @@ required zero first-party reinforcement of a retired external entity. That
 older build contained a contaminated organization-profile link. The public
 judge URL did not change; only its Vercel alias target changed.
 
-- Current deployment: `dpl_E8L62gRLNakXNWuEJoxC5yJSTUks`, READY.
+- Current deployment (2026-10-10): `dpl_CSFnsbcbiPTtZDKqoeVkoiidTzjH`, READY,
+  built from `main` after PR #14 into the isolated `webmcp` environment and
+  aliased only to `webmcp.suedeai.ai`.
 - Deployment hostname:
-  `agentix-oxkl2vazb-suede-ai-64d39175.vercel.app`.
+  `agentix-5iyvjwwnz-suede-ai-64d39175.vercel.app`.
+- Previous judge deployments (superseded): `dpl_ACZkaWvuQkFTRPVkFQCrVMSSugkM`
+  (2026-10-07), `dpl_E8L62gRLNakXNWuEJoxC5yJSTUks` (cleanup `253ef33`).
 - Source: cleanup commit `253ef33`, merged to public `main` as `5578eee`
   through PR #9. The corrected deployment evidence merged later in PR #10;
   requery the current `main` head rather than pinning a moving SHA here.
