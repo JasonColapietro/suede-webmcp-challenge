@@ -11,6 +11,22 @@ const nextConfig: NextConfig = {
     "/*": ["./node_modules/pdfkit/js/data/*.afm"],
   },
   serverExternalPackages: ["better-sqlite3", "pdfkit", "unpdf"],
+  async headers() {
+    return [
+      {
+        // webmcp.suedeai.ai serves this frozen WebMCP release build, a copy of
+        // Agent Studio. Keep it working for agents but out of search indexes so
+        // it does not compete with agents.suedeai.ai. Header-level so per-page
+        // `robots: { index: true }` metadata cannot override it.
+        source: "/:path*",
+        has: [{ type: "host", value: "webmcp.suedeai.ai" }],
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, follow" },
+          { key: "Link", value: '<https://agents.suedeai.ai/>; rel="canonical"' },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       {

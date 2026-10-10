@@ -19,10 +19,10 @@ export default function SiteFooter(): React.JSX.Element {
               the flow as a graph of nodes, each node one step, wired to
               the next, then launch it as a live URL that charges callers
               per call. A{" "}
-              <a href="https://suedeai.ai">Suede Labs AI</a> product,
+              <a href="https://suedeai.ai">Suede AI</a> product,
               built by <Link href="/founder">Jason Colapietro</Link>, an
-              open-source contributor with 37 pull requests merged across 34
-              open-source projects (as of September 2026), including Jest,
+              open-source contributor with 54 pull requests merged across 46
+              external repositories (as of October 2026), including Jest,
               Backstage, and Adobe&rsquo;s React Spectrum.
             </p>
           </div>
