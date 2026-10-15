@@ -2,11 +2,15 @@ import type { MetadataRoute } from "next";
 import { buildCatalog } from "@/lib/catalog";
 import { ARTICLES } from "@/lib/articles";
 import { listTemplateDetailPageSlugs } from "@/lib/template-summaries";
-import { SITE_URL, SITE_LAST_UPDATED } from "@/lib/site";
+import { SITE_URL, SITE_LAST_UPDATED, IS_WEBMCP_SEARCH_EXCLUDED } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Keep a valid, empty sitemap for previously discovered/submitted URLs.
+  // Advertising the excluded copy would contradict its noindex header.
+  if (IS_WEBMCP_SEARCH_EXCLUDED) return [];
+
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: SITE_LAST_UPDATED, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/agents`, lastModified: "2026-07-20", changeFrequency: "hourly", priority: 0.9 },
