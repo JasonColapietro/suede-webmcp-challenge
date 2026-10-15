@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { notFound } from "next/navigation";
 import { buildCatalog } from "@/lib/catalog";
 import { ARTICLES } from "@/lib/articles";
 import { listTemplateDetailPageSlugs } from "@/lib/template-summaries";
@@ -7,9 +8,9 @@ import { SITE_URL, SITE_LAST_UPDATED, IS_WEBMCP_SEARCH_EXCLUDED } from "@/lib/si
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Keep a valid, empty sitemap for previously discovered/submitted URLs.
-  // Advertising the excluded copy would contradict its noindex header.
-  if (IS_WEBMCP_SEARCH_EXCLUDED) return [];
+  // This host is intentionally excluded. Retire its sitemap rather than
+  // advertise noindexed pages or return an invalid empty <urlset>.
+  if (IS_WEBMCP_SEARCH_EXCLUDED) notFound();
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: SITE_LAST_UPDATED, changeFrequency: "weekly", priority: 1 },

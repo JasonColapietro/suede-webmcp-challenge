@@ -22,7 +22,9 @@ describe("WebMCP search exclusion", () => {
       const { default: sitemap } = await import("@/app/sitemap");
       const { default: robots } = await import("@/app/robots");
 
-      expect(await sitemap()).toHaveLength(0);
+      // An empty <urlset> is not valid against the sitemap protocol's XSD.
+      // Retire the excluded host's sitemap with a genuine 404 instead.
+      await expect(sitemap()).rejects.toThrow("NEXT_HTTP_ERROR_FALLBACK;404");
       expect(robots().sitemap).toBeUndefined();
       // Crawlers still need to reach the pages to observe the noindex header;
       // the machine-discovery allowlist and API restrictions stay intact.
