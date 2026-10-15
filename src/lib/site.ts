@@ -5,6 +5,10 @@
  */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://agents.suedeai.ai";
 
+// The judge build remains available for WebMCP callers, but next.config.ts
+// deliberately noindexes its host. Search discovery must use the same policy.
+export const IS_WEBMCP_SEARCH_EXCLUDED = new URL(SITE_URL).hostname === "webmcp.suedeai.ai";
+
 /** Canonical site-wide social preview image. */
 export const OG_IMAGE = `${SITE_URL}/opengraph-image`;
 

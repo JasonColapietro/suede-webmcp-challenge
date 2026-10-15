@@ -35,6 +35,7 @@ jobs:
           tests/webmcp-preview-budget.test.ts
           tests/webmcp-buy-guard.test.ts
           tests/webmcp-mount-scope.test.ts
+          tests/webmcp-search-discovery.test.ts
       - run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: '1'

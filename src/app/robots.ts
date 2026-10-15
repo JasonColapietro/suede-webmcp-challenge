@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, IS_WEBMCP_SEARCH_EXCLUDED } from "@/lib/site";
 
 // Mirrors the AI-crawler allowlist used across other Suede properties
 // (app.suedeai.ai, suedeai.ai, strumly, suedeai.org) so answer engines and
@@ -47,6 +47,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: DISALLOW,
       })),
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: IS_WEBMCP_SEARCH_EXCLUDED ? undefined : `${SITE_URL}/sitemap.xml`,
   };
 }
