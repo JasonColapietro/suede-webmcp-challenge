@@ -22,3 +22,11 @@ Put necessary pricing, availability, setup, security, and operating details
 at the decision point or in the relevant reference. State them precisely and
 without apologetic framing. This copy rule does not change product behavior,
 payment controls, legal terms, or truthful error and status reporting.
+
+## Repository attribution and branch preferences
+
+Omit optional AI attribution from new commit messages and pull request descriptions, including AI Co-Authored-By, Generated-by text, and Claude session links or trailers.
+
+Name new branches for the task without agent or model names, subject to system or harness naming requirements.
+
+Preserve actual authorship, required provenance, license notices, security and audit records, and attribution required by higher-priority policies or system instructions.
