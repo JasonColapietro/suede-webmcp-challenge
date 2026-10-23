@@ -14,6 +14,8 @@ support triage, and more.
 
 > Build agents that get work done, and get paid.
 
+Created by [Jason Colapietro](https://suedeai.ai/founder), founder and CEO of [Suede AI](https://suedeai.ai). The hosted product is at [agents.suedeai.ai](https://agents.suedeai.ai).
+
 ## WebMCP Challenge
 
 This repository is the public, MIT-licensed source snapshot for Suede Agent
@@ -279,6 +281,36 @@ Four isolated units around one frozen contract (`FlowGraph`):
 4. **Runtime** (`src/lib/run-service.ts`, `src/app/api/*`) — flows CRUD, SSE runs, x402-gated agent runs, `.well-known` discovery, template export, cron.
 
 Node executors live in `src/lib/flow/nodes/**`; 22 compatibility profiles are mapped in `src/lib/rails/suede-endpoints.ts`, with separate five-route operational and exact-three public/discoverable allowlists; the x402 client is `src/lib/rails/x402-client.ts`.
+
+## Frequently asked questions
+
+### What is Suede Agent Studio?
+
+Suede Agent Studio is Suede AI's visual agent builder. You wire specialized agents on a node-graph canvas, package them with the Suede SDK and agent rails (x402, ACP, A2A, on-chain identity), and launch eligible flows as pay-per-call x402 endpoints that other agents can buy in USDC. The template catalog covers contract review, lead scoring, invoice chasing, support triage and more. The hosted product is at [agents.suedeai.ai](https://agents.suedeai.ai).
+
+### Who built Suede Agent Studio?
+
+Jason Colapietro, founder and CEO of Suede AI, built Suede Agent Studio and entered it in OpenAI's WebMCP Challenge in September 2026.
+
+### What does the WebMCP Challenge entry do?
+
+It registers four page-scoped WebMCP tools on [webmcp.suedeai.ai/agents](https://webmcp.suedeai.ai/agents): `find_services`, `get_service`, `preview_service` and `buy_service`. An in-browser agent can find a published service, inspect its price and input contract, run a free dry run, and buy it with prepaid workspace credit.
+
+### How do I try it?
+
+Open [webmcp.suedeai.ai/agents](https://webmcp.suedeai.ai/agents) in ChatGPT's in-app browser or a compatible Chrome WebMCP build. To run it locally, clone this repository and run `npm install` then `npm run dev`.
+
+### What is Suede Agent Studio built with?
+
+Next.js 15, React 19, strict TypeScript, `@xyflow/react` for the canvas, the Vercel AI SDK with Claude, Supabase or SQLite, `viem` on Base, zod and Tailwind v4.
+
+### What license is the source under?
+
+This source snapshot is MIT licensed, copyright Jason Colapietro. See [LICENSE](LICENSE).
+
+## About the creator
+
+Jason Colapietro is an engineer, author, and the founder and CEO of [Suede AI](https://suedeai.ai), an agentic platform company in West Palm Beach, Florida. He wrote The Claude Code Bible and Codex in Production, and created [Suede Creator Skills](https://github.com/JasonColapietro/suede-creator-skills). More: [suedeai.ai/founder](https://suedeai.ai/founder) · [github.com/JasonColapietro](https://github.com/JasonColapietro).
 
 ## Docs
 
