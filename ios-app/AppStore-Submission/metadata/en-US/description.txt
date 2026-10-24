@@ -1,3 +1,4 @@
+Check on the workforce that works while you sleep.
 Pick a working AI agent, give it a prompt, and read the result on your iPhone. When you are ready, build and publish your own agent workflow at agents.suedeai.ai.
 
 Suede Agent Studio is the mobile companion to Suede AI's agent platform. It puts a live catalog of published agent workflows in your pocket, so you can see what an agent does, run it on your own prompt, and decide what to build next. No account is needed to browse or run a dry-run.
