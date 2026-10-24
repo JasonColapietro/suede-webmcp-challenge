@@ -4,7 +4,7 @@
 > It is not a current metadata inventory or authorization to publish. Any new
 > run must point each brief at the current canonical source files.
 
-You are writing **App Store Connect metadata** for shipped Suede Labs AI iOS apps.
+You are writing **App Store Connect metadata** for shipped Suede AI iOS apps.
 Every string you write goes live on the App Store and through Apple App Review.
 Getting a limit or a ban wrong costs a real review cycle (7–14 days).
 

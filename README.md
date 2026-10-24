@@ -2,7 +2,7 @@
 
 **A general-purpose agent builder with an available x402 packaging and launch path.**
 
-A visual, node-graph builder — Gumloop-style, for any business workflow — where
+A visual, node-graph builder (Gumloop-style, for any business workflow) where
 you wire specialized agents on a canvas, package them with the Suede SDK and
 modern agent rails (x402, ACP, A2A, on-chain identity), and launch eligible
 flows through the available pay-per-call x402 path. This packaging path can make
@@ -59,7 +59,7 @@ Vercel AI SDK + Claude · Supabase / SQLite · `viem` (Base) · zod · Tailwind 
 ```bash
 npm install
 npm run dev      # http://localhost:3210 (or default 3000)
-npm test         # vitest — engine, nodes, db, integration
+npm test         # vitest: engine, nodes, db, integration
 npm run build    # production build
 npm run verify:phase2a # isolated canonical-node release gate
 npm run verify:phase2b # isolated graph-editing release gate
@@ -77,7 +77,7 @@ npm run verify:card-payment # end-to-end card top-up rail: checkout, signed webh
 `verify:card-payment` boots its own server on a throwaway database and needs no
 Stripe account: webhook signatures are local HMAC, so the money-into-the-ledger
 half runs for real. Creating a Checkout Session is the one step that needs
-Stripe's API — supply a test key to cover it
+Stripe's API. Supply a test key to cover it
 (`STRIPE_SECRET_KEY=sk_test_... npm run verify:card-payment`); otherwise the run
 reports that step as not covered. A live key is refused.
 
@@ -250,22 +250,22 @@ Postgres, effectful, or production-durability claim.
 | `DB_DRIVER` | `sqlite` | `sqlite` or `supabase` |
 | `SQLITE_PATH` | `studio.db` for legacy/core only | local DB file; durable runtime requires an explicit absolute path and never accepts this default |
 | `RESOURCE_FOUNDRY_ENABLED` | enabled | emergency stop only: exact value `0` refuses Resource Foundry operations; it is not an entitlement or subfeature gate |
-| `RUNTIME_IDEMPOTENCY_HMAC_KEY` | — | required for durable enqueue; same strong 32-byte-or-longer secret in the app and worker |
+| `RUNTIME_IDEMPOTENCY_HMAC_KEY` | none | required for durable enqueue; same strong 32-byte-or-longer secret in the app and worker |
 | `CONNECTION_ENCRYPTION_KEY` | none | required for SQLite or reviewed shared-runtime Supabase connections; the same 32-byte key, encoded as 64 lowercase hex characters and excluding the all-zero value, must reach every app instance and never the database |
 | `CRON_SECRET` | none | required by `/api/cron/tick`; at least 32 UTF-8 bytes and sent by Vercel Cron as `Authorization: Bearer <value>` |
-| `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` | — | dedicated service-role configuration for general application persistence; reviewed baseline: `src/lib/db/schema.deploy.sql`; not sufficient for the connection provider |
-| `SUPABASE_ANON_KEY` / `AGENT_STUDIO_DB_SECRET` | — | required shared-runtime connection bridge; requires the reviewed request-secret boundary and manual connections migration, never a browser client |
-| `ANTHROPIC_API_KEY` | — | LLM node; falls back to a deterministic stub |
+| `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` | none | dedicated service-role configuration for general application persistence; reviewed baseline: `src/lib/db/schema.deploy.sql`; not sufficient for the connection provider |
+| `SUPABASE_ANON_KEY` / `AGENT_STUDIO_DB_SECRET` | none | required shared-runtime connection bridge; requires the reviewed request-secret boundary and manual connections migration, never a browser client |
+| `ANTHROPIC_API_KEY` | none | LLM node; falls back to a deterministic stub |
 | `X402_SKIP_SETTLEMENT` | `true` | set `false` to settle real USDC on Base |
-| `X402_PRIVATE_KEY` / `X402_SELLER_WALLET_ADDRESS` / `BASE_RPC_URL` / `SUEDE_API_URL` | — | live x402 settlement |
+| `X402_PRIVATE_KEY` / `X402_SELLER_WALLET_ADDRESS` / `BASE_RPC_URL` / `SUEDE_API_URL` | none | live x402 settlement |
 | `AP2_MODE` | `off` | experimental AP2 v0.2 merchant authorization: `off`, `optional`, or `required`; invalid values fail to `off` |
-| `AP2_MERCHANT_ISSUER` | — | stable HTTPS issuer for merchant-signed checkout quotes and Checkout Receipts; required before AP2 can be advertised |
-| `AP2_MERCHANT_SIGNING_JWK` | — | server-only ES256 P-256 private JWK with `kid`; keep in managed secrets and never expose it to clients or logs |
-| `AP2_MERCHANT_RETIRED_JWKS_JSON` | — | optional JWKS containing up to 8 retired public ES256/P-256 verification keys; preserves receipt verification across active-key rotation and rejects private or remote key material |
-| `AP2_TRUSTED_ISSUERS_JSON` | — | pinned issuer, algorithm, and public-key registry for accepted mandate signers; remote token-provided key URLs are never trusted |
+| `AP2_MERCHANT_ISSUER` | none | stable HTTPS issuer for merchant-signed checkout quotes and Checkout Receipts; required before AP2 can be advertised |
+| `AP2_MERCHANT_SIGNING_JWK` | none | server-only ES256 P-256 private JWK with `kid`; keep in managed secrets and never expose it to clients or logs |
+| `AP2_MERCHANT_RETIRED_JWKS_JSON` | none | optional JWKS containing up to 8 retired public ES256/P-256 verification keys; preserves receipt verification across active-key rotation and rejects private or remote key material |
+| `AP2_TRUSTED_ISSUERS_JSON` | none | pinned issuer, algorithm, and public-key registry for accepted mandate signers; remote token-provided key URLs are never trusted |
 | `AP2_REPLAY_STORE_READY` | unset | operator assertion set to `1` only after the durable AP2 authorization migration is applied and read back; runtime still probes the required table/columns and stays unavailable if that live probe fails |
-| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | — | card top-ups — the non-x402 way to fund gateway credit. Both are required; unset, `/api/gateway/topup/stripe` answers 503 and the wallet-free path is simply off. Point a Stripe webhook endpoint listening for `checkout.session.completed` at `/api/gateway/topup/stripe/webhook` and use its signing secret |
-| `PROMO_AGENT_KEY` | — | server-to-server key for `promo.suedeai.ai`; required by the `suede.promo` and `suede.promoClaims` nodes and the reviewer-gated promo-claims proxy. Unset, those nodes fail fast with a config error instead of calling Promo |
+| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | none | card top-ups, the non-x402 way to fund gateway credit. Both are required; unset, `/api/gateway/topup/stripe` answers 503 and the wallet-free path is simply off. Point a Stripe webhook endpoint listening for `checkout.session.completed` at `/api/gateway/topup/stripe/webhook` and use its signing secret |
+| `PROMO_AGENT_KEY` | none | server-to-server key for `promo.suedeai.ai`; required by the `suede.promo` and `suede.promoClaims` nodes and the reviewer-gated promo-claims proxy. Unset, those nodes fail fast with a config error instead of calling Promo |
 | `GOOGLE_PLACES_API_KEY` | none | optional Prospect Engine discovery via Google Places Text Search. Results are transient; selecting one performs a manual website import and no Google place provenance is persisted. Manual website import remains available when unset |
 | `PROSPECT_SUPPRESSION_HMAC_SECRET` | none | required server-only secret (at least 32 characters) for versioned keyed recipient suppression digests. Draft, approval, handoff, delivery confirmation, and suppression fail closed when unset |
 | `OPTIMIZE_OPERATOR_AUDIT_URL` / `OPTIMIZE_OPERATOR_AUDIT_TOKEN` | none | trusted server-to-server Optimize audit adapter for Prospect Engine. Both are required to run an audit; unsigned shared snapshots cannot seed the engine |
@@ -275,10 +275,10 @@ Postgres, effectful, or production-durability claim.
 
 Four isolated units around one frozen contract (`FlowGraph`):
 
-1. **Canvas** (`src/components/canvas`) — `@xyflow/react` editor + palette + inspector + run dock.
-2. **Flow contract** (`src/lib/flow/types.ts`, `node-meta.ts`) — the spine.
-3. **Execution engine** (`src/lib/flow/engine.ts`) — topological run, per-node USDC cost ledger, error-branch halting, subflow guard.
-4. **Runtime** (`src/lib/run-service.ts`, `src/app/api/*`) — flows CRUD, SSE runs, x402-gated agent runs, `.well-known` discovery, template export, cron.
+1. **Canvas** (`src/components/canvas`): `@xyflow/react` editor + palette + inspector + run dock.
+2. **Flow contract** (`src/lib/flow/types.ts`, `node-meta.ts`): the spine.
+3. **Execution engine** (`src/lib/flow/engine.ts`): topological run, per-node USDC cost ledger, error-branch halting, subflow guard.
+4. **Runtime** (`src/lib/run-service.ts`, `src/app/api/*`): flows CRUD, SSE runs, x402-gated agent runs, `.well-known` discovery, template export, cron.
 
 Node executors live in `src/lib/flow/nodes/**`; 22 compatibility profiles are mapped in `src/lib/rails/suede-endpoints.ts`, with separate five-route operational and exact-three public/discoverable allowlists; the x402 client is `src/lib/rails/x402-client.ts`.
 
