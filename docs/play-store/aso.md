@@ -42,6 +42,10 @@ Counts are Unicode code points, measured with
 `python3 -c "print(len(open(F,encoding='utf-8').read().rstrip('\n')))"`.
 `wc -m` without `LC_ALL` counts bytes and lies about the em dashes in this file.
 
+### Update (2026-10-24)
+
+Full description only; title, short description and keyword placement are unchanged. Em dashes removed. The "Built on the Suede rails" paragraph (creator ownership, programmable IP, provenance, registry-backed media, royalty routing) was replaced with the canonical Suede AI company line, per the identity spec v2 that retired that positioning; x402, USDC and Base stay. The phone-canvas paragraph keeps its fact and now reads as directions (guided mode on a phone, the visual canvas on a tablet, laptop or desktop), and says the studio *offers* guided mode, which closes build task 4 below. The template count is 88, pinned by `tests/templates.test.ts`.
+
 ### Title
 
 `Studio` measured 0 exact-title matches out of the top 14–30 results for the

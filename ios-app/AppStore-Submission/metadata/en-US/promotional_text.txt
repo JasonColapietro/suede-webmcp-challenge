@@ -1,1 +1,1 @@
-Browse working agents, give one a prompt, review the result, inspect its x402 endpoint, and continue on the web to assemble and publish your own callable workflow.
+Run a working AI agent from your iPhone. Pick one from the live catalog, give it a prompt and read the result, then build and publish your own at agents.suedeai.ai.
