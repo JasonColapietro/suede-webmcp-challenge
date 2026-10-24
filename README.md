@@ -1,4 +1,4 @@
-# Suede Agent Studio
+# Suede AI Agent Studio
 
 **A general-purpose agent builder with an available x402 packaging and launch path.**
 
@@ -284,13 +284,13 @@ Node executors live in `src/lib/flow/nodes/**`; 22 compatibility profiles are ma
 
 ## Frequently asked questions
 
-### What is Suede Agent Studio?
+### What is Suede AI Agent Studio?
 
-Suede Agent Studio is Suede AI's visual agent builder. You wire specialized agents on a node-graph canvas, package them with the Suede SDK and agent rails (x402, ACP, A2A, on-chain identity), and launch eligible flows as pay-per-call x402 endpoints that other agents can buy in USDC. The template catalog covers contract review, lead scoring, invoice chasing, support triage and more. The hosted product is at [agents.suedeai.ai](https://agents.suedeai.ai).
+Suede AI Agent Studio (formerly Suede Agent Studio) is Suede AI's visual agent builder. You wire specialized agents on a node-graph canvas, package them with the Suede SDK and agent rails (x402, ACP, A2A, on-chain identity), and launch eligible flows as pay-per-call x402 endpoints that other agents can buy in USDC. The template catalog covers contract review, lead scoring, invoice chasing, support triage and more. The hosted product is at [agents.suedeai.ai](https://agents.suedeai.ai).
 
-### Who built Suede Agent Studio?
+### Who built Suede AI Agent Studio?
 
-Jason Colapietro, founder and CEO of Suede AI, built Suede Agent Studio and entered it in OpenAI's WebMCP Challenge in September 2026.
+Jason Colapietro, founder and CEO of Suede AI, built Suede AI Agent Studio and entered it in OpenAI's WebMCP Challenge in September 2026.
 
 ### What does the WebMCP Challenge entry do?
 
@@ -300,7 +300,7 @@ It registers four page-scoped WebMCP tools on [webmcp.suedeai.ai/agents](https:/
 
 Open [webmcp.suedeai.ai/agents](https://webmcp.suedeai.ai/agents) in ChatGPT's in-app browser or a compatible Chrome WebMCP build. To run it locally, clone this repository and run `npm install` then `npm run dev`.
 
-### What is Suede Agent Studio built with?
+### What is Suede AI Agent Studio built with?
 
 Next.js 15, React 19, strict TypeScript, `@xyflow/react` for the canvas, the Vercel AI SDK with Claude, Supabase or SQLite, `viem` on Base, zod and Tailwind v4.
 
