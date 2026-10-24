@@ -110,7 +110,7 @@ export default function SiteFooter(): React.JSX.Element {
         </nav>
 
         <p className="lp-footer-bottom">
-          &copy; Suede AI 2026 &middot; Site last updated{" "}
+          &copy; Jason Colapietro 2026 &middot; Site last updated{" "}
           <time dateTime={SITE_LAST_UPDATED}>{SITE_LAST_UPDATED}</time>.
         </p>
         </div>
