@@ -51,7 +51,7 @@ export const FAQ_ITEMS = [
   {
     question: "Who builds Suede Agent Studio?",
     answer:
-      "Suede Agent Studio is a Suede Labs AI product, built by founder Jason Colapietro.",
+      "Suede Agent Studio is a Suede AI product, built by founder Jason Colapietro.",
   },
 ] as const;
 

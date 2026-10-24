@@ -102,7 +102,7 @@ describe("curated business service registry", () => {
       name: contract.name,
       version: "1.0.0",
       supportedInterfaces: [{ protocolBinding: "HTTP+JSON", protocolVersion: "1.0" }],
-      provider: { organization: "Suede Labs AI" },
+      provider: { organization: "Suede AI" },
       capabilities: { streaming: false },
       defaultInputModes: ["application/json"],
       defaultOutputModes: ["application/json"],

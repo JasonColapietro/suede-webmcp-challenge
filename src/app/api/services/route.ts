@@ -52,7 +52,7 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json(
       {
         service: "Suede Business Operations",
-        operator: "Suede Labs AI",
+        operator: "Suede AI",
         description:
           "Curated published business decision services with typed contracts, listed per-call prices, current call readiness, and explicit human-review boundaries.",
         collection: "business-operations",

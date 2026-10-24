@@ -203,7 +203,7 @@ describe("Scan outbound diagnostic", () => {
     expect(text).toContain("I checked the public page and reproduced");
     expect(text).toContain(JASON_OUTBOUND_PROFILE.credibilityStatement);
     expect(text).toContain(
-      "Jason Colapietro\nFounder and CEO, Suede Labs AI\nhttps://suedeai.ai/founder",
+      "Jason Colapietro\nFounder and CEO, Suede AI\nhttps://suedeai.ai/founder",
     );
     expect(text).toContain("extended Suede Scan");
     expect(text).toContain("Commercial outreach");

@@ -76,7 +76,7 @@ export function buildProviderPartnerOutreach(
     "Happy to adjust the implementation to whatever serves your adopters best, and to be a public reference deployment.",
     "",
     "Jason Colapietro",
-    "Founder, Suede Labs AI",
+    "Founder, Suede AI",
     `GitHub: ${service.maintainer}`,
     service.site,
   ].join("\n");

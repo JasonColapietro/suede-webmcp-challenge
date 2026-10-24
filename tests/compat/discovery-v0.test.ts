@@ -165,7 +165,7 @@ describe("discovery v0 compatibility", () => {
         protocolBinding: "HTTP+JSON",
         protocolVersion: "1.0",
       }],
-      provider: { organization: "Suede Labs AI", url: SITE_URL },
+      provider: { organization: "Suede AI", url: SITE_URL },
       version: "1.0.0",
       capabilities: { streaming: false, extensions: [] },
       defaultInputModes: ["application/json"],

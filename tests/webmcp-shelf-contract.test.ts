@@ -29,7 +29,7 @@ const entry = {
 
 const envelope = {
   service: "Suede Business Operations",
-  operator: "Suede Labs AI",
+  operator: "Suede AI",
   collection: "business-operations",
   count: 1,
   services: [entry],

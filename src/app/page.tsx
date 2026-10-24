@@ -56,7 +56,7 @@ export default function Home(): React.JSX.Element {
       <footer className="mystery-footer">
         <a href="/privacy">Privacy</a>
         <a href="/security">Security</a>
-        <a href="https://suedeai.ai">Suede Labs</a>
+        <a href="https://suedeai.ai">Suede AI</a>
       </footer>
     </div>
   );

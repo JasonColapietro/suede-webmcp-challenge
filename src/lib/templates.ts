@@ -2467,7 +2467,7 @@ export const SEED_TEMPLATES: SeedTemplate[] = [
     name: "Brand Audit to Contest Brief",
     pitch: "Turns a brand audit score into a ready-to-post creator contest brief: $0.10 per brief.",
     description:
-      "Turns a brand audit score into a ready-to-post creator contest brief with audience criteria and prize structure.\n\nExample input: \"Brand: Suede Labs AI, score: 72, weakness: AEO\"\n\nExample output: \"Contest title: 'AI for Creators Challenge'. Prize: $500 + Suede Pro. Audience: music producers 18–35...\"",
+      "Turns a brand audit score into a ready-to-post creator contest brief with audience criteria and prize structure.\n\nExample input: \"Brand: Suede AI, score: 72, weakness: AEO\"\n\nExample output: \"Contest title: 'AI for Creators Challenge'. Prize: $500 + Suede Pro. Audience: music producers 18–35...\"",
     suggestedPriceUsdc: 0.1,
     category: "business",
     department: "Marketing",

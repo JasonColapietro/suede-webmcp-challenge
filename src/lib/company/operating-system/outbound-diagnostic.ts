@@ -191,9 +191,9 @@ const PendingScanHandoffSchema = z.object({
 export const JASON_OUTBOUND_PROFILE = Object.freeze({
   id: "jason-colapietro" as const,
   name: "Jason Colapietro",
-  title: "Founder and CEO, Suede Labs AI",
+  title: "Founder and CEO, Suede AI",
   credibilityStatement:
-    "I'm Jason Colapietro, founder and CEO of Suede Labs AI and creator of Suede Scan. I also wrote Proof as Infrastructure and a Programming Insider article on SEO and AI-readable businesses.",
+    "I'm Jason Colapietro, founder and CEO of Suede AI and creator of Suede Scan. I also wrote Proof as Infrastructure and a Programming Insider article on SEO and AI-readable businesses.",
   identityUrl: "https://suedeai.ai/founder",
   scanUrl: "https://scan.suedeai.ai/",
   articleUrl:
@@ -559,7 +559,7 @@ function securityDisclosureBody(value: {
     "Please route this notice to the appropriate security or engineering contact. No commercial service is offered in this disclosure.",
     "",
     value.operatorName,
-    "Suede Labs AI",
+    "Suede AI",
   ].join("\n");
 }
 

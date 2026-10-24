@@ -28,6 +28,6 @@ BUILT ON THE SUEDE RAILS
 
 Suede is creator ownership infrastructure for the AI era. Suede Agent Studio plugs your agents into the same rails as the rest of the platform: programmable IP, provenance, registry-backed media, royalty routing, and agent commerce over x402. Your agents are assets you own, with a price, an audience, and a ledger.
 
-A Suede Labs AI product.
+A Suede AI product.
 
-More from Suede Labs AI: Suede Guitar Tuner for tuning and guitar setup, Suede Voice for vocal range testing and singing practice, and Suede Social for the guitar forum and gear talk.
+More from Suede AI: Suede Guitar Tuner for tuning and guitar setup, Suede Voice for vocal range testing and singing practice, and Suede Social for the guitar forum and gear talk.

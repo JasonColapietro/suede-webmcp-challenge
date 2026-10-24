@@ -132,4 +132,4 @@ This is SDK v0, released alongside [Suede Agent Studio](https://agents.suedeai.a
 
 ## License
 
-MIT · [Jason Colapietro / Suede Labs AI](https://suedeai.ai/founder)
+MIT · [Jason Colapietro / Suede AI](https://suedeai.ai/founder)

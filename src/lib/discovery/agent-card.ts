@@ -98,7 +98,7 @@ export function buildSuedeAgentCard(
       },
     ],
     provider: {
-      organization: "Suede Labs AI",
+      organization: "Suede AI",
       url: SITE_URL,
     },
     version: "1.0.0",

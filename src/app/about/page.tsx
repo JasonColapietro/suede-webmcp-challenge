@@ -193,7 +193,7 @@ export default function AboutPage(): React.JSX.Element {
             <p>
               Suede Agent Studio is built by{" "}
               <Link href="/founder">Jason Colapietro</Link>, founder and CEO of{" "}
-              <a href="https://suedeai.ai/about">Suede Labs AI</a>, the AI
+              <a href="https://suedeai.ai/about">Suede AI</a>, the AI
               agent and creator-software company behind the studio. Read the
               full{" "}
               <a href="https://suedeai.ai/founder">founder bio on suedeai.ai</a>{" "}

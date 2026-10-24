@@ -21,7 +21,7 @@ export async function GET(): Promise<NextResponse> {
             protocolVersion: "2025-06-18",
           },
         ],
-        provider: { organization: "Suede Labs AI", url: SITE_URL },
+        provider: { organization: "Suede AI", url: SITE_URL },
         version: "1.0.0",
         documentationUrl: `${SITE_URL}/docs`,
         capabilities: {

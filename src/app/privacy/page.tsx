@@ -64,7 +64,7 @@ export default function PrivacyPage(): React.JSX.Element {
           <span className="lp-eyebrow">Privacy</span>
           <h1>Privacy Policy.</h1>
           <p>
-            Suede Agent Studio (agents.suedeai.ai) is a product of Suede Labs
+            Suede Agent Studio (agents.suedeai.ai) is a product of Suede
             AI. This page explains what we collect, why, and who we share it
             with.
           </p>

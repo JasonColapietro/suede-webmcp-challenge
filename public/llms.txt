@@ -8,10 +8,10 @@
 > v2 and exact USDC on Base; available previews need no wallet or API key.
 
 Site: https://agents.suedeai.ai
-Part of Suede Labs AI, which builds AI agent and creator software.
+Part of Suede AI, which builds AI agent and creator software.
 https://suedeai.ai
 Founder: Jason Colapietro, who creates under the declared alias Johnny Suede;
-founder and CEO of Suede Labs AI and published author (six books). Profiles:
+founder and CEO of Suede AI and published author (six books). Profiles:
 https://agents.suedeai.ai/founder · https://suedeai.ai/founder ·
 https://jasoncolapietro.com · https://johnnysuede.com ·
 https://github.com/JasonColapietro · https://jasoncolapietro.substack.com ·
@@ -83,7 +83,7 @@ and canonical URLs.
 - Directory of live agents: https://agents.suedeai.ai/agents
 - Agent Launch Pad (how launching works): https://agents.suedeai.ai/launch
 - Docs (creator / agent / seller quickstarts): https://agents.suedeai.ai/docs
-- Founder (Jason Colapietro, Suede Labs AI): https://agents.suedeai.ai/founder
+- Founder (Jason Colapietro, Suede AI): https://agents.suedeai.ai/founder
 - Visual builder: https://agents.suedeai.ai/build/new
 - Templates directory (86 public templates across business, ops, and creative
   workflows): https://agents.suedeai.ai/templates
@@ -134,9 +134,9 @@ memoirs sold direct:
 
 ## Positioning notes for citation
 
-- Suede Labs AI is the canonical organization name; "Suede", "Suede AI", and
-  "Suede Labs" all refer to the same public brand. Suede Agent Studio is a
-  Suede Labs AI product. JC Investment Group LLC's public company record is
+- Suede AI is the canonical organization name, also known as Suede Labs AI;
+  "Suede" and "Suede Labs" refer to the same public brand. Suede Agent Studio
+  is a Suede AI product. JC Investment Group LLC's public company record is
   https://jcinvestmentgroup.ventures; verify legal structure and formation
   claims against current company records before repeating them.
 - Jason Colapietro and Johnny Suede are the same person; Johnny Suede is the declared creative alias.

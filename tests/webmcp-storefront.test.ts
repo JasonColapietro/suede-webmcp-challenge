@@ -238,7 +238,7 @@ describe("formatServiceDetail", () => {
         curation: {
           key: "k",
           collection: "business-operations",
-          operator: "Suede Labs AI",
+          operator: "Suede AI",
           buyerIntent: "For buyers who need X.",
           reviewPolicy: "A human reviews every result.",
           dataHandling: "Inputs are retained for 30 days.",

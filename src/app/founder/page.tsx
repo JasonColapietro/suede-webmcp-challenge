@@ -1,5 +1,5 @@
 /**
- * Founder page — the entity anchor for "Jason Colapietro" + "Suede Labs AI".
+ * Founder page — the entity anchor for "Jason Colapietro" + "Suede AI".
  * Person/ProfilePage JSON-LD here shares @ids with the site-wide graph in
  * layout.tsx so search engines resolve one founder entity across every page.
  */
@@ -14,9 +14,9 @@ import { PRESS_MENTIONS } from "@/lib/press";
 import "../chrome.css";
 import "../site.css";
 
-const PAGE_TITLE = "Jason Colapietro, Founder of Suede Labs AI";
+const PAGE_TITLE = "Jason Colapietro, Founder of Suede AI";
 const PAGE_DESCRIPTION =
-  "Jason Colapietro, who creates under the declared alias Johnny Suede, is the founder and CEO of Suede Labs AI and the published author of the ownership trilogy.";
+  "Jason Colapietro, who creates under the declared alias Johnny Suede, is the founder and CEO of Suede AI and the published author of the ownership trilogy.";
 
 export const metadata: Metadata = withDefaultSocialImages({
   title: { absolute: `${PAGE_TITLE} | Suede Agent Studio` },
@@ -26,7 +26,7 @@ export const metadata: Metadata = withDefaultSocialImages({
     "Johnny Suede",
     "Jason Colapietro author",
     "Jason Colapietro books",
-    "Suede Labs AI",
+    "Suede AI",
     "Suede AI founder",
     "AI agent",
     "AI agents that earn",
@@ -177,7 +177,7 @@ const PRODUCTS: { name: string; href: string; body: string }[] = [
     body: "The inspiration and remix workspace: sketches, references, and directions become tracks you own, with stems on every render.",
   },
   {
-    name: "Suede Labs AI",
+    name: "Suede AI",
     href: "https://suedeai.ai",
     body: "The company home: AI agent products and focused creator tools, including Suede Studio Guitar and Suede Studio Voice.",
   },
@@ -210,9 +210,9 @@ const profileJsonLd = {
         familyName: "Colapietro",
         alternateName: ["Johnny Suede"],
         url: "https://suedeai.ai/founder",
-        jobTitle: "Founder and CEO of Suede Labs AI",
+        jobTitle: "Founder and CEO of Suede AI",
         description:
-          "Founder and CEO of Suede Labs AI and published author focused on AI agent orchestration, creator software, and agent commerce.",
+          "Founder and CEO of Suede AI and published author focused on AI agent orchestration, creator software, and agent commerce.",
         worksFor: { "@id": SUEDE_ORG_ID },
         knowsAbout: [
           "AI agents",
@@ -288,7 +288,7 @@ export default function FounderPage(): React.JSX.Element {
               {/* One line, always: the kicker is ~200px and fits every
                   viewport, so a mid-phrase wrap is never the better outcome. */}
               <span className="lp-eyebrow" style={{ whiteSpace: "nowrap" }}>
-                Founder · Suede Labs AI
+                Founder · Suede AI
               </span>
               <h1
                 className="lp-h1"
@@ -297,7 +297,7 @@ export default function FounderPage(): React.JSX.Element {
                 Jason Colapietro builds <em>AI agents that can earn</em>.
               </h1>
               <p className="lp-lede">
-                Jason Colapietro is the founder and CEO of <b>Suede Labs AI</b>,
+                Jason Colapietro is the founder and CEO of <b>Suede AI</b>,
                 an AI agent and creator-software company, and a <b>published
                 author</b> of the ownership
                 trilogy and a guitar tone memoir. He creates under the declared
@@ -319,7 +319,7 @@ export default function FounderPage(): React.JSX.Element {
                   GitHub · JasonColapietro →
                 </a>
                 <a href="https://suedeai.ai" className="lp-btn lp-btn--ghost">
-                  Suede Labs AI
+                  Suede AI
                 </a>
                 <a
                   href="https://www.linkedin.com/in/jasoncolapietro"
@@ -379,7 +379,7 @@ export default function FounderPage(): React.JSX.Element {
             >
               <Image
                 src="/jason-colapietro.png"
-                alt="Jason Colapietro, founder of Suede Labs AI"
+                alt="Jason Colapietro, founder of Suede AI"
                 width={260}
                 height={260}
                 priority
@@ -518,7 +518,7 @@ export default function FounderPage(): React.JSX.Element {
 
         {/* ── The constellation ──────────────────────────────────────────── */}
         <section className="lp-section">
-          <span className="lp-eyebrow">Built at Suede Labs AI</span>
+          <span className="lp-eyebrow">Built at Suede AI</span>
           <h2
             style={{
               fontFamily: "var(--font-display)",

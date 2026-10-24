@@ -85,7 +85,6 @@ export const metadata: Metadata = {
     "pay-per-call API",
     "on-chain AI",
     "Suede Agent Studio",
-    "Suede Labs AI",
     "Suede AI",
     "Jason Colapietro",
     "Johnny Suede",
@@ -95,7 +94,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Jason Colapietro", url: "https://suedeai.ai/founder" }],
   creator: "Jason Colapietro",
-  publisher: "Suede Labs AI",
+  publisher: "Suede AI",
   alternates: { canonical: SITE_URL },
   robots: {
     index: true,
@@ -149,7 +148,7 @@ export const viewport: Viewport = {
  * The Person and Organization @ids MIRROR the canonical nodes published on
  * suedeai.ai (suede-home `src/lib/seo-entity.ts`) — `/founder#person` and
  * `/#organization` on the suedeai.ai domain — so search engines merge this
- * site's claims into the same Jason Colapietro / Suede Labs AI entities.
+ * site's claims into the same Jason Colapietro / Suede AI entities.
  * Don't mint new @ids here; change suede-home first if the canon moves.
  */
 const SUEDE_ORG_ID = "https://suedeai.ai/#organization";
@@ -194,8 +193,8 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": SUEDE_ORG_ID,
-      name: "Suede Labs AI",
-      alternateName: ["Suede", "Suede AI", "Suede Labs"],
+      name: "Suede AI",
+      alternateName: ["Suede", "Suede Labs AI", "Suede Labs"],
       url: "https://suedeai.ai",
       foundingDate: "2024",
       description:
@@ -228,9 +227,9 @@ const jsonLd = {
       familyName: "Colapietro",
       alternateName: ["Johnny Suede"],
       url: "https://suedeai.ai/founder",
-      jobTitle: "Founder and CEO of Suede Labs AI",
+      jobTitle: "Founder and CEO of Suede AI",
       description:
-        "Founder and CEO of Suede Labs AI and published author focused on AI agent orchestration, creator software, and agent commerce.",
+        "Founder and CEO of Suede AI and published author focused on AI agent orchestration, creator software, and agent commerce.",
       worksFor: { "@id": SUEDE_ORG_ID },
       knowsAbout: [
         "AI agents",

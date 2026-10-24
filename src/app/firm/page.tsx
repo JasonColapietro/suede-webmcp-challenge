@@ -1,6 +1,6 @@
 /**
  * /firm: Suede Visibility, the credibility / reputation / AI-search practice
- * from Suede Labs, sold as a capped five-cohort engagement.
+ * from Suede AI, sold as a capped five-cohort engagement.
  *
  * The cohort board renders from COHORT_BOARD below. Statuses are flipped by
  * hand when an engagement signs or wraps; nothing on this page counts down,
@@ -23,7 +23,7 @@ const LAST_UPDATED = "2026-08-18";
 export const metadata: Metadata = {
   title: { absolute: "AEO + GEO Marketing Firm | Suede Agent Studio" },
   description:
-    "Suede Visibility is the credibility, reputation, and AI search firm from Suede Labs. Five client cohorts at a time. Schema, proof, and a citation ledger across ChatGPT, Perplexity, and Google AI Overviews.",
+    "Suede Visibility is the credibility, reputation, and AI search firm from Suede AI. Five client cohorts at a time. Schema, proof, and a citation ledger across ChatGPT, Perplexity, and Google AI Overviews.",
   alternates: { canonical: PAGE_URL },
   robots: { index: true, follow: true },
   openGraph: {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: "Suede Agent Studio",
     title: "AEO + GEO Marketing Firm | Suede Agent Studio",
     description:
-      "The credibility, reputation, and AI search firm from Suede Labs. Five cohorts at a time, founder-reviewed intake, and a share-of-voice ledger per engine.",
+      "The credibility, reputation, and AI search firm from Suede AI. Five cohorts at a time, founder-reviewed intake, and a share-of-voice ledger per engine.",
     images: [{ url: OG_IMAGE }],
   },
   twitter: {
@@ -226,7 +226,7 @@ const jsonLd = {
       url: PAGE_URL,
       name: "Suede Visibility: AEO + GEO Marketing Firm",
       description:
-        "The credibility, reputation, and AI search firm from Suede Labs. Five client cohorts at a time, founder-reviewed intake, and a monthly share-of-voice ledger per engine.",
+        "The credibility, reputation, and AI search firm from Suede AI. Five client cohorts at a time, founder-reviewed intake, and a monthly share-of-voice ledger per engine.",
       datePublished: "2026-08-18",
       dateModified: `${LAST_UPDATED}`,
       inLanguage: "en-US",
@@ -290,7 +290,7 @@ export default function FirmPage(): React.JSX.Element {
               When buyers ask AI, be the brand in the answer.
             </h1>
             <p className="fm-hero__lede">
-              Suede Visibility is the marketing firm from Suede Labs for the
+              Suede Visibility is the marketing firm from Suede AI for the
               questions buyers now ask engines instead of search bars. We ship
               the structure, proof, and authority work that makes ChatGPT,
               Perplexity, and Google AI Overviews cite you, and we report share

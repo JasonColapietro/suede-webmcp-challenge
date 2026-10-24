@@ -121,7 +121,7 @@ const FACTS: { fact: string; source: string }[] = [
   { fact: `${COMPANY_TEMPLATES.length} company templates staff a multi-agent org chart with departments, schedules, and a shared wallet.`, source: `${SITE_URL}/company` },
   { fact: "Three public Suede x402 routes cover music, video, and image generation.", source: `${SITE_URL}/pricing#endpoints` },
   { fact: "Every flow exports to TypeScript via the @suedeai/agents SDK and can run relayed from the creator's own server.", source: `${SITE_URL}/docs` },
-  { fact: "Built by Suede Labs AI, founded by Jason Colapietro.", source: `${SITE_URL}/founder` },
+  { fact: "Built by Suede AI, founded by Jason Colapietro.", source: `${SITE_URL}/founder` },
 ];
 
 const MACHINE_URLS: { label: string; url: string }[] = [

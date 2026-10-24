@@ -112,7 +112,7 @@ describe("root machine discovery", () => {
       name: "Suede Agent Studio",
       version: "1.0.0",
       supportedInterfaces: [{ protocolBinding: "MCP" }],
-      provider: { organization: "Suede Labs AI" },
+      provider: { organization: "Suede AI" },
       defaultInputModes: ["application/json"],
       defaultOutputModes: ["application/json"],
       "x-suede": {
@@ -246,7 +246,7 @@ describe("public claim boundaries", () => {
 
   it("does not assert the disputed subsidiary relationship or JCIG founding year", async () => {
     const llms = await readFile(new URL("../public/llms.txt", import.meta.url), "utf8");
-    expect(llms).not.toMatch(/Suede Labs AI is a subsidiary of JC Investment Group LLC/i);
+    expect(llms).not.toMatch(/Suede AI is a subsidiary of JC Investment Group LLC/i);
     expect(llms).not.toMatch(/JC Investment Group LLC[^\n]*founded 2016/i);
     expect(llms).toMatch(
       /verify legal structure and formation\s+claims against current company records/i,

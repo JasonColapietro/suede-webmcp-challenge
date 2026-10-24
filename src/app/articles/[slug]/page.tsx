@@ -99,7 +99,7 @@ export default async function ArticlePage({ params }: RouteParams): Promise<Reac
     publisher: {
       "@type": "Organization",
       "@id": "https://suedeai.ai/#organization",
-      name: "Suede Labs AI",
+      name: "Suede AI",
       url: "https://suedeai.ai",
     },
     mainEntityOfPage: `${SITE_URL}/articles/${article.slug}`,

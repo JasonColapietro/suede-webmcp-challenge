@@ -8,7 +8,7 @@ export interface CuratedBusinessServiceContract {
   readonly templateId: string;
   readonly name: string;
   readonly collection: typeof CURATED_BUSINESS_COLLECTION;
-  readonly operator: "Suede Labs AI";
+  readonly operator: "Suede AI";
   readonly description: string;
   readonly buyerIntent: string;
   readonly tags: readonly string[];
@@ -39,7 +39,7 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
     templateId: "tpl-po-invoice-match",
     name: "PO Match Gate",
     collection: CURATED_BUSINESS_COLLECTION,
-    operator: "Suede Labs AI",
+    operator: "Suede AI",
     description:
       "Compare one purchase order with its invoice. Returns pass or hold, with every quantity, unit-price, vendor, and total discrepancy identified before payment approval.",
     buyerIntent:
@@ -85,7 +85,7 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
     templateId: "tpl-resume-jd-screen",
     name: "Resume vs JD Screener",
     collection: CURATED_BUSINESS_COLLECTION,
-    operator: "Suede Labs AI",
+    operator: "Suede AI",
     description:
       "Compare one candidate resume with one job description. Returns an evidence-based fit score, supported and missing requirements, three interview questions, and a screening recommendation.",
     buyerIntent:
@@ -175,7 +175,7 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
     templateId: "tpl-contract-redflag-scan",
     name: "Contract Red-Flag Scan",
     collection: CURATED_BUSINESS_COLLECTION,
-    operator: "Suede Labs AI",
+    operator: "Suede AI",
     description:
       "Extract a PDF contract and return a first-pass risk report covering liability, indemnity, renewal, termination, IP, exclusivity, governing law, and payment terms.",
     buyerIntent:
@@ -248,7 +248,7 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
     templateId: "tpl-vendor-risk-read",
     name: "Vendor Risk Read",
     collection: CURATED_BUSINESS_COLLECTION,
-    operator: "Suede Labs AI",
+    operator: "Suede AI",
     description:
       "Assess a supplied vendor profile for onboarding risk, name and tax mismatches, thin operating history, banking-change fraud signals, and missing diligence.",
     buyerIntent:
@@ -297,7 +297,7 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
     templateId: "tpl-expense-policy-check",
     name: "Expense Policy Check",
     collection: CURATED_BUSINESS_COLLECTION,
-    operator: "Suede Labs AI",
+    operator: "Suede AI",
     description:
       "Compare one expense with the policy supplied by the caller. Returns approve, flag, or reject, plus the reimbursable amount and supported violations.",
     buyerIntent:
@@ -343,7 +343,7 @@ const CONTRACTS: readonly CuratedBusinessServiceContract[] = [
     templateId: "tpl-bank-rec-discrepancy",
     name: "Bank Rec Discrepancy Finder",
     collection: CURATED_BUSINESS_COLLECTION,
-    operator: "Suede Labs AI",
+    operator: "Suede AI",
     description:
       "Compare bank-statement lines with book entries and return matched counts, classified exceptions, the unreconciled total, and the next item to investigate.",
     buyerIntent:

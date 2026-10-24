@@ -2038,7 +2038,7 @@ Brand audit:
       "category": "business",
       "description": "Turns a brand audit score into a ready-to-post creator contest brief with audience criteria and prize structure.
 
-Example input: "Brand: Suede Labs AI, score: 72, weakness: AEO"
+Example input: "Brand: Suede AI, score: 72, weakness: AEO"
 
 Example output: "Contest title: 'AI for Creators Challenge'. Prize: $500 + Suede Pro. Audience: music producers 18–35..."",
       "name": "Brand Audit to Contest Brief",
