@@ -314,8 +314,6 @@ Jason Colapietro is an engineer, author, and the founder and CEO of [Suede AI](h
 
 ## Docs
 
-- Design spec: [`docs/superpowers/specs/2026-06-07-suede-agent-studio-design.md`](docs/superpowers/specs/2026-06-07-suede-agent-studio-design.md)
-- Implementation plan: [`docs/superpowers/plans/2026-06-07-suede-agent-studio.md`](docs/superpowers/plans/2026-06-07-suede-agent-studio.md)
 - Database deployment baseline: [`src/lib/db/schema.deploy.sql`](src/lib/db/schema.deploy.sql). SQL under [`docs/migrations/`](docs/migrations/) is manual-only and requires a live schema readback, reviewed dry run, and explicit apply approval. `src/lib/db/schema.sql` is a conflicting historical Supabase Auth bootstrap, not the deployment baseline.
 - Prospect Engine production persistence uses [`prospect-engine-records.sql`](docs/migrations/prospect-engine-records.sql), followed by [`prospect-engine-production-shared-runtime.sql`](docs/migrations/prospect-engine-production-shared-runtime.sql) for the public-key plus request-secret Supabase bridge. Both were applied and read back in production on 2026-08-09.
 - Canonical node definitions: [`docs/architecture/canonical-node-definitions.md`](docs/architecture/canonical-node-definitions.md). This is the one-source workflow for adding a node without palette, inspector, runtime, price, or dry-run drift.

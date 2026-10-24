@@ -64,6 +64,23 @@ export default defineConfig({
       "packages/*/tests/**/*.test.ts",
       "packages/*/tests/**/*.test.tsx",
     ],
+    /*
+     * Release verifiers that read design specs and plans under
+     * docs/superpowers/. Those documents stay in the private Agent Studio
+     * repository and are not part of this public snapshot, so these suites can
+     * only fail here. They keep running in the private repository.
+     */
+    exclude: [
+      "**/node_modules/**",
+      "tests/runtime/event-schema.test.ts",
+      "tests/scripts/verify-phase2c.test.ts",
+      "tests/scripts/verify-phase2d.test.ts",
+      "tests/scripts/verify-phase2d-subflows.test.ts",
+      "tests/scripts/verify-phase2e.test.ts",
+      "tests/scripts/verify-phase2f.test.ts",
+      "tests/scripts/verify-phase3a.test.ts",
+      "tests/scripts/verify-phase4b1.test.ts",
+    ],
     coverage: {
       provider: "v8",
       include: ["src/lib/**/*.ts"],
