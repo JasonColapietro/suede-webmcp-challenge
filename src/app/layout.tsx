@@ -249,6 +249,7 @@ const jsonLd = {
         "https://jasoncolapietro.substack.com",
         "https://www.youtube.com/@aisuede",
         "https://www.crunchbase.com/person/jason-colapietro-d83e",
+        "https://apps.apple.com/us/developer/jason-colapietro/id1895958699",
         "https://www.wikidata.org/wiki/Q140235755",
         `${SITE_URL}/founder`,
       ],
