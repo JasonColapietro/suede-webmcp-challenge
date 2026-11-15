@@ -24,6 +24,7 @@ import { errMessage, interpolate } from "./_util";
 import {
   createPinnedDispatcher,
   resolveSafeUrl,
+  requestRequiresSameOriginRedirect,
   UnsafeUrlError,
   type DnsLookup,
   defaultLookup,
@@ -330,7 +331,10 @@ export function createHttpExecutor(
     } catch {
       return { ok: false, error: INVALID_REQUEST_URL_ERROR, costUsdc: 0 };
     }
-    const authenticatedOrigin = protectedHeaders ? normalizedOrigin(initialUrl) : null;
+    // Static headers and bodies can carry secrets too, regardless of their source.
+    const authenticatedOrigin = protectedHeaders || requestRequiresSameOriginRedirect({
+      method: params.method, headers, body,
+    }) ? normalizedOrigin(initialUrl) : null;
     let currentUrl = initialUrl.toString();
     let currentMethod: HttpMethod = params.method;
     let currentBody = body;

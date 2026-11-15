@@ -332,6 +332,38 @@ describe("assertSafeUrl with an http+https allowlist (http-node style)", () => {
 });
 
 describe("createPinnedDispatcher", () => {
+  it("never sends an authenticated redirected request over a real socket", async () => {
+    const received: string[] = [];
+    const server = createServer((request, response) => {
+      received.push(request.headers.host ?? "");
+      response.writeHead(307, { location: `http://receiver.example:${(server.address() as { port: number }).port}/collect` });
+      response.end();
+    });
+    await new Promise<void>((resolve, reject) => {
+      server.once("error", reject);
+      server.listen(0, "127.0.0.1", resolve);
+    });
+    const address = server.address();
+    if (!address || typeof address === "string") throw new Error("Expected a TCP server address");
+    const { safeFetch, createPinnedDispatcher, UnsafeUrlError } = await import("@/lib/net/safe-url");
+    try {
+      await expect(safeFetch(`http://source.example:${address.port}/start`, {
+        headers: { Authorization: "Bearer socket-secret-canary" },
+      }, {
+        allowedProtocols: ["http:"],
+        lookupFn: async () => [{ address: "93.184.216.34", family: 4 }],
+        // Test-only transport: route the validated fixture host to this
+        // local server, so no public service or real credential is used.
+        dispatcherFactory: (target) => createPinnedDispatcher({ ...target, address: "127.0.0.1", family: 4 }),
+      })).rejects.toBeInstanceOf(UnsafeUrlError);
+      expect(received).toEqual([`source.example:${address.port}`]);
+    } finally {
+      await new Promise<void>((resolve, reject) => {
+        server.close((error) => error ? reject(error) : resolve());
+      });
+    }
+  });
+
   it("connects to the pinned address while preserving the original Host header", async () => {
     const ipv4Server = createServer((request, response) => {
       response.setHeader("content-type", "application/json");
@@ -400,6 +432,45 @@ describe("safeFetch", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.clearAllMocks();
+  });
+
+  it.each([
+    { headers: { Authorization: "Bearer sentinel-secret" } },
+    { headers: { Cookie: "session=sentinel-secret" } },
+    { headers: { "x-suede-signature": "sha256=sentinel-signature" } },
+    { method: "POST", body: JSON.stringify({ password: "sentinel-secret" }) },
+  ])("refuses a cross-origin redirect before forwarding sensitive request data: %j", async (init) => {
+    lookupMock.mockResolvedValue([{ address: "93.184.216.34", family: 4 }]);
+    (fetch as ReturnType<typeof vi.fn>)
+      .mockResolvedValueOnce(new Response(null, { status: 307, headers: { location: "https://other.example.com/collect" } }))
+      .mockResolvedValueOnce(new Response("should not be requested"));
+    const { safeFetch, UnsafeUrlError } = await import("@/lib/net/safe-url");
+    await expect(safeFetch("https://relay.example.com/start", init)).rejects.toBeInstanceOf(UnsafeUrlError);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("retains same-origin authenticated redirects", async () => {
+    lookupMock.mockResolvedValue([{ address: "93.184.216.34", family: 4 }]);
+    (fetch as ReturnType<typeof vi.fn>)
+      .mockResolvedValueOnce(new Response(null, { status: 307, headers: { location: "/final" } }))
+      .mockResolvedValueOnce(new Response("ok"));
+    const { safeFetch } = await import("@/lib/net/safe-url");
+    const response = await safeFetch("https://relay.example.com/start", { headers: { Authorization: "Bearer sentinel-secret" } });
+    await response.text();
+    expect(fetch).toHaveBeenLastCalledWith("https://relay.example.com/final", expect.objectContaining({
+      headers: { Authorization: "Bearer sentinel-secret" },
+    }));
+  });
+
+  it("allows public read redirects across origins", async () => {
+    lookupMock.mockResolvedValue([{ address: "93.184.216.34", family: 4 }]);
+    (fetch as ReturnType<typeof vi.fn>)
+      .mockResolvedValueOnce(new Response(null, { status: 302, headers: { location: "https://cdn.example.com/final" } }))
+      .mockResolvedValueOnce(new Response("ok"));
+    const { safeFetch } = await import("@/lib/net/safe-url");
+    const response = await safeFetch("https://relay.example.com/start", { headers: { accept: "image/*" } });
+    await response.text();
+    expect(fetch).toHaveBeenCalledTimes(2);
   });
 
   it("re-validates the URL immediately before the connection, then fetches on success", async () => {

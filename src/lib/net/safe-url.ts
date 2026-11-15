@@ -70,6 +70,16 @@ const DEFAULT_PROTOCOLS = ["https:"];
 const DEFAULT_MAX_REDIRECTS = 3;
 const DEFAULT_TIMEOUT_MS = 15_000;
 
+const PUBLIC_REDIRECT_HEADERS = new Set(["accept", "accept-language", "content-type", "user-agent"]);
+
+/** Unknown headers and request bodies can carry credentials, including custom signatures. */
+export function requestRequiresSameOriginRedirect(init: RequestInit): boolean {
+  const method = (init.method ?? "GET").toUpperCase();
+  if (method !== "GET" && method !== "HEAD") return true;
+  if (init.body !== undefined && init.body !== null) return true;
+  return [...new Headers(init.headers).keys()].some((name) => !PUBLIC_REDIRECT_HEADERS.has(name));
+}
+
 export function createPinnedDispatcher(target: PinnedTarget): PinnedTransport {
   const dispatcher = new Agent({
     connect: {
@@ -415,6 +425,7 @@ export async function safeFetch(
   const maxRedirects = options.maxRedirects ?? DEFAULT_MAX_REDIRECTS;
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const dispatcherFactory = options.dispatcherFactory ?? createPinnedDispatcher;
+  const bindRedirectOrigin = requestRequiresSameOriginRedirect(init);
 
   let currentUrl = rawUrl;
   for (let hop = 0; hop <= maxRedirects; hop++) {
@@ -447,7 +458,12 @@ export async function safeFetch(
       }
       await response.body?.cancel().catch(() => undefined);
       await closeTransport(transport);
-      currentUrl = new URL(location, currentUrl).toString();
+      const nextUrl = new URL(location, currentUrl).toString();
+      // Manual redirects must not replay credentials or bodies at another origin.
+      if (bindRedirectOrigin && new URL(nextUrl).origin !== resolution.url.origin) {
+        throw new UnsafeUrlError("Cross-origin redirect refused for a private request");
+      }
+      currentUrl = nextUrl;
       continue;
     }
 

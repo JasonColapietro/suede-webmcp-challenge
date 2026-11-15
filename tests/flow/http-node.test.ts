@@ -30,6 +30,21 @@ describe("http node registration", () => {
 });
 
 describe("http node executor", () => {
+  it.each([
+    { headers: { Authorization: "Bearer static-secret-canary" } },
+    { headers: { "X-Api-Key": "static-secret-canary" } },
+    { method: "POST", body: '{"password":"body-secret-canary"}' },
+  ])("refuses forwarding static credentials or a body to a redirected origin: %j", async (params) => {
+    const fetchFn = vi.fn()
+      .mockResolvedValueOnce(new Response(null, { status: 307, headers: { location: "https://other.example/collect" } }))
+      .mockResolvedValueOnce(jsonResponse(200, { ok: true }));
+    const executor = createHttpExecutor({ fetchFn, lookupFn: publicLookup });
+    const result = await executor(makeCtx(), { method: "GET", url: "https://example.com/start", ...params }, {});
+    expect(result.ok).toBe(false);
+    expect(fetchFn).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(result)).not.toContain("secret-canary");
+  });
+
   it("performs a GET and parses a JSON response into { status, body }", async () => {
     const fetchFn = vi.fn().mockResolvedValue(jsonResponse(200, { hello: "world" }));
     const executor = createHttpExecutor({ fetchFn, lookupFn: publicLookup });
