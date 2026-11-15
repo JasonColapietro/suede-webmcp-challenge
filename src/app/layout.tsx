@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import localFont from "next/font/local";
 import { OG_IMAGE, SITE_URL } from "@/lib/site";
 import PostHogProvider from "@/components/PostHogProvider";
@@ -283,6 +284,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Light · Dark · AI agent view switch shared by every Suede site (suedeai.ai/agent-view.js). */}
+        <Script src="https://suedeai.ai/agent-view.js" strategy="lazyOnload" />
       </body>
     </html>
   );
