@@ -226,6 +226,8 @@ const profileJsonLd = {
           "https://suedeai.org/jason-colapietro/",
           "https://x.com/johnnysuede",
           "https://github.com/JasonColapietro",
+          "https://devpost.com/jasoncola1",
+          "https://www.salesforce.com/trailblazer/zeeurz8mozlb6bxzj0",
           "https://www.linkedin.com/in/jasoncolapietro",
           "https://jasoncolapietro.com/",
           "https://johnnysuede.com/",
@@ -318,6 +320,12 @@ export default function FounderPage(): React.JSX.Element {
                   className="lp-btn lp-btn--primary"
                 >
                   GitHub · JasonColapietro →
+                </a>
+                <a href="https://www.salesforce.com/trailblazer/zeeurz8mozlb6bxzj0" className="lp-btn lp-btn--ghost">
+                  Salesforce Trailblazer
+                </a>
+                <a href="https://jasoncolapietro.com/badges/#profiles" className="lp-btn lp-btn--ghost">
+                  Developer and training profiles
                 </a>
                 <a href="https://suedeai.ai" className="lp-btn lp-btn--ghost">
                   Suede AI
