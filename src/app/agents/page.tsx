@@ -281,6 +281,29 @@ export default async function AgentsDirectoryPage(): Promise<React.JSX.Element> 
             </a>
           </div>
         </section>
+        <section className="lp-block" aria-labelledby="agdir-developer-heading">
+          <h2 id="agdir-developer-heading" className="lp-eyebrow">Developer profiles</h2>
+          <div className="lp-rows">
+            <a className="lp-row" href="https://devpost.com/jasoncola1">
+              <div className="grow">
+                <div className="name">Jason Colapietro on Devpost</div>
+                <div className="sub">WebMCP Challenge entry and other developer projects</div>
+              </div>
+            </a>
+            <a className="lp-row" href="https://www.salesforce.com/trailblazer/zeeurz8mozlb6bxzj0">
+              <div className="grow">
+                <div className="name">Salesforce Trailblazer</div>
+                <div className="sub">Jason’s Salesforce projects and Trailhead badges</div>
+              </div>
+            </a>
+            <a className="lp-row" href="https://jasoncolapietro.com/badges/#profiles">
+              <div className="grow">
+                <div className="name">Developer and training profiles</div>
+                <div className="sub">GitHub, Microsoft Learn, Google Skills, and more</div>
+              </div>
+            </a>
+          </div>
+        </section>
       </main>
       <SiteFooter />
     </div>

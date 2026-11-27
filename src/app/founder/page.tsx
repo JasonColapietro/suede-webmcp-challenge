@@ -319,6 +319,12 @@ export default function FounderPage(): React.JSX.Element {
                 >
                   GitHub · JasonColapietro →
                 </a>
+                <a href="https://www.salesforce.com/trailblazer/zeeurz8mozlb6bxzj0" className="lp-btn lp-btn--ghost">
+                  Salesforce Trailblazer
+                </a>
+                <a href="https://jasoncolapietro.com/badges/#profiles" className="lp-btn lp-btn--ghost">
+                  Developer and training profiles
+                </a>
                 <a href="https://suedeai.ai" className="lp-btn lp-btn--ghost">
                   Suede AI
                 </a>
