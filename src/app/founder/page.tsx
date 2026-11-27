@@ -226,8 +226,6 @@ const profileJsonLd = {
           "https://suedeai.org/jason-colapietro/",
           "https://x.com/johnnysuede",
           "https://github.com/JasonColapietro",
-          "https://devpost.com/jasoncola1",
-          "https://www.salesforce.com/trailblazer/zeeurz8mozlb6bxzj0",
           "https://www.linkedin.com/in/jasoncolapietro",
           "https://jasoncolapietro.com/",
           "https://johnnysuede.com/",
